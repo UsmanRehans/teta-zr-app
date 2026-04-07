@@ -5,6 +5,8 @@ import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import CookMap from "@/components/map/CookMap";
+import { useTranslation } from "@/lib/i18n/LanguageContext";
+import LanguageToggle from "@/components/LanguageToggle";
 
 interface Cook {
   id: string;
@@ -27,6 +29,7 @@ export default function BrowsePage() {
   const [filter, setFilter] = useState("");
   const router = useRouter();
   const supabase = createClient();
+  const { t, locale } = useTranslation();
 
   useEffect(() => {
     loadCooks();
@@ -92,10 +95,12 @@ export default function BrowsePage() {
       )
     : cooks;
 
+  const arrow = locale === "ar" ? "←" : "→";
+
   if (loading) {
     return (
       <div className="min-h-screen bg-cream flex items-center justify-center">
-        <p className="text-foreground/50">Finding cooks near you...</p>
+        <p className="text-foreground/50">{t("findingCooks")}</p>
       </div>
     );
   }
@@ -108,21 +113,24 @@ export default function BrowsePage() {
           <Link href="/" className="text-2xl font-bold text-primary">
             teta
           </Link>
-          <button
-            onClick={async () => {
-              const {
-                data: { user },
-              } = await supabase.auth.getUser();
-              if (user) {
-                router.push("/my-orders");
-              } else {
-                router.push("/login");
-              }
-            }}
-            className="text-sm text-primary font-medium"
-          >
-            My Orders
-          </button>
+          <div className="flex items-center gap-3">
+            <LanguageToggle />
+            <button
+              onClick={async () => {
+                const {
+                  data: { user },
+                } = await supabase.auth.getUser();
+                if (user) {
+                  router.push("/my-orders");
+                } else {
+                  router.push("/login");
+                }
+              }}
+              className="text-sm text-primary font-medium"
+            >
+              {t("myOrders")}
+            </button>
+          </div>
         </div>
 
         {/* Search & filters */}
@@ -132,7 +140,7 @@ export default function BrowsePage() {
             dir="auto"
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
-            placeholder="Search cooks or cuisines..."
+            placeholder={t("searchPlaceholder")}
             className="flex-1 px-4 py-2.5 rounded-xl border border-foreground/10 bg-white text-sm text-foreground placeholder:text-foreground/30 focus:outline-none focus:ring-2 focus:ring-primary/50"
           />
           <div className="flex bg-white rounded-xl border border-foreground/10 overflow-hidden">
@@ -144,7 +152,7 @@ export default function BrowsePage() {
                   : "text-foreground/50"
               }`}
             >
-              Map
+              {t("map")}
             </button>
             <button
               onClick={() => setViewMode("list")}
@@ -154,7 +162,7 @@ export default function BrowsePage() {
                   : "text-foreground/50"
               }`}
             >
-              List
+              {t("list")}
             </button>
           </div>
         </div>
@@ -171,7 +179,7 @@ export default function BrowsePage() {
             {filteredCooks.length === 0 ? (
               <div className="text-center py-12">
                 <p className="text-4xl mb-3">🔍</p>
-                <p className="text-foreground/50">No cooks found</p>
+                <p className="text-foreground/50">{t("noCooksFound")}</p>
               </div>
             ) : (
               filteredCooks.map((cook) => (
@@ -219,7 +227,7 @@ export default function BrowsePage() {
                       </div>
                     )}
                   </div>
-                  <span className="text-foreground/30">→</span>
+                  <span className="text-foreground/30">{arrow}</span>
                 </Link>
               ))
             )}

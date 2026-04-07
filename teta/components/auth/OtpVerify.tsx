@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
+import { useTranslation } from "@/lib/i18n/LanguageContext";
 
 interface OtpVerifyProps {
   phone: string;
@@ -14,6 +15,7 @@ export default function OtpVerify({ phone }: OtpVerifyProps) {
   const [error, setError] = useState("");
   const router = useRouter();
   const supabase = createClient();
+  const { t } = useTranslation();
 
   async function handleVerify(e: React.FormEvent) {
     e.preventDefault();
@@ -66,7 +68,7 @@ export default function OtpVerify({ phone }: OtpVerifyProps) {
           htmlFor="otp"
           className="block text-sm font-medium text-foreground/70 mb-1"
         >
-          Verification code
+          {t("verificationCode")}
         </label>
         <input
           id="otp"
@@ -81,7 +83,7 @@ export default function OtpVerify({ phone }: OtpVerifyProps) {
       </div>
 
       <p className="text-sm text-foreground/50 text-center">
-        We sent a code to {phone}
+        {t("weSentCode")} {phone}
       </p>
 
       {error && <p className="text-sm text-red-600 text-center">{error}</p>}
@@ -91,7 +93,7 @@ export default function OtpVerify({ phone }: OtpVerifyProps) {
         disabled={loading || otp.length !== 6}
         className="w-full py-3 px-6 bg-primary text-white font-semibold rounded-full hover:bg-primary-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {loading ? "Verifying..." : "Verify"}
+        {loading ? t("verifying") : t("verify")}
       </button>
 
       <button
@@ -99,7 +101,7 @@ export default function OtpVerify({ phone }: OtpVerifyProps) {
         onClick={handleResend}
         className="w-full text-sm text-primary hover:text-primary-dark transition-colors"
       >
-        Resend code
+        {t("resendCode")}
       </button>
     </form>
   );

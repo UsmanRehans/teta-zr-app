@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import OrderCard from "@/components/orders/OrderCard";
+import { useTranslation } from "@/lib/i18n/LanguageContext";
 
 interface Order {
   id: string;
@@ -21,6 +22,7 @@ export default function CustomerOrdersPage() {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   const supabase = createClient();
+  const { t } = useTranslation();
 
   useEffect(() => {
     loadOrders();
@@ -93,7 +95,7 @@ export default function CustomerOrdersPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-cream flex items-center justify-center">
-        <p className="text-foreground/50">Loading orders...</p>
+        <p className="text-foreground/50">{t("loadingOrders")}</p>
       </div>
     );
   }
@@ -108,22 +110,22 @@ export default function CustomerOrdersPage() {
           href="/browse"
           className="text-sm text-primary font-medium hover:text-primary-dark"
         >
-          Browse
+          {t("browse")}
         </Link>
       </header>
 
       <main className="max-w-md mx-auto px-6 py-8">
-        <h1 className="text-2xl font-bold mb-6">My Orders</h1>
+        <h1 className="text-2xl font-bold mb-6">{t("myOrders")}</h1>
 
         {orders.length === 0 ? (
           <div className="text-center py-12">
             <p className="text-4xl mb-3">📋</p>
-            <p className="text-foreground/50 mb-4">No orders yet</p>
+            <p className="text-foreground/50 mb-4">{t("noOrdersYetCustomer")}</p>
             <Link
               href="/browse"
               className="inline-block px-6 py-3 bg-primary text-white font-semibold rounded-full hover:bg-primary-dark transition-colors"
             >
-              Browse cooks
+              {t("browseCooksButton")}
             </Link>
           </div>
         ) : (

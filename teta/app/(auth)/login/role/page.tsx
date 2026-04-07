@@ -4,6 +4,7 @@ import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useTranslation } from "@/lib/i18n/LanguageContext";
 
 export default function RoleSelectionPage() {
   const [name, setName] = useState("");
@@ -12,6 +13,7 @@ export default function RoleSelectionPage() {
   const [error, setError] = useState("");
   const router = useRouter();
   const supabase = createClient();
+  const { t } = useTranslation();
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -24,7 +26,7 @@ export default function RoleSelectionPage() {
     } = await supabase.auth.getUser();
 
     if (!user) {
-      setError("Session expired. Please log in again.");
+      setError(t("sessionExpired"));
       setLoading(false);
       return;
     }
@@ -65,10 +67,10 @@ export default function RoleSelectionPage() {
         <div className="w-full max-w-xs text-center mb-8">
           <p className="text-4xl mb-3">✨</p>
           <h1 className="text-2xl font-bold text-foreground mb-2">
-            Almost there
+            {t("almostThere")}
           </h1>
           <p className="text-sm text-foreground/60">
-            Tell us a bit about yourself
+            {t("tellUsAbout")}
           </p>
         </div>
 
@@ -78,7 +80,7 @@ export default function RoleSelectionPage() {
               htmlFor="name"
               className="block text-sm font-medium text-foreground/70 mb-1"
             >
-              Your name
+              {t("yourName")}
             </label>
             <input
               id="name"
@@ -86,14 +88,14 @@ export default function RoleSelectionPage() {
               dir="auto"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="e.g. Rima"
+              placeholder={t("namePlaceholder")}
               className="w-full px-4 py-3 rounded-xl border border-foreground/10 bg-white text-foreground placeholder:text-foreground/30 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
             />
           </div>
 
           <div>
             <p className="text-sm font-medium text-foreground/70 mb-3">
-              I want to...
+              {t("iWantTo")}
             </p>
             <div className="grid grid-cols-2 gap-3">
               <button
@@ -106,7 +108,7 @@ export default function RoleSelectionPage() {
                 }`}
               >
                 <p className="text-2xl mb-1">🍽️</p>
-                <p className="font-semibold text-sm">Order food</p>
+                <p className="font-semibold text-sm">{t("orderFood")}</p>
               </button>
               <button
                 type="button"
@@ -118,7 +120,7 @@ export default function RoleSelectionPage() {
                 }`}
               >
                 <p className="text-2xl mb-1">👩‍🍳</p>
-                <p className="font-semibold text-sm">Sell my food</p>
+                <p className="font-semibold text-sm">{t("sellMyFood")}</p>
               </button>
             </div>
           </div>
@@ -130,7 +132,7 @@ export default function RoleSelectionPage() {
             disabled={loading || !role || !name.trim()}
             className="w-full py-3 px-6 bg-primary text-white font-semibold rounded-full hover:bg-primary-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {loading ? "Setting up..." : "Let's go"}
+            {loading ? t("settingUp") : t("letsGo")}
           </button>
         </form>
       </main>

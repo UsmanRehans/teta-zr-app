@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import OrderCard from "@/components/orders/OrderCard";
+import { useTranslation } from "@/lib/i18n/LanguageContext";
 
 interface Order {
   id: string;
@@ -21,6 +22,7 @@ export default function CookOrdersPage() {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   const supabase = createClient();
+  const { t } = useTranslation();
 
   useEffect(() => {
     loadOrders();
@@ -107,7 +109,7 @@ export default function CookOrdersPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-cream flex items-center justify-center">
-        <p className="text-foreground/50">Loading orders...</p>
+        <p className="text-foreground/50">{t("loadingOrders")}</p>
       </div>
     );
   }
@@ -122,24 +124,24 @@ export default function CookOrdersPage() {
           href="/dashboard"
           className="text-sm text-primary font-medium hover:text-primary-dark"
         >
-          Dashboard
+          {t("dashboard")}
         </Link>
       </header>
 
       <main className="max-w-md mx-auto px-6 py-8">
-        <h1 className="text-2xl font-bold mb-6">Orders</h1>
+        <h1 className="text-2xl font-bold mb-6">{t("orders")}</h1>
 
         {orders.length === 0 ? (
           <div className="text-center py-12">
             <p className="text-4xl mb-3">📋</p>
-            <p className="text-foreground/50">No orders yet</p>
+            <p className="text-foreground/50">{t("noOrdersYet")}</p>
           </div>
         ) : (
           <>
             {activeOrders.length > 0 && (
               <div className="mb-8">
                 <h2 className="text-sm font-medium text-foreground/40 uppercase tracking-wider mb-3">
-                  Active ({activeOrders.length})
+                  {t("activeLabel")} ({activeOrders.length})
                 </h2>
                 <div className="space-y-3">
                   {activeOrders.map((order) => (
@@ -157,7 +159,7 @@ export default function CookOrdersPage() {
             {pastOrders.length > 0 && (
               <div>
                 <h2 className="text-sm font-medium text-foreground/40 uppercase tracking-wider mb-3">
-                  Past ({pastOrders.length})
+                  {t("pastLabel")} ({pastOrders.length})
                 </h2>
                 <div className="space-y-3">
                   {pastOrders.map((order) => (

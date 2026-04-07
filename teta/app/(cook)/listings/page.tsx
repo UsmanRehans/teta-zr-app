@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useTranslation } from "@/lib/i18n/LanguageContext";
 
 interface Listing {
   id: string;
@@ -22,6 +23,7 @@ export default function ListingsPage() {
   const [showCreate, setShowCreate] = useState(false);
   const router = useRouter();
   const supabase = createClient();
+  const { t } = useTranslation();
 
   useEffect(() => {
     loadListings();
@@ -74,7 +76,7 @@ export default function ListingsPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-cream flex items-center justify-center">
-        <p className="text-foreground/50">Loading...</p>
+        <p className="text-foreground/50">{t("loading")}</p>
       </div>
     );
   }
@@ -89,30 +91,30 @@ export default function ListingsPage() {
           href="/dashboard"
           className="text-sm text-primary font-medium hover:text-primary-dark"
         >
-          Dashboard
+          {t("dashboard")}
         </Link>
       </header>
 
       <main className="max-w-md mx-auto px-6 py-8">
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-bold">My Dishes</h1>
+          <h1 className="text-2xl font-bold">{t("myDishes")}</h1>
           <button
             onClick={() => setShowCreate(true)}
             className="px-4 py-2 bg-primary text-white text-sm font-semibold rounded-full hover:bg-primary-dark transition-colors"
           >
-            + Add dish
+            {t("addDish")}
           </button>
         </div>
 
         {listings.length === 0 && !showCreate ? (
           <div className="text-center py-12">
             <p className="text-4xl mb-3">🍳</p>
-            <p className="text-foreground/50 mb-4">No dishes yet</p>
+            <p className="text-foreground/50 mb-4">{t("noDishesYet")}</p>
             <button
               onClick={() => setShowCreate(true)}
               className="px-6 py-3 bg-primary text-white font-semibold rounded-full hover:bg-primary-dark transition-colors"
             >
-              Add your first dish
+              {t("addFirstDish")}
             </button>
           </div>
         ) : (
@@ -142,9 +144,9 @@ export default function ListingsPage() {
                   <p className="font-semibold truncate">{listing.name}</p>
                   <p className="text-sm text-foreground/50">
                     {listing.is_free
-                      ? "Free (donation)"
+                      ? t("freeDonation")
                       : `$${listing.price_usd}`}{" "}
-                    · {listing.portions_available} portions
+                    · {listing.portions_available} {t("portions")}
                   </p>
                 </div>
                 <button
@@ -155,7 +157,7 @@ export default function ListingsPage() {
                       : "bg-foreground/5 text-foreground/40"
                   }`}
                 >
-                  {listing.is_active ? "Active" : "Hidden"}
+                  {listing.is_active ? t("active") : t("hidden")}
                 </button>
               </div>
             ))}
@@ -201,9 +203,23 @@ function CreateListingModal({
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const supabase = createClient();
+  const { t } = useTranslation();
 
-  const ALLERGEN_OPTIONS = ["Nuts", "Dairy", "Gluten", "Shellfish", "Eggs", "Soy"];
-  const DIETARY_OPTIONS = ["Halal", "Vegan", "Vegetarian", "Gluten-free"];
+  const ALLERGEN_OPTIONS: { key: string; label: string }[] = [
+    { key: "nuts", label: t("allergenNuts") },
+    { key: "dairy", label: t("allergenDairy") },
+    { key: "gluten", label: t("allergenGluten") },
+    { key: "shellfish", label: t("allergenShellfish") },
+    { key: "eggs", label: t("allergenEggs") },
+    { key: "soy", label: t("allergenSoy") },
+  ];
+
+  const DIETARY_OPTIONS: { key: string; label: string }[] = [
+    { key: "halal", label: t("dietHalal") },
+    { key: "vegan", label: t("dietVegan") },
+    { key: "vegetarian", label: t("dietVegetarian") },
+    { key: "gluten-free", label: t("dietGlutenFree") },
+  ];
 
   async function handlePhotoUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -279,7 +295,7 @@ function CreateListingModal({
     <div className="fixed inset-0 bg-black/50 z-50 flex items-end sm:items-center justify-center">
       <div className="bg-cream rounded-t-2xl sm:rounded-2xl w-full max-w-md max-h-[90vh] overflow-y-auto">
         <div className="sticky top-0 bg-cream px-6 py-4 border-b border-foreground/5 flex items-center justify-between">
-          <h2 className="text-lg font-bold">Add a dish</h2>
+          <h2 className="text-lg font-bold">{t("addADish")}</h2>
           <button
             onClick={onClose}
             className="text-foreground/40 hover:text-foreground text-xl"
@@ -292,7 +308,7 @@ function CreateListingModal({
           {/* Photo */}
           <div>
             <label className="block text-sm font-medium text-foreground/70 mb-2">
-              Photo
+              {t("photo")}
             </label>
             {photoUrl ? (
               <div className="relative w-full h-48 rounded-xl overflow-hidden">
@@ -314,7 +330,7 @@ function CreateListingModal({
               <label className="w-full h-32 border-2 border-dashed border-foreground/10 rounded-xl flex flex-col items-center justify-center cursor-pointer hover:border-primary/30 transition-colors">
                 <span className="text-2xl mb-1">📷</span>
                 <span className="text-sm text-foreground/40">
-                  {uploading ? "Uploading..." : "Tap to add a photo"}
+                  {uploading ? t("uploading") : t("tapToAddPhoto")}
                 </span>
                 <input
                   type="file"
@@ -330,14 +346,14 @@ function CreateListingModal({
           {/* Name */}
           <div>
             <label className="block text-sm font-medium text-foreground/70 mb-1">
-              Dish name
+              {t("dishName")}
             </label>
             <input
               type="text"
               dir="auto"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="e.g. Kibbeh, Fattoush, Mana'eesh"
+              placeholder={t("dishNamePlaceholder")}
               className="w-full px-4 py-3 rounded-xl border border-foreground/10 bg-white text-foreground placeholder:text-foreground/30 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
             />
           </div>
@@ -345,13 +361,13 @@ function CreateListingModal({
           {/* Description */}
           <div>
             <label className="block text-sm font-medium text-foreground/70 mb-1">
-              Description
+              {t("description")}
             </label>
             <textarea
               dir="auto"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="What makes this dish special?"
+              placeholder={t("descriptionPlaceholder")}
               rows={2}
               className="w-full px-4 py-3 rounded-xl border border-foreground/10 bg-white text-foreground placeholder:text-foreground/30 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary resize-none"
             />
@@ -361,7 +377,7 @@ function CreateListingModal({
           <div>
             <div className="flex items-center justify-between mb-2">
               <label className="text-sm font-medium text-foreground/70">
-                Price
+                {t("price")}
               </label>
               <button
                 type="button"
@@ -372,7 +388,7 @@ function CreateListingModal({
                     : "bg-foreground/5 text-foreground/50"
                 }`}
               >
-                {isFree ? "Free meal ❤️" : "Mark as free"}
+                {isFree ? t("freeMeal") + " ❤️" : t("markAsFree")}
               </button>
             </div>
             {!isFree && (
@@ -397,7 +413,7 @@ function CreateListingModal({
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label className="block text-sm font-medium text-foreground/70 mb-1">
-                Portions
+                {t("portionsLabel")}
               </label>
               <input
                 type="number"
@@ -409,7 +425,7 @@ function CreateListingModal({
             </div>
             <div>
               <label className="block text-sm font-medium text-foreground/70 mb-1">
-                Prep time (min)
+                {t("prepTime")}
               </label>
               <input
                 type="number"
@@ -425,42 +441,42 @@ function CreateListingModal({
           {/* Category */}
           <div>
             <label className="block text-sm font-medium text-foreground/70 mb-1">
-              Category
+              {t("category")}
             </label>
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
               className="w-full px-4 py-3 rounded-xl border border-foreground/10 bg-white text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
             >
-              <option value="">Select category</option>
-              <option value="mezza">Mezza</option>
-              <option value="main">Main Course</option>
-              <option value="breakfast">Breakfast</option>
-              <option value="pastry">Pastry</option>
-              <option value="dessert">Dessert</option>
-              <option value="drink">Drink</option>
-              <option value="other">Other</option>
+              <option value="">{t("selectCategory")}</option>
+              <option value="mezza">{t("catMezza")}</option>
+              <option value="main">{t("catMain")}</option>
+              <option value="breakfast">{t("catBreakfast")}</option>
+              <option value="pastry">{t("catPastry")}</option>
+              <option value="dessert">{t("catDessert")}</option>
+              <option value="drink">{t("catDrink")}</option>
+              <option value="other">{t("catOther")}</option>
             </select>
           </div>
 
           {/* Allergens */}
           <div>
             <label className="block text-sm font-medium text-foreground/70 mb-2">
-              Allergens
+              {t("allergens")}
             </label>
             <div className="flex flex-wrap gap-2">
               {ALLERGEN_OPTIONS.map((a) => (
                 <button
-                  key={a}
+                  key={a.key}
                   type="button"
-                  onClick={() => toggleTag(allergens, a.toLowerCase(), setAllergens)}
+                  onClick={() => toggleTag(allergens, a.key, setAllergens)}
                   className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
-                    allergens.includes(a.toLowerCase())
+                    allergens.includes(a.key)
                       ? "bg-red-100 text-red-700 border border-red-200"
                       : "bg-white border border-foreground/10 text-foreground/60"
                   }`}
                 >
-                  {a}
+                  {a.label}
                 </button>
               ))}
             </div>
@@ -469,23 +485,23 @@ function CreateListingModal({
           {/* Dietary tags */}
           <div>
             <label className="block text-sm font-medium text-foreground/70 mb-2">
-              Dietary
+              {t("dietary")}
             </label>
             <div className="flex flex-wrap gap-2">
               {DIETARY_OPTIONS.map((d) => (
                 <button
-                  key={d}
+                  key={d.key}
                   type="button"
                   onClick={() =>
-                    toggleTag(dietaryTags, d.toLowerCase(), setDietaryTags)
+                    toggleTag(dietaryTags, d.key, setDietaryTags)
                   }
                   className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
-                    dietaryTags.includes(d.toLowerCase())
+                    dietaryTags.includes(d.key)
                       ? "bg-primary/10 text-primary border border-primary/20"
                       : "bg-white border border-foreground/10 text-foreground/60"
                   }`}
                 >
-                  {d}
+                  {d.label}
                 </button>
               ))}
             </div>
@@ -499,7 +515,7 @@ function CreateListingModal({
               onChange={(e) => setPickupOnly(e.target.checked)}
               className="w-5 h-5 rounded border-foreground/20 accent-primary"
             />
-            <span className="text-sm text-foreground/70">Pickup only</span>
+            <span className="text-sm text-foreground/70">{t("pickupOnly")}</span>
           </label>
 
           {error && <p className="text-sm text-red-600">{error}</p>}
@@ -509,7 +525,7 @@ function CreateListingModal({
             disabled={saving || !name.trim()}
             className="w-full py-3 px-6 bg-primary text-white font-semibold rounded-full hover:bg-primary-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {saving ? "Adding..." : "Add dish"}
+            {saving ? t("adding") : t("addDish").replace("+ ", "")}
           </button>
         </form>
       </div>

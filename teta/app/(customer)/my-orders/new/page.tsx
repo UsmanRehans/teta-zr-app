@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
+import { useTranslation } from "@/lib/i18n/LanguageContext";
 
 interface CartData {
   cookId: string;
@@ -29,6 +29,7 @@ export default function NewOrderPage() {
   const [error, setError] = useState("");
   const router = useRouter();
   const supabase = createClient();
+  const { t, locale } = useTranslation();
 
   useEffect(() => {
     const stored = sessionStorage.getItem("teta_cart");
@@ -39,10 +40,12 @@ export default function NewOrderPage() {
     setCart(JSON.parse(stored));
   }, [router]);
 
+  const backArrow = locale === "ar" ? "→" : "←";
+
   if (!cart) {
     return (
       <div className="min-h-screen bg-cream flex items-center justify-center">
-        <p className="text-foreground/50">Loading...</p>
+        <p className="text-foreground/50">{t("loading")}</p>
       </div>
     );
   }
@@ -108,16 +111,16 @@ export default function NewOrderPage() {
             onClick={() => router.back()}
             className="w-10 h-10 flex items-center justify-center rounded-full bg-white border border-foreground/10"
           >
-            ←
+            {backArrow}
           </button>
-          <span className="text-lg font-bold">Confirm Order</span>
+          <span className="text-lg font-bold">{t("confirmOrder")}</span>
         </div>
       </header>
 
       <main className="max-w-md mx-auto px-6 py-6 space-y-6">
         {/* Items */}
         <div className="bg-white rounded-xl border border-foreground/5 p-4">
-          <h2 className="font-semibold mb-3">Your items</h2>
+          <h2 className="font-semibold mb-3">{t("yourItems")}</h2>
           <div className="space-y-2">
             {cart.items.map((item) => (
               <div
@@ -130,21 +133,21 @@ export default function NewOrderPage() {
                 </div>
                 <span className="text-sm font-medium">
                   {item.listing.is_free
-                    ? "Free"
+                    ? t("free")
                     : `$${((item.listing.price_usd || 0) * item.quantity).toFixed(2)}`}
                 </span>
               </div>
             ))}
           </div>
           <div className="border-t border-foreground/5 mt-3 pt-3 flex justify-between font-bold">
-            <span>Total</span>
+            <span>{t("total")}</span>
             <span>${total.toFixed(2)}</span>
           </div>
         </div>
 
         {/* Delivery type */}
         <div className="bg-white rounded-xl border border-foreground/5 p-4">
-          <h2 className="font-semibold mb-3">How do you want it?</h2>
+          <h2 className="font-semibold mb-3">{t("howDoYouWantIt")}</h2>
           <div className="grid grid-cols-2 gap-3">
             <button
               onClick={() => setDeliveryType("pickup")}
@@ -155,7 +158,7 @@ export default function NewOrderPage() {
               }`}
             >
               <p className="text-xl mb-1">🚶</p>
-              <p className="font-medium">Pickup</p>
+              <p className="font-medium">{t("pickup")}</p>
             </button>
             <button
               onClick={() => setDeliveryType("delivery")}
@@ -166,21 +169,21 @@ export default function NewOrderPage() {
               }`}
             >
               <p className="text-xl mb-1">🛵</p>
-              <p className="font-medium">Delivery</p>
+              <p className="font-medium">{t("delivery")}</p>
             </button>
           </div>
 
           {deliveryType === "delivery" && (
             <div className="mt-3">
               <p className="text-xs text-orange-600 mb-2">
-                Note: Contact the cook to arrange delivery details
+                {t("deliveryNote")}
               </p>
               <input
                 type="text"
                 dir="auto"
                 value={deliveryAddress}
                 onChange={(e) => setDeliveryAddress(e.target.value)}
-                placeholder="Your delivery address"
+                placeholder={t("deliveryAddress")}
                 className="w-full px-4 py-3 rounded-xl border border-foreground/10 bg-cream text-foreground text-sm placeholder:text-foreground/30 focus:outline-none focus:ring-2 focus:ring-primary/50"
               />
             </div>
@@ -189,12 +192,12 @@ export default function NewOrderPage() {
 
         {/* Special instructions */}
         <div className="bg-white rounded-xl border border-foreground/5 p-4">
-          <h2 className="font-semibold mb-2">Special instructions</h2>
+          <h2 className="font-semibold mb-2">{t("specialInstructions")}</h2>
           <textarea
             dir="auto"
             value={instructions}
             onChange={(e) => setInstructions(e.target.value)}
-            placeholder="Any allergies or preferences?"
+            placeholder={t("allergiesPlaceholder")}
             rows={2}
             className="w-full px-4 py-3 rounded-xl border border-foreground/10 bg-cream text-foreground text-sm placeholder:text-foreground/30 focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none"
           />
@@ -202,10 +205,10 @@ export default function NewOrderPage() {
 
         {/* Payment */}
         <div className="bg-white rounded-xl border border-foreground/5 p-4">
-          <h2 className="font-semibold mb-2">Payment</h2>
+          <h2 className="font-semibold mb-2">{t("payment")}</h2>
           <div className="flex items-center gap-3 text-sm text-foreground/60">
             <span className="text-xl">💵</span>
-            <span>Cash on delivery</span>
+            <span>{t("cashOnDelivery")}</span>
           </div>
         </div>
 
@@ -216,11 +219,11 @@ export default function NewOrderPage() {
           disabled={placing || (deliveryType === "delivery" && !deliveryAddress)}
           className="w-full py-3 bg-primary text-white font-semibold rounded-full hover:bg-primary-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {placing ? "Placing order..." : `Place order — $${total.toFixed(2)}`}
+          {placing ? t("placingOrder") : `${t("placeOrder")} — $${total.toFixed(2)}`}
         </button>
 
         <p className="text-xs text-center text-foreground/30">
-          By placing this order you agree to pay the cook directly
+          {t("paymentDisclaimer")}
         </p>
       </main>
     </div>

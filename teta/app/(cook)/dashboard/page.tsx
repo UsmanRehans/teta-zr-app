@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useTranslation } from "@/lib/i18n/LanguageContext";
+import LanguageToggle from "@/components/LanguageToggle";
 
 interface CookStats {
   activeListings: number;
@@ -23,6 +25,7 @@ export default function CookDashboard() {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   const supabase = createClient();
+  const { t, locale } = useTranslation();
 
   useEffect(() => {
     loadDashboard();
@@ -103,10 +106,12 @@ export default function CookDashboard() {
   if (loading) {
     return (
       <div className="min-h-screen bg-cream flex items-center justify-center">
-        <p className="text-foreground/50">Loading...</p>
+        <p className="text-foreground/50">{t("loading")}</p>
       </div>
     );
   }
+
+  const arrow = locale === "ar" ? "←" : "→";
 
   return (
     <div className="min-h-screen bg-cream">
@@ -114,22 +119,25 @@ export default function CookDashboard() {
         <Link href="/" className="text-2xl font-bold text-primary">
           teta
         </Link>
-        <button
-          onClick={async () => {
-            await supabase.auth.signOut();
-            router.push("/");
-          }}
-          className="text-sm text-foreground/50 hover:text-foreground"
-        >
-          Sign out
-        </button>
+        <div className="flex items-center gap-3">
+          <LanguageToggle />
+          <button
+            onClick={async () => {
+              await supabase.auth.signOut();
+              router.push("/");
+            }}
+            className="text-sm text-foreground/50 hover:text-foreground"
+          >
+            {t("signOut")}
+          </button>
+        </div>
       </header>
 
       <main className="max-w-md mx-auto px-6 py-8">
         <div className="mb-8">
-          <h1 className="text-2xl font-bold">Ahla, {cookName} 👋</h1>
+          <h1 className="text-2xl font-bold">{t("ahla")} {cookName} 👋</h1>
           <p className="text-sm text-foreground/50 mt-1">
-            Here&apos;s your kitchen today
+            {t("heresYourKitchen")}
           </p>
         </div>
 
@@ -142,11 +150,11 @@ export default function CookDashboard() {
               : "bg-foreground/5 border-2 border-foreground/10"
           }`}
         >
-          <div className="text-left">
+          <div className="text-start">
             <p className="font-semibold">
-              {stats.acceptsOrders ? "Accepting orders" : "Not accepting orders"}
+              {stats.acceptsOrders ? t("acceptingOrders") : t("notAcceptingOrders")}
             </p>
-            <p className="text-xs text-foreground/50">Tap to toggle</p>
+            <p className="text-xs text-foreground/50">{t("tapToToggle")}</p>
           </div>
           <div
             className={`w-12 h-7 rounded-full p-0.5 transition-colors ${
@@ -167,19 +175,19 @@ export default function CookDashboard() {
             <p className="text-2xl font-bold text-primary">
               {stats.activeListings}
             </p>
-            <p className="text-xs text-foreground/50 mt-1">Active dishes</p>
+            <p className="text-xs text-foreground/50 mt-1">{t("activeDishes")}</p>
           </div>
           <div className="bg-white rounded-xl p-4 text-center border border-foreground/5">
             <p className="text-2xl font-bold text-primary">
               {stats.pendingOrders}
             </p>
-            <p className="text-xs text-foreground/50 mt-1">Pending</p>
+            <p className="text-xs text-foreground/50 mt-1">{t("pending")}</p>
           </div>
           <div className="bg-white rounded-xl p-4 text-center border border-foreground/5">
             <p className="text-2xl font-bold text-primary">
               {stats.todayOrders}
             </p>
-            <p className="text-xs text-foreground/50 mt-1">Today</p>
+            <p className="text-xs text-foreground/50 mt-1">{t("today")}</p>
           </div>
         </div>
 
@@ -192,13 +200,13 @@ export default function CookDashboard() {
             <div className="flex items-center gap-3">
               <span className="text-xl">🍽️</span>
               <div>
-                <p className="font-semibold">My Dishes</p>
+                <p className="font-semibold">{t("myDishes")}</p>
                 <p className="text-xs text-foreground/50">
-                  Add or edit your menu
+                  {t("addOrEditMenu")}
                 </p>
               </div>
             </div>
-            <span className="text-foreground/30">→</span>
+            <span className="text-foreground/30">{arrow}</span>
           </Link>
 
           <Link
@@ -208,13 +216,13 @@ export default function CookDashboard() {
             <div className="flex items-center gap-3">
               <span className="text-xl">📋</span>
               <div>
-                <p className="font-semibold">Orders</p>
+                <p className="font-semibold">{t("orders")}</p>
                 <p className="text-xs text-foreground/50">
-                  View and manage orders
+                  {t("viewManageOrders")}
                 </p>
               </div>
             </div>
-            <span className="text-foreground/30">→</span>
+            <span className="text-foreground/30">{arrow}</span>
           </Link>
 
           <Link
@@ -224,13 +232,13 @@ export default function CookDashboard() {
             <div className="flex items-center gap-3">
               <span className="text-xl">👤</span>
               <div>
-                <p className="font-semibold">Profile</p>
+                <p className="font-semibold">{t("profile")}</p>
                 <p className="text-xs text-foreground/50">
-                  Edit your cook profile
+                  {t("editCookProfile")}
                 </p>
               </div>
             </div>
-            <span className="text-foreground/30">→</span>
+            <span className="text-foreground/30">{arrow}</span>
           </Link>
         </div>
       </main>

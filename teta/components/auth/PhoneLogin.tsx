@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
+import { useTranslation } from "@/lib/i18n/LanguageContext";
 
 export default function PhoneLogin() {
   const [phone, setPhone] = useState("+961");
@@ -10,6 +11,7 @@ export default function PhoneLogin() {
   const [error, setError] = useState("");
   const router = useRouter();
   const supabase = createClient();
+  const { t } = useTranslation();
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -18,7 +20,7 @@ export default function PhoneLogin() {
 
     const cleaned = phone.replace(/\s/g, "");
     if (!/^\+961\d{7,8}$/.test(cleaned)) {
-      setError("Please enter a valid Lebanese number (+961 XX XXX XXX)");
+      setError(t("invalidPhone"));
       setLoading(false);
       return;
     }
@@ -43,7 +45,7 @@ export default function PhoneLogin() {
           htmlFor="phone"
           className="block text-sm font-medium text-foreground/70 mb-1"
         >
-          Phone number
+          {t("phoneNumber")}
         </label>
         <input
           id="phone"
@@ -51,7 +53,7 @@ export default function PhoneLogin() {
           dir="auto"
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
-          placeholder="+961 71 123 456"
+          placeholder={t("phonePlaceholder")}
           className="w-full px-4 py-3 rounded-xl border border-foreground/10 bg-white text-foreground placeholder:text-foreground/30 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
         />
       </div>
@@ -63,7 +65,7 @@ export default function PhoneLogin() {
         disabled={loading}
         className="w-full py-3 px-6 bg-primary text-white font-semibold rounded-full hover:bg-primary-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {loading ? "Sending code..." : "Send verification code"}
+        {loading ? t("sendingCode") : t("sendCode")}
       </button>
     </form>
   );

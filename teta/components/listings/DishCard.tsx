@@ -1,3 +1,7 @@
+"use client";
+
+import { useTranslation } from "@/lib/i18n/LanguageContext";
+
 interface Listing {
   id: string;
   name: string;
@@ -23,6 +27,8 @@ export default function DishCard({
   onAdd,
   onRemove,
 }: DishCardProps) {
+  const { t } = useTranslation();
+
   return (
     <div className="bg-white rounded-xl border border-foreground/5 overflow-hidden">
       <div className="flex">
@@ -42,7 +48,7 @@ export default function DishCard({
           <div className="flex items-center gap-2 mt-2">
             {listing.is_free ? (
               <span className="text-sm font-semibold text-primary">
-                Free ❤️
+                {t("free")} ❤️
               </span>
             ) : (
               <span className="text-sm font-semibold">
@@ -51,13 +57,13 @@ export default function DishCard({
             )}
             <span className="text-xs text-foreground/30">·</span>
             <span className="text-xs text-foreground/40">
-              {listing.prep_time_mins} min
+              {listing.prep_time_mins} {t("min")}
             </span>
             {listing.portions_available <= 3 && (
               <>
                 <span className="text-xs text-foreground/30">·</span>
                 <span className="text-xs text-orange-500">
-                  {listing.portions_available} left
+                  {listing.portions_available} {t("left")}
                 </span>
               </>
             )}
@@ -96,7 +102,7 @@ export default function DishCard({
                 onClick={onAdd}
                 className="px-5 py-1.5 bg-white border-2 border-primary text-primary text-sm font-bold rounded-full shadow-sm hover:bg-primary hover:text-white transition-colors"
               >
-                ADD
+                {t("addButton")}
               </button>
             ) : (
               <div className="flex items-center bg-primary rounded-full shadow-sm">

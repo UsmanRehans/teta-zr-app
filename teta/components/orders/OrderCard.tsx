@@ -1,6 +1,8 @@
 "use client";
 
 import { createClient } from "@/lib/supabase/client";
+import { useTranslation } from "@/lib/i18n/LanguageContext";
+import type { TranslationKey } from "@/lib/i18n/translations";
 
 interface Order {
   id: string;
@@ -11,15 +13,6 @@ interface Order {
   created_at: string;
   cook_name: string;
 }
-
-const STATUS_CONFIG: Record<string, { label: string; color: string; bg: string }> = {
-  pending: { label: "Pending", color: "text-yellow-700", bg: "bg-yellow-50" },
-  confirmed: { label: "Confirmed", color: "text-blue-700", bg: "bg-blue-50" },
-  preparing: { label: "Preparing", color: "text-orange-700", bg: "bg-orange-50" },
-  ready: { label: "Ready", color: "text-primary", bg: "bg-primary/10" },
-  delivered: { label: "Delivered", color: "text-foreground/50", bg: "bg-foreground/5" },
-  cancelled: { label: "Cancelled", color: "text-red-700", bg: "bg-red-50" },
-};
 
 const NEXT_STATUS: Record<string, string> = {
   pending: "confirmed",
@@ -37,8 +30,28 @@ export default function OrderCard({
   role: "customer" | "cook";
   onStatusChange?: (orderId: string, newStatus: string) => void;
 }) {
-  const status = STATUS_CONFIG[order.status] || STATUS_CONFIG.pending;
   const supabase = createClient();
+  const { t } = useTranslation();
+
+  const STATUS_CONFIG: Record<string, { label: string; color: string; bg: string }> = {
+    pending: { label: t("statusPending"), color: "text-yellow-700", bg: "bg-yellow-50" },
+    confirmed: { label: t("statusConfirmed"), color: "text-blue-700", bg: "bg-blue-50" },
+    preparing: { label: t("statusPreparing"), color: "text-orange-700", bg: "bg-orange-50" },
+    ready: { label: t("statusReady"), color: "text-primary", bg: "bg-primary/10" },
+    delivered: { label: t("statusDelivered"), color: "text-foreground/50", bg: "bg-foreground/5" },
+    cancelled: { label: t("statusCancelled"), color: "text-red-700", bg: "bg-red-50" },
+  };
+
+  const STATUS_LABEL_KEYS: Record<string, TranslationKey> = {
+    pending: "statusPending",
+    confirmed: "statusConfirmed",
+    preparing: "statusPreparing",
+    ready: "statusReady",
+    delivered: "statusDelivered",
+    cancelled: "statusCancelled",
+  };
+
+  const status = STATUS_CONFIG[order.status] || STATUS_CONFIG.pending;
 
   async function advanceStatus() {
     const nextStatus = NEXT_STATUS[order.status];
@@ -61,7 +74,12 @@ export default function OrderCard({
     onStatusChange?.(order.id, "cancelled");
   }
 
-  const timeAgo = getTimeAgo(order.created_at);
+  const timeAgo = getTimeAgo(order.created_at, t);
+
+  const nextStatus = NEXT_STATUS[order.status];
+  const nextStatusLabel = nextStatus
+    ? t(STATUS_LABEL_KEYS[nextStatus] || "statusPending")
+    : "";
 
   return (
     <div className="bg-white rounded-xl border border-foreground/5 p-4">
@@ -88,20 +106,20 @@ export default function OrderCard({
       </div>
 
       {/* Cook actions */}
-      {role === "cook" && NEXT_STATUS[order.status] && (
+      {role === "cook" && nextStatus && (
         <div className="flex gap-2 mt-3 pt-3 border-t border-foreground/5">
           <button
             onClick={advanceStatus}
             className="flex-1 py-2 bg-primary text-white text-sm font-medium rounded-full hover:bg-primary-dark transition-colors"
           >
-            Mark as {NEXT_STATUS[order.status]}
+            {t("markAs")} {nextStatusLabel}
           </button>
           {order.status === "pending" && (
             <button
               onClick={cancelOrder}
               className="py-2 px-4 text-red-600 text-sm font-medium rounded-full border border-red-200 hover:bg-red-50 transition-colors"
             >
-              Cancel
+              {t("cancel")}
             </button>
           )}
         </div>
@@ -114,7 +132,7 @@ export default function OrderCard({
             onClick={cancelOrder}
             className="text-sm text-red-500 hover:text-red-700"
           >
-            Cancel order
+            {t("cancelOrder")}
           </button>
         </div>
       )}
@@ -122,13 +140,16 @@ export default function OrderCard({
   );
 }
 
-function getTimeAgo(dateStr: string): string {
+function getTimeAgo(
+  dateStr: string,
+  t: (key: TranslationKey) => string
+): string {
   const diff = Date.now() - new Date(dateStr).getTime();
   const mins = Math.floor(diff / 60000);
-  if (mins < 1) return "Just now";
-  if (mins < 60) return `${mins}m ago`;
+  if (mins < 1) return t("justNow");
+  if (mins < 60) return `${mins}${t("mAgo")}`;
   const hours = Math.floor(mins / 60);
-  if (hours < 24) return `${hours}h ago`;
+  if (hours < 24) return `${hours}${t("hAgo")}`;
   const days = Math.floor(hours / 24);
-  return `${days}d ago`;
+  return `${days}${t("dAgo")}`;
 }

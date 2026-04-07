@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useTranslation } from "@/lib/i18n/LanguageContext";
+import LanguageToggle from "@/components/LanguageToggle";
 
 interface Stats {
   ordersToday: number;
@@ -62,6 +64,7 @@ export default function AdminDashboard() {
   const [authorized, setAuthorized] = useState(false);
   const router = useRouter();
   const supabase = createClient();
+  const { t } = useTranslation();
 
   useEffect(() => {
     checkAuth();
@@ -220,10 +223,16 @@ export default function AdminDashboard() {
     );
   }
 
+  const tabLabels: Record<Tab, string> = {
+    orders: t("orders"),
+    cooks: t("cooks"),
+    logs: t("agentLogs"),
+  };
+
   if (loading || !authorized) {
     return (
       <div className="min-h-screen bg-cream flex items-center justify-center">
-        <p className="text-foreground/50">Loading admin dashboard...</p>
+        <p className="text-foreground/50">{t("loadingAdmin")}</p>
       </div>
     );
   }
@@ -234,42 +243,45 @@ export default function AdminDashboard() {
         <Link href="/" className="text-2xl font-bold text-primary">
           teta
         </Link>
-        <span className="text-xs px-2 py-1 bg-red-100 text-red-700 rounded-full font-medium">
-          Admin
-        </span>
+        <div className="flex items-center gap-3">
+          <LanguageToggle />
+          <span className="text-xs px-2 py-1 bg-red-100 text-red-700 rounded-full font-medium">
+            {t("admin")}
+          </span>
+        </div>
       </header>
 
       <main className="max-w-4xl mx-auto px-6 py-8">
-        <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
+        <h1 className="text-2xl font-bold mb-6">{t("dashboard")}</h1>
 
         {/* Stats */}
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-8">
-          <StatCard label="Orders today" value={stats.ordersToday} />
+          <StatCard label={t("ordersToday")} value={stats.ordersToday} />
           <StatCard
-            label="Revenue today"
+            label={t("revenueToday")}
             value={`$${stats.revenueToday.toFixed(2)}`}
           />
-          <StatCard label="Total orders" value={stats.totalOrders} />
+          <StatCard label={t("totalOrders")} value={stats.totalOrders} />
           <StatCard
-            label="Active cooks"
+            label={t("activeCooks")}
             value={`${stats.activeCooks}/${stats.totalCooks}`}
           />
-          <StatCard label="Customers" value={stats.totalCustomers} />
+          <StatCard label={t("customers")} value={stats.totalCustomers} />
         </div>
 
         {/* Tabs */}
         <div className="flex gap-1 bg-white rounded-xl border border-foreground/5 p-1 mb-6">
-          {(["orders", "cooks", "logs"] as Tab[]).map((t) => (
+          {(["orders", "cooks", "logs"] as Tab[]).map((tabKey) => (
             <button
-              key={t}
-              onClick={() => setTab(t)}
-              className={`flex-1 py-2 rounded-lg text-sm font-medium transition-colors capitalize ${
-                tab === t
+              key={tabKey}
+              onClick={() => setTab(tabKey)}
+              className={`flex-1 py-2 rounded-lg text-sm font-medium transition-colors ${
+                tab === tabKey
                   ? "bg-primary text-white"
                   : "text-foreground/50 hover:text-foreground"
               }`}
             >
-              {t === "logs" ? "Agent Logs" : t}
+              {tabLabels[tabKey]}
             </button>
           ))}
         </div>
@@ -295,7 +307,7 @@ export default function AdminDashboard() {
                     <span className="font-medium">{order.cook_name}</span>
                   </p>
                 </div>
-                <div className="text-right">
+                <div className="text-end">
                   <p className="font-semibold">${order.total_usd.toFixed(2)}</p>
                   <p className="text-xs text-foreground/40">
                     {new Date(order.created_at).toLocaleString()}
@@ -304,7 +316,7 @@ export default function AdminDashboard() {
               </div>
             ))}
             {orders.length === 0 && (
-              <p className="text-center text-foreground/50 py-8">No orders yet</p>
+              <p className="text-center text-foreground/50 py-8">{t("noOrdersAdmin")}</p>
             )}
           </div>
         )}
@@ -328,7 +340,7 @@ export default function AdminDashboard() {
                     <span
                       className={`text-xs ${cook.accepts_orders ? "text-primary" : "text-foreground/30"}`}
                     >
-                      {cook.accepts_orders ? "Online" : "Offline"}
+                      {cook.accepts_orders ? t("online") : t("offline")}
                     </span>
                   </div>
                 </div>
@@ -340,12 +352,12 @@ export default function AdminDashboard() {
                       : "bg-foreground/5 text-foreground/40 hover:bg-primary/10 hover:text-primary"
                   }`}
                 >
-                  {cook.verified ? "Verified ✓" : "Verify"}
+                  {cook.verified ? t("verified") + " ✓" : t("verifyButton")}
                 </button>
               </div>
             ))}
             {cooks.length === 0 && (
-              <p className="text-center text-foreground/50 py-8">No cooks yet</p>
+              <p className="text-center text-foreground/50 py-8">{t("noCooksAdmin")}</p>
             )}
           </div>
         )}
@@ -368,11 +380,11 @@ export default function AdminDashboard() {
                 </div>
                 <div className="space-y-1.5">
                   <p className="text-sm">
-                    <span className="font-medium text-foreground/50">User: </span>
+                    <span className="font-medium text-foreground/50">{t("user")} </span>
                     {log.user_message}
                   </p>
                   <p className="text-sm">
-                    <span className="font-medium text-primary">Agent: </span>
+                    <span className="font-medium text-primary">{t("agent")} </span>
                     {log.agent_response.slice(0, 200)}
                     {log.agent_response.length > 200 ? "..." : ""}
                   </p>
@@ -393,7 +405,7 @@ export default function AdminDashboard() {
             ))}
             {logs.length === 0 && (
               <p className="text-center text-foreground/50 py-8">
-                No agent logs yet
+                {t("noLogsAdmin")}
               </p>
             )}
           </div>
@@ -419,6 +431,8 @@ function StatCard({
 }
 
 function StatusBadge({ status }: { status: string }) {
+  const { t } = useTranslation();
+
   const colors: Record<string, string> = {
     pending: "bg-yellow-50 text-yellow-700",
     confirmed: "bg-blue-50 text-blue-700",
@@ -428,11 +442,20 @@ function StatusBadge({ status }: { status: string }) {
     cancelled: "bg-red-50 text-red-700",
   };
 
+  const statusLabels: Record<string, string> = {
+    pending: t("statusPending"),
+    confirmed: t("statusConfirmed"),
+    preparing: t("statusPreparing"),
+    ready: t("statusReady"),
+    delivered: t("statusDelivered"),
+    cancelled: t("statusCancelled"),
+  };
+
   return (
     <span
       className={`text-xs px-2 py-0.5 rounded-full font-medium ${colors[status] || "bg-foreground/5 text-foreground/50"}`}
     >
-      {status}
+      {statusLabels[status] || status}
     </span>
   );
 }

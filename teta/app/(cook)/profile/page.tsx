@@ -5,19 +5,7 @@ import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import LocationPicker from "@/components/map/LocationPicker";
-
-const SPECIALTY_OPTIONS = [
-  "Mezza",
-  "Grills",
-  "Pastries",
-  "Saj & Manaqeesh",
-  "Soups & Stews",
-  "Desserts",
-  "Salads",
-  "Breakfast",
-  "Vegan",
-  "Seafood",
-];
+import { useTranslation } from "@/lib/i18n/LanguageContext";
 
 export default function CookProfilePage() {
   const [name, setName] = useState("");
@@ -35,6 +23,20 @@ export default function CookProfilePage() {
   const [success, setSuccess] = useState(false);
   const router = useRouter();
   const supabase = createClient();
+  const { t } = useTranslation();
+
+  const SPECIALTY_OPTIONS: { key: string; label: string }[] = [
+    { key: "Mezza", label: t("specMezza") },
+    { key: "Grills", label: t("specGrills") },
+    { key: "Pastries", label: t("specPastries") },
+    { key: "Saj & Manaqeesh", label: t("specSaj") },
+    { key: "Soups & Stews", label: t("specSoups") },
+    { key: "Desserts", label: t("specDesserts") },
+    { key: "Salads", label: t("specSalads") },
+    { key: "Breakfast", label: t("specBreakfast") },
+    { key: "Vegan", label: t("specVegan") },
+    { key: "Seafood", label: t("specSeafood") },
+  ];
 
   useEffect(() => {
     loadProfile();
@@ -176,7 +178,7 @@ export default function CookProfilePage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-cream flex items-center justify-center">
-        <p className="text-foreground/50">Loading your profile...</p>
+        <p className="text-foreground/50">{t("loadingProfile")}</p>
       </div>
     );
   }
@@ -191,12 +193,12 @@ export default function CookProfilePage() {
           href="/dashboard"
           className="text-sm text-primary font-medium hover:text-primary-dark"
         >
-          Dashboard
+          {t("dashboard")}
         </Link>
       </header>
 
       <main className="max-w-md mx-auto px-6 py-8">
-        <h1 className="text-2xl font-bold mb-6">Your cook profile</h1>
+        <h1 className="text-2xl font-bold mb-6">{t("yourCookProfile")}</h1>
 
         <form onSubmit={handleSave} className="space-y-6">
           {/* Avatar */}
@@ -215,7 +217,7 @@ export default function CookProfilePage() {
             </div>
             <div>
               <label className="inline-block px-4 py-2 bg-white border border-foreground/10 rounded-lg text-sm font-medium cursor-pointer hover:bg-foreground/5 transition-colors">
-                {uploading ? "Uploading..." : "Upload photo"}
+                {uploading ? t("uploading") : t("uploadPhoto")}
                 <input
                   type="file"
                   accept="image/*"
@@ -230,14 +232,14 @@ export default function CookProfilePage() {
           {/* Name */}
           <div>
             <label className="block text-sm font-medium text-foreground/70 mb-1">
-              Name
+              {t("name")}
             </label>
             <input
               type="text"
               dir="auto"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="e.g. Teta Rima"
+              placeholder={t("nameCookPlaceholder")}
               className="w-full px-4 py-3 rounded-xl border border-foreground/10 bg-white text-foreground placeholder:text-foreground/30 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
             />
           </div>
@@ -245,13 +247,13 @@ export default function CookProfilePage() {
           {/* Bio */}
           <div>
             <label className="block text-sm font-medium text-foreground/70 mb-1">
-              About you
+              {t("aboutYou")}
             </label>
             <textarea
               dir="auto"
               value={bio}
               onChange={(e) => setBio(e.target.value)}
-              placeholder="Tell customers about your cooking..."
+              placeholder={t("aboutPlaceholder")}
               rows={3}
               className="w-full px-4 py-3 rounded-xl border border-foreground/10 bg-white text-foreground placeholder:text-foreground/30 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary resize-none"
             />
@@ -260,7 +262,7 @@ export default function CookProfilePage() {
           {/* Location */}
           <div>
             <label className="block text-sm font-medium text-foreground/70 mb-2">
-              Your location
+              {t("yourLocation")}
             </label>
             <LocationPicker
               initialLng={lng}
@@ -275,14 +277,14 @@ export default function CookProfilePage() {
           {/* Neighborhood hint */}
           <div>
             <label className="block text-sm font-medium text-foreground/70 mb-1">
-              Neighborhood
+              {t("neighborhood")}
             </label>
             <input
               type="text"
               dir="auto"
               value={addressHint}
               onChange={(e) => setAddressHint(e.target.value)}
-              placeholder="e.g. Hamra, Achrafieh, Verdun"
+              placeholder={t("neighborhoodPlaceholder")}
               className="w-full px-4 py-3 rounded-xl border border-foreground/10 bg-white text-foreground placeholder:text-foreground/30 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
             />
           </div>
@@ -290,7 +292,7 @@ export default function CookProfilePage() {
           {/* Delivery radius */}
           <div>
             <label className="block text-sm font-medium text-foreground/70 mb-1">
-              Delivery radius: {deliveryRadius} km
+              {t("deliveryRadius")} {deliveryRadius} {t("km")}
             </label>
             <input
               type="range"
@@ -301,29 +303,29 @@ export default function CookProfilePage() {
               className="w-full accent-primary"
             />
             <div className="flex justify-between text-xs text-foreground/40">
-              <span>1 km</span>
-              <span>10 km</span>
+              <span>1 {t("km")}</span>
+              <span>10 {t("km")}</span>
             </div>
           </div>
 
           {/* Specialties */}
           <div>
             <label className="block text-sm font-medium text-foreground/70 mb-2">
-              Specialties
+              {t("specialties")}
             </label>
             <div className="flex flex-wrap gap-2">
               {SPECIALTY_OPTIONS.map((spec) => (
                 <button
-                  key={spec}
+                  key={spec.key}
                   type="button"
-                  onClick={() => toggleSpecialty(spec)}
+                  onClick={() => toggleSpecialty(spec.key)}
                   className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                    specialties.includes(spec)
+                    specialties.includes(spec.key)
                       ? "bg-primary text-white"
                       : "bg-white border border-foreground/10 text-foreground/70 hover:border-primary/30"
                   }`}
                 >
-                  {spec}
+                  {spec.label}
                 </button>
               ))}
             </div>
@@ -332,7 +334,7 @@ export default function CookProfilePage() {
           {error && <p className="text-sm text-red-600">{error}</p>}
           {success && (
             <p className="text-sm text-primary font-medium">
-              Profile saved!
+              {t("profileSaved")}
             </p>
           )}
 
@@ -341,7 +343,7 @@ export default function CookProfilePage() {
             disabled={saving || !name.trim()}
             className="w-full py-3 px-6 bg-primary text-white font-semibold rounded-full hover:bg-primary-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {saving ? "Saving..." : "Save profile"}
+            {saving ? t("saving") : t("saveProfile")}
           </button>
         </form>
       </main>

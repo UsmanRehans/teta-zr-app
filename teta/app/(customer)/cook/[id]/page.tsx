@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/client";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import DishCard from "@/components/listings/DishCard";
+import { useTranslation } from "@/lib/i18n/LanguageContext";
 
 interface CookProfile {
   name: string;
@@ -42,6 +43,7 @@ export default function CookPage() {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   const supabase = createClient();
+  const { t, locale } = useTranslation();
 
   useEffect(() => {
     loadCook();
@@ -135,10 +137,12 @@ export default function CookPage() {
 
   const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
 
+  const backArrow = locale === "ar" ? "→" : "←";
+
   if (loading) {
     return (
       <div className="min-h-screen bg-cream flex items-center justify-center">
-        <p className="text-foreground/50">Loading...</p>
+        <p className="text-foreground/50">{t("loading")}</p>
       </div>
     );
   }
@@ -153,7 +157,7 @@ export default function CookPage() {
             href="/browse"
             className="w-10 h-10 flex items-center justify-center rounded-full bg-white border border-foreground/10"
           >
-            ←
+            {backArrow}
           </Link>
           <span className="text-lg font-bold">{cook.name}</span>
         </div>
@@ -187,7 +191,7 @@ export default function CookPage() {
               )}
               {!cook.accepts_orders && (
                 <span className="text-xs px-2 py-0.5 bg-foreground/5 rounded-full text-foreground/40">
-                  Not accepting orders
+                  {t("notAccepting")}
                 </span>
               )}
             </div>
@@ -215,12 +219,12 @@ export default function CookPage() {
 
         {/* Dishes */}
         <h2 className="text-lg font-bold mb-4">
-          Today&apos;s Menu ({listings.length})
+          {t("todaysMenu")} ({listings.length})
         </h2>
 
         {listings.length === 0 ? (
           <p className="text-foreground/50 text-center py-8">
-            No dishes available right now
+            {t("noDishesAvailable")}
           </p>
         ) : (
           <div className="space-y-3">
@@ -256,7 +260,7 @@ export default function CookPage() {
               className="w-full py-3 bg-primary text-white font-semibold rounded-full flex items-center justify-center gap-2 hover:bg-primary-dark transition-colors"
             >
               <span>
-                View order ({cartCount} {cartCount === 1 ? "item" : "items"})
+                {t("viewOrder")} ({cartCount} {cartCount === 1 ? t("item") : t("items")})
               </span>
               <span className="font-bold">${cartTotal.toFixed(2)}</span>
             </button>
