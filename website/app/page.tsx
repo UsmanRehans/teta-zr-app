@@ -228,17 +228,33 @@ function Header() {
 function Hero() {
   const { t } = useTranslation();
   return (
-    <section className="bg-gradient-to-b from-cream to-[#FFF0E0] py-24 md:py-36 px-6 relative overflow-hidden">
-      <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-12">
-        {/* Left — text */}
-        <div className="flex-1 text-center md:text-left">
-          <h1 className="text-4xl md:text-6xl font-bold text-foreground leading-tight mb-6 animate-fade-in-up">
+    <section className="bg-gradient-to-b from-cream to-[#FFF0E0] py-20 md:py-28 px-6 relative overflow-hidden">
+      <div className="max-w-5xl mx-auto">
+        {/* Headline + subtitle centered */}
+        <div className="text-center max-w-3xl mx-auto mb-10">
+          <h1 className="text-4xl md:text-6xl font-bold text-foreground leading-tight mb-6">
             {t("hero.headline")}
           </h1>
-          <p className="text-lg md:text-xl text-foreground/80 max-w-2xl mb-10 leading-relaxed animate-fade-in-up animate-fade-in-up-delay-1">
+          <p className="text-lg md:text-xl text-foreground/80 leading-relaxed">
             {t("hero.subtitle")}
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start animate-fade-in-up animate-fade-in-up-delay-2">
+        </div>
+
+        {/* Hero image — full width */}
+        <div className="rounded-2xl overflow-hidden shadow-2xl mb-10 max-w-4xl mx-auto">
+          <Image
+            src="/images/hero-food.jpg"
+            alt="Authentic Lebanese hummus and mezze spread"
+            width={900}
+            height={500}
+            className="w-full h-64 md:h-96 object-cover"
+            priority
+          />
+        </div>
+
+        {/* Buttons + social proof below the photo */}
+        <div className="text-center">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
               href="https://app.ourteta.com"
               className="px-8 py-3.5 text-lg font-semibold text-white bg-gradient-to-r from-primary to-primary-dark rounded-full shadow-lg hover:scale-105 transition-transform"
@@ -254,27 +270,13 @@ function Hero() {
           </div>
 
           {/* Social proof */}
-          <div className="flex items-center justify-center md:justify-start mt-10 animate-fade-in-up animate-fade-in-up-delay-3">
+          <div className="flex items-center justify-center mt-6">
             <div className="flex items-center">
               <div className="w-8 h-8 rounded-full border-2 border-cream bg-[#C2185B]" />
               <div className="w-8 h-8 rounded-full border-2 border-cream bg-[#A2C2E0] -ml-2" />
               <div className="w-8 h-8 rounded-full border-2 border-cream bg-[#FFB300] -ml-2" />
             </div>
             <span className="ml-3 text-sm text-foreground/60">{t("hero.socialProof")}</span>
-          </div>
-        </div>
-
-        {/* Right — hero image */}
-        <div className="flex-1 animate-fade-in-up animate-fade-in-up-delay-2">
-          <div className="rounded-2xl overflow-hidden shadow-2xl">
-            <Image
-              src="/images/hero-food.jpg"
-              alt="Authentic Lebanese hummus and mezze spread"
-              width={600}
-              height={450}
-              className="w-full h-auto object-cover"
-              priority
-            />
           </div>
         </div>
       </div>
