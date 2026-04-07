@@ -5,7 +5,12 @@ import { executeAgentTool } from "@/lib/agent/teta-agent";
 import { TETA_AGENT_SYSTEM_PROMPT } from "@/lib/agent/prompts";
 
 export async function POST(request: Request) {
+  try {
   const { messages, sessionId, userId } = await request.json();
+
+  if (!process.env.ANTHROPIC_API_KEY) {
+    return Response.json({ error: "Missing ANTHROPIC_API_KEY" }, { status: 500 });
+  }
 
   const supabase = await createClient();
   const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
@@ -87,4 +92,9 @@ export async function POST(request: Request) {
     content: finalResponse.content,
     usage: finalResponse.usage,
   });
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : "Unknown error";
+    console.error("Agent API error:", message);
+    return Response.json({ error: message }, { status: 500 });
+  }
 }
