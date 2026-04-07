@@ -1,5 +1,6 @@
 import Link from "next/link";
 import PhoneLogin from "@/components/auth/PhoneLogin";
+import DevLogin from "@/components/auth/DevLogin";
 
 export default function LoginPage() {
   return (
@@ -22,6 +23,8 @@ export default function LoginPage() {
         </div>
 
         <PhoneLogin />
+
+        {process.env.NODE_ENV !== "production" && <DevLogin />}
       </main>
     </div>
   );
