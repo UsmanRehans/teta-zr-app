@@ -62,6 +62,73 @@ function useCountUp(target: number, duration = 1500) {
 }
 
 /* ------------------------------------------------------------------ */
+/*  Teta Character & Speech Bubble                                     */
+/* ------------------------------------------------------------------ */
+
+function TetaCharacter({ className = "", action = "wave" }: { className?: string; action?: "wave" | "stir" | "point" }) {
+  return (
+    <div className={`inline-block ${className}`}>
+      <svg viewBox="0 0 120 160" fill="none" className="w-full h-full">
+        {/* Head */}
+        <circle cx="60" cy="40" r="28" fill="#F4D5B0" />
+        {/* Headscarf */}
+        <path d="M32 38c0-20 12-32 28-32s28 12 28 32" fill="#C2185B" />
+        <path d="M30 38c2 8 8 12 15 14" fill="#C2185B" />
+        <path d="M90 38c-2 8-8 12-15 14" fill="#C2185B" />
+        {/* Eyes — warm, smiling */}
+        <ellipse cx="48" cy="42" rx="3" ry="2" fill="#2C2C2C" />
+        <ellipse cx="72" cy="42" rx="3" ry="2" fill="#2C2C2C" />
+        {/* Warm smile */}
+        <path d="M48 52c4 6 20 6 24 0" stroke="#C2185B" strokeWidth="2" fill="none" strokeLinecap="round" />
+        {/* Cheeks — rosy */}
+        <circle cx="42" cy="48" r="4" fill="#FFB3B3" opacity="0.5" />
+        <circle cx="78" cy="48" r="4" fill="#FFB3B3" opacity="0.5" />
+        {/* Body — dress */}
+        <path d="M35 68c0 0 5 60 25 70c20-10 25-70 25-70z" fill="#A2C2E0" />
+        {/* Apron */}
+        <path d="M42 75c0 0 3 40 18 50c15-10 18-50 18-50z" fill="white" opacity="0.8" />
+        {/* Arms */}
+        {action === "wave" && (
+          <>
+            <path d="M35 75c-10 5-18 0-22-8" stroke="#F4D5B0" strokeWidth="8" strokeLinecap="round">
+              <animateTransform attributeName="transform" type="rotate" values="-5,35,75;5,35,75;-5,35,75" dur="1s" repeatCount="indefinite" />
+            </path>
+            <path d="M85 75c10 15 15 20 12 30" stroke="#F4D5B0" strokeWidth="8" strokeLinecap="round" />
+          </>
+        )}
+        {action === "stir" && (
+          <>
+            <path d="M35 75c-10 15-8 25-5 30" stroke="#F4D5B0" strokeWidth="8" strokeLinecap="round" />
+            <path d="M85 75c5 10 8 20 5 30" stroke="#F4D5B0" strokeWidth="8" strokeLinecap="round">
+              <animateTransform attributeName="transform" type="rotate" values="-3,85,75;3,85,75;-3,85,75" dur="0.8s" repeatCount="indefinite" />
+            </path>
+            {/* Spoon */}
+            <line x1="90" y1="105" x2="95" y2="120" stroke="#8B6914" strokeWidth="3" strokeLinecap="round">
+              <animateTransform attributeName="transform" type="rotate" values="-3,90,105;3,90,105;-3,90,105" dur="0.8s" repeatCount="indefinite" />
+            </line>
+          </>
+        )}
+        {action === "point" && (
+          <>
+            <path d="M35 75c-10 15-8 25-5 30" stroke="#F4D5B0" strokeWidth="8" strokeLinecap="round" />
+            <path d="M85 75c15-5 25-8 30-5" stroke="#F4D5B0" strokeWidth="8" strokeLinecap="round" />
+          </>
+        )}
+      </svg>
+    </div>
+  );
+}
+
+function SpeechBubble({ text, className = "" }: { text: string; className?: string }) {
+  return (
+    <div className={`relative bg-white rounded-2xl px-4 py-2 shadow-sm text-sm font-medium text-foreground ${className}`}>
+      {text}
+      <div className="absolute -bottom-2 left-6 w-4 h-4 bg-white transform rotate-45" />
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /*  Header                                                             */
 /* ------------------------------------------------------------------ */
 
@@ -186,8 +253,14 @@ function Hero() {
             </a>
           </div>
 
+          {/* Teta character with speech bubble */}
+          <div className="flex items-center gap-3 justify-center md:justify-start mt-8 animate-fade-in-up animate-fade-in-up-delay-3">
+            <TetaCharacter className="w-24 h-32" action="wave" />
+            <SpeechBubble text="Ahla w sahla! \ud83e\ded3" />
+          </div>
+
           {/* Social proof */}
-          <div className="flex items-center justify-center md:justify-start mt-10 animate-fade-in-up animate-fade-in-up-delay-3">
+          <div className="flex items-center justify-center md:justify-start mt-4 animate-fade-in-up animate-fade-in-up-delay-3">
             <div className="flex items-center">
               <div className="w-8 h-8 rounded-full border-2 border-cream bg-[#C2185B]" />
               <div className="w-8 h-8 rounded-full border-2 border-cream bg-[#A2C2E0] -ml-2" />
@@ -291,9 +364,12 @@ function HowItWorks() {
   return (
     <section id="how" className="py-20 px-6">
       <div className="max-w-5xl mx-auto">
-        <h2 className="text-3xl md:text-4xl font-bold text-primary-dark text-center mb-16">
-          {t("how.title")}
-        </h2>
+        <div className="flex items-center justify-center gap-3 mb-16">
+          <TetaCharacter className="w-16 h-20" action="stir" />
+          <h2 className="text-3xl md:text-4xl font-bold text-primary-dark text-center">
+            {t("how.title")}
+          </h2>
+        </div>
         <div className="grid md:grid-cols-3 gap-8">
           {steps.map((step) => (
             <div
@@ -521,6 +597,10 @@ function Sahteen() {
 
       {/* 7f — Charity CTA */}
       <div className="text-center py-8 px-6">
+        <div className="flex items-center justify-center gap-3 mb-4">
+          <TetaCharacter className="w-16 h-20" action="point" />
+          <SpeechBubble text="Yalla, let's feed everyone!" />
+        </div>
         <h3 className="text-2xl font-bold text-primary-dark mb-4">{t("sahteen.ctaTitle")}</h3>
         <a
           href="mailto:hello@ourteta.com"

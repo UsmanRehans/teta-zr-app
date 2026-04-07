@@ -13,7 +13,7 @@ type Language = "en" | "ar";
 
 const translations: Record<string, Record<Language, string>> = {
   // Header
-  "header.openApp": { en: "Open App", ar: "افتح التطبيق" },
+  "header.openApp": { en: "Tfaddal!", ar: "افتح التطبيق" },
   "header.langToggle": { en: "عربي", ar: "EN" },
   "header.howItWorks": { en: "How It Works", ar: "كيف بتشتغل" },
   "header.story": { en: "Our Story", ar: "قصتنا" },
@@ -23,59 +23,59 @@ const translations: Record<string, Record<Language, string>> = {
 
   // Hero
   "hero.headline": {
-    en: "Taste home, even when you're far from it",
+    en: "Yalla habibi, come taste what teta made",
     ar: "طعمة البيت، حتى لو بعيد عنّو",
   },
   "hero.subtitle": {
-    en: "Authentic meals from Beirut's best home cooks. Fresh, affordable, and just like mama used to make.",
+    en: "3njad, the best home-cooked Lebanese food from real tetas in your neighborhood. Kibbeh, tabbouleh, mana'eesh — bas like mama used to make. Tfaddal!",
     ar: "أطباق أصيلة من أمهر طبّاخين بيروت. طازجة، بسعر معقول، ومتل ما بتعملها الماما.",
   },
   "hero.browseCooks": { en: "Browse Cooks", ar: "تصفّح الطبّاخين" },
   "hero.startSelling": { en: "Start Selling", ar: "ابدأ البيع" },
-  "hero.primaryCta": { en: "Order Your First Meal", ar: "اطلب أول وجبة" },
-  "hero.secondaryCta": { en: "Become a Cook", ar: "صير/ي طبّاخ/ة" },
-  "hero.socialProof": { en: "Trusted by 50+ home cooks across Beirut", ar: "موثوق من قبل ٥٠+ طبّاخ بيتي ببيروت" },
+  "hero.primaryCta": { en: "Yalla, order now!", ar: "اطلب أول وجبة" },
+  "hero.secondaryCta": { en: "Ana badde ebi3 (I want to sell)", ar: "صير/ي طبّاخ/ة" },
+  "hero.socialProof": { en: "50+ tetas are cooking for you right now, wallah!", ar: "موثوق من قبل ٥٠+ طبّاخ بيتي ببيروت" },
 
   // Stats
   "stats.cooksCount": { en: "50+", ar: "٥٠+" },
-  "stats.cooksLabel": { en: "Home Cooks", ar: "طبّاخ بيتي" },
+  "stats.cooksLabel": { en: "Tetas Cooking", ar: "طبّاخ بيتي" },
   "stats.mealsCount": { en: "500+", ar: "٥٠٠+" },
-  "stats.mealsLabel": { en: "Meals Shared", ar: "وجبة مشتركة" },
+  "stats.mealsLabel": { en: "Meals w Mhabbeh", ar: "وجبة مشتركة" },
   "stats.hoodsCount": { en: "5", ar: "٥" },
-  "stats.hoodsLabel": { en: "Neighborhoods", ar: "أحياء" },
+  "stats.hoodsLabel": { en: "Hay (Neighborhoods)", ar: "أحياء" },
 
   // How it works
-  "how.title": { en: "How it works", ar: "كيف بتشتغل" },
-  "how.step1.title": { en: "Find a cook near you", ar: "لاقي طبّاخ قريب منّك" },
+  "how.title": { en: "Shu bta3mel? (How does it work?)", ar: "كيف بتشتغل" },
+  "how.step1.title": { en: "La2e teta 2rib minnak", ar: "لاقي طبّاخ قريب منّك" },
   "how.step1.desc": {
-    en: "Browse the map to discover home cooks in your neighborhood.",
+    en: "Browse the map — ktir tetas are cooking in your hay right now!",
     ar: "تصفّح الخريطة لتكتشف طبّاخين البيت بحيّك.",
   },
-  "how.step2.title": { en: "Pick your dishes", ar: "اختار أطباقك" },
+  "how.step2.title": { en: "Khtar aklek", ar: "اختار أطباقك" },
   "how.step2.desc": {
-    en: "Choose from today's menu — every dish is freshly prepared.",
+    en: "Shu badak? Check today's menu — kil shi taza w mnel 2alb (everything fresh and from the heart)",
     ar: "اختار من قائمة اليوم — كل طبق محضّر طازج.",
   },
   "how.step3.title": {
-    en: "Pick up or arrange delivery",
+    en: "Rouh khod aklek!",
     ar: "استلم أو رتّب التوصيل",
   },
   "how.step3.desc": {
-    en: "Pay cash on delivery. Simple, no fuss.",
+    en: "Cash 3al teslim, simple hek. No fuss, no apps — bas you w teta.",
     ar: "ادفع كاش عند الاستلام. بسيط وبدون تعقيد.",
   },
 
   // Story
-  "story.title": { en: "The Story", ar: "القصة" },
-  "story.label1": { en: "The Problem", ar: "المشكلة" },
-  "story.label2": { en: "The Reality", ar: "الواقع" },
-  "story.label3": { en: "The Solution", ar: "الحل" },
+  "story.title": { en: "2essetna (Our Story)", ar: "القصة" },
+  "story.label1": { en: "El Meshkleh (The Problem)", ar: "المشكلة" },
+  "story.label2": { en: "El Wa2e3 (The Reality)", ar: "الواقع" },
+  "story.label3": { en: "El Hall (The Solution)", ar: "الحل" },
   "story.p1": {
-    en: "Beirut is full of incredible tetas and home cooks whose food rivals any restaurant — but they have no way to reach beyond their neighborhood.",
+    en: "Beirut is FULL of incredible tetas — their kibbeh w their wara2 3enab could beat any fancy restaurant, wallah. Bas they have no way to share it beyond their building.",
     ar: "بيروت مليانة تيتات وطبّاخين بيت أكلن بينافس أحسن المطاعم — بس ما عندن طريقة يوصلوا لأبعد من حيّن.",
   },
   "story.p2": {
-    en: "Meanwhile, students, young professionals, and expats miss the taste of homemade food. They're stuck choosing between expensive restaurants and bland delivery apps.",
+    en: "W meanwhile, ktir shabeb w banet — students, young professionals, expats — are dying for a real home-cooked meal. Stuck between overpriced restaurants w bland delivery apps. Haram!",
     ar: "بنفس الوقت، الطلّاب والموظّفين والمغتربين مشتاقين لطعمة الأكل البيتي. محصورين بين مطاعم غالية وتطبيقات توصيل بلا طعمة.",
   },
   "story.p3": {
@@ -83,26 +83,26 @@ const translations: Record<string, Record<Language, string>> = {
     ar: "بظل الوضع الحالي بلبنان، كتير عيل عم تتعب تأمّن الأكل. غلاء المعيشة عم يزيد، والأكل المنيح ما لازم يكون رفاهية.",
   },
   "story.p4": {
-    en: "Teta connects home cooks with hungry neighbors — simple, community-driven, not corporate. No commissions eating into their earnings. Just neighbors feeding neighbors.",
+    en: "So we said yalla, let's fix this. Teta connects home cooks with hungry neighbors. No commissions eating into their money. Bas neighbors feeding neighbors. Hek lazem tkun.",
     ar: "تيتا بتوصل طبّاخين البيت بجيرانن الجوعانين — بسيط، من المجتمع للمجتمع، مش شركة. بلا عمولات تاكل من أرباحن. بس جيران بيطعموا جيران.",
   },
 
   // Testimonials
-  "testimonials.title": { en: "What Our Neighbors Say", ar: "شو عم يقولوا جيراننا" },
+  "testimonials.title": { en: "Shu 2al jiraanna? (What do our neighbors say?)", ar: "شو عم يقولوا جيراننا" },
   "testimonials.1.quote": {
-    en: "I haven't cooked in weeks — Teta's tabbouleh tastes exactly like my mom's. I'm hooked.",
+    en: "Wallah I haven't cooked in weeks — teta's tabbouleh is 3njad exactly like my mom's. I'm hooked ya3ne!",
     ar: "ما طبخت من أسابيع — تبولة تيتا طعمتها بالزبط متل يلي بتعملها أمي. ما فيي وقّف.",
   },
   "testimonials.1.name": { en: "Sarah M.", ar: "سارة م." },
   "testimonials.1.desc": { en: "Student in Hamra", ar: "طالبة بالحمرا" },
   "testimonials.2.quote": {
-    en: "I started selling my kibbeh through Teta and now I have regular customers every week. It changed my life.",
+    en: "Ballashet bi3 el kibbeh 3a Teta w halla2 3ande zabeyn kil jum3a. Ghayaret hayete 3njad!",
     ar: "بلّشت بيع الكبة عتيتا وهلق عندي زبائن دائمين كل أسبوع. غيّرت حياتي.",
   },
   "testimonials.2.name": { en: "Um Ali", ar: "أم علي" },
   "testimonials.2.desc": { en: "Home cook in Achrafieh", ar: "طبّاخة بيت بالأشرفية" },
   "testimonials.3.quote": {
-    en: "As an expat, finding real home-cooked Lebanese food was impossible until Teta. Now it's just a tap away.",
+    en: "As an expat, finding real home-cooked Lebanese food was impossible. Halla2 with Teta? Bas click w yalla — ktir mni7!",
     ar: "كمغترب، كان مستحيل لاقي أكل لبناني بيتي حقيقي قبل تيتا. هلق صار على بعد ضغطة.",
   },
   "testimonials.3.name": { en: "Rami K.", ar: "رامي ك." },
@@ -135,24 +135,24 @@ const translations: Record<string, Record<Language, string>> = {
     en: "\"Sahteen\" means \"bon appetit\" in Lebanese — it's what we say when we wish someone health through food.",
     ar: "\"صحتين\" يعني نتمنّالك الصحة من خلال الأكل — هيدي الكلمة يلي بنقولها بلبنان لمّا حدا ياكل.",
   },
-  "sahteen.headline": { en: "No One Goes Hungry", ar: "ما حدا يضل جوعان" },
+  "sahteen.headline": { en: "No One Goes Hungry, wallah", ar: "ما حدا يضل جوعان" },
   "sahteen.subheadline": {
     en: "\"Sahteen\" — said when you wish someone health through food. It's how we say bon appétit in Lebanon.",
     ar: "\"صحتين\" — بنقولها لمّا نتمنّى لحدا الصحة من خلال الأكل. هيك منقول بالعافية بلبنان.",
   },
-  "sahteen.step1Title": { en: "Apply for a meal", ar: "قدّم طلب لوجبة" },
+  "sahteen.step1Title": { en: "2addem talab (Apply for a meal)", ar: "قدّم طلب لوجبة" },
   "sahteen.step1Desc": {
-    en: "Anyone in need can request a free meal through the platform. No paperwork, no judgment.",
+    en: "Anyone who needs a warm meal can ask through the platform. Ma fi wara2, ma fi a7kam — bas akl w mhabbeh.",
     ar: "أي حدا محتاج فيه يطلب وجبة مجانية من المنصة. بلا ورق، بلا أحكام.",
   },
-  "sahteen.step2Title": { en: "Tetas choose to help", ar: "التيتات بتختار تساعد" },
+  "sahteen.step2Title": { en: "El tetas bt2arrer (The tetas decide)", ar: "التيتات بتختار تساعد" },
   "sahteen.step2Desc": {
-    en: "The home cooks themselves decide who to help. It stays personal, neighbor to neighbor.",
+    en: "The tetas themselves choose who to help w where to deliver. It stays personal, from jar la jar.",
     ar: "طبّاخين البيت بنفسن بيقرّروا مين يساعدوا. بتضل شخصية، من جار لجار.",
   },
-  "sahteen.step3Title": { en: "A warm meal arrives", ar: "بتوصل وجبة دافية" },
+  "sahteen.step3Title": { en: "Btousal wajbe dafye (A warm meal arrives)", ar: "بتوصل وجبة دافية" },
   "sahteen.step3Desc": {
-    en: "A fresh home-cooked meal delivered with care. Because everyone deserves to eat well.",
+    en: "A fresh home-cooked meal delivered b mhabbeh. La2anno kil wa7ad byesta7e2 yekol mni7, 3njad.",
     ar: "وجبة بيتية طازجة موصّلة بحب. لأنو كل حدا بيستاهل ياكل منيح.",
   },
   "sahteen.stat1": { en: "100+", ar: "١٠٠+" },
@@ -162,22 +162,22 @@ const translations: Record<string, Record<Language, string>> = {
   "sahteen.stat3": { en: "100%", ar: "١٠٠٪" },
   "sahteen.stat3Label": { en: "Community-Driven", ar: "من المجتمع" },
   "sahteen.trustStatement": {
-    en: "Every donation stays in your neighborhood. The tetas themselves decide who needs help most.",
+    en: "Kil tabaro3 bi dall bi hayyek. El tetas bi nafsoun bi2arrro meen aktar me7taj. Hek mni7.",
     ar: "كل تبرّع بيضل بحيّك. التيتات بنفسن بيقرّروا مين أكتر محتاج.",
   },
   "sahteen.culturalQuote": {
-    en: "In Lebanese culture, feeding someone is the highest form of generosity.",
+    en: "In Lebanese culture, feeding someone is el akbar shakl lal karam. Wallah, there's nothing more beautiful.",
     ar: "بالثقافة اللبنانية، إطعام حدا هو أعلى أشكال الكرم.",
   },
-  "sahteen.ctaTitle": { en: "Want to help feed your neighbors?", ar: "بدّك تساعد تطعم جيرانك؟" },
-  "sahteen.ctaButton": { en: "Donate a Meal", ar: "تبرّع بوجبة" },
+  "sahteen.ctaTitle": { en: "Baddak tse3ed tet3em jiraanak?", ar: "بدّك تساعد تطعم جيرانك؟" },
+  "sahteen.ctaButton": { en: "Tabarra3 bi wajbe (Donate a meal)", ar: "تبرّع بوجبة" },
 
   // Team
-  "team.title": { en: "The Team", ar: "الفريق" },
+  "team.title": { en: "El Fari2 (The Team)", ar: "الفريق" },
   "team.zeinab.name": { en: "Zeinab Reda", ar: "زينب رضا" },
   "team.zeinab.role": { en: "Founder", ar: "المؤسسة" },
   "team.zeinab.bio": {
-    en: "AUB Medical Physics Resident, living in Beirut for 2 years. Got tired of eating out and missed her mom's cooking. Became close with neighbors who are talented home cooks and wanted to help them turn their passion into a business.",
+    en: "AUB Medical Physics Resident, 3aysheh bi Beirut min senetayn. Te3bet min el akl barra w shta2et la tabkh immha. Tsara2bet ma jiranha — tetas shatriin ktir — w 7abbet tse3edoun y7awlo shaghafoun la shughul.",
     ar: "مقيمة بالفيزياء الطبية بالجامعة الأميركية ببيروت، عايشة ببيروت من سنتين. تعبت من الأكل برّا واشتاقت لطبخ أمّها. تقرّبت من جيرانها الطبّاخين الشاطرين وحبّت تساعدن يحوّلوا شغفن لشغل.",
   },
   "team.usman.name": { en: "Usman Rehan", ar: "عثمان ريحان" },
@@ -188,7 +188,7 @@ const translations: Record<string, Record<Language, string>> = {
   },
 
   "team.zeinab.quote": {
-    en: "I missed my mom's cooking, so I built a way for everyone to share theirs.",
+    en: "Shta2et la tabkh imme, fa baneet taree2a la kil wa7ad ysharak tabkhetoun.",
     ar: "اشتقت لطبخ أمي، فبنيت طريقة ليشارك الكل طبخاتن.",
   },
   "team.usman.quote": {
@@ -200,9 +200,9 @@ const translations: Record<string, Record<Language, string>> = {
   "cta.title": { en: "Join Teta today", ar: "انضم لتيتا اليوم" },
   "cta.openApp": { en: "Open Teta", ar: "افتح تيتا" },
   "cta.help": { en: "Want to help?", ar: "بدّك تساعد؟" },
-  "cta.headline": { en: "Your next home-cooked meal is waiting", ar: "وجبتك البيتية الجاي عم تستنّاك" },
-  "cta.primaryButton": { en: "Open Teta", ar: "افتح تيتا" },
-  "cta.secondaryLink": { en: "Questions? Email us", ar: "أسئلة؟ راسلنا" },
+  "cta.headline": { en: "Yalla habibi, teta 3am testannak!", ar: "وجبتك البيتية الجاي عم تستنّاك" },
+  "cta.primaryButton": { en: "Tfaddal 3a Teta", ar: "افتح تيتا" },
+  "cta.secondaryLink": { en: "As2le? Raselnaa! (Questions? Email us!)", ar: "أسئلة؟ راسلنا" },
 
   // Careers
   "careers.heroTitle": { en: "Join Our Teta", ar: "انضم لفريق تيتا" },
@@ -281,14 +281,14 @@ const translations: Record<string, Record<Language, string>> = {
 
   // Footer
   "footer.madeWith": {
-    en: "Made with love in Beirut",
+    en: "Ma3mul b mhabbeh bi Beirut \ud83c\uddf1\ud83c\udde7",
     ar: "صُنع بحب في بيروت",
   },
   "footer.openApp": { en: "Open App", ar: "افتح التطبيق" },
   "footer.about": { en: "About", ar: "عنّا" },
   "footer.contact": { en: "Contact", ar: "تواصل" },
   "footer.sahtteenLine": {
-    en: "Part of the Sahteen initiative — feeding Beirut, one meal at a time",
+    en: "Min mubadaret Sahteen — mnet3em Beirut, wajbe b wajbe",
     ar: "جزء من مبادرة صحتين — منطعم بيروت، وجبة بوجبة",
   },
 };
