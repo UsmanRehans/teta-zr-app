@@ -1,15 +1,15 @@
 @import "tailwindcss";
 
 @theme {
-  --color-cream: #FFFBF0;
-  --color-warm: #F4A460;
-  --color-accent: #FFB300;
-  --color-secondary: #A2C2E0;
+  --color-cream: #FAFAF8;
+  --color-warm: #FFF0E0;
+  --color-accent: #E8590C;
+  --color-secondary: #2B6CB0;
   --color-cedar: #2D5016;
   --color-primary: #C2185B;
   --color-primary-light: #D81B60;
-  --color-primary-dark: #9B1348;
-  --color-foreground: #2C2C2C;
+  --color-primary-dark: #1A1A2E;
+  --color-foreground: #1A1A2E;
 }
 
 @keyframes fadeInUp {

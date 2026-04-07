@@ -232,10 +232,10 @@ function Hero() {
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-12">
         {/* Left — text */}
         <div className="flex-1 text-center md:text-left">
-          <h1 className="text-4xl md:text-6xl font-bold text-primary-dark leading-tight mb-6 animate-fade-in-up">
+          <h1 className="text-4xl md:text-6xl font-bold text-foreground leading-tight mb-6 animate-fade-in-up">
             {t("hero.headline")}
           </h1>
-          <p className="text-lg md:text-xl text-foreground/70 max-w-2xl mb-10 leading-relaxed animate-fade-in-up animate-fade-in-up-delay-1">
+          <p className="text-lg md:text-xl text-foreground/80 max-w-2xl mb-10 leading-relaxed animate-fade-in-up animate-fade-in-up-delay-1">
             {t("hero.subtitle")}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start animate-fade-in-up animate-fade-in-up-delay-2">
@@ -253,14 +253,8 @@ function Hero() {
             </a>
           </div>
 
-          {/* Teta character with speech bubble */}
-          <div className="flex items-center gap-3 justify-center md:justify-start mt-8 animate-fade-in-up animate-fade-in-up-delay-3">
-            <TetaCharacter className="w-24 h-32" action="wave" />
-            <SpeechBubble text="Ahla w sahla! \ud83e\ded3" />
-          </div>
-
           {/* Social proof */}
-          <div className="flex items-center justify-center md:justify-start mt-4 animate-fade-in-up animate-fade-in-up-delay-3">
+          <div className="flex items-center justify-center md:justify-start mt-10 animate-fade-in-up animate-fade-in-up-delay-3">
             <div className="flex items-center">
               <div className="w-8 h-8 rounded-full border-2 border-cream bg-[#C2185B]" />
               <div className="w-8 h-8 rounded-full border-2 border-cream bg-[#A2C2E0] -ml-2" />
@@ -292,11 +286,10 @@ function Hero() {
 /*  Stats Bar                                                          */
 /* ------------------------------------------------------------------ */
 
-function StatItem({ target, label }: { target: number; label: string }) {
-  const { count, ref } = useCountUp(target);
+function StatItem({ value, label }: { value: string; label: string }) {
   return (
-    <div ref={ref} className="text-center">
-      <div className="text-5xl md:text-6xl font-bold text-primary">{count}+</div>
+    <div className="text-center">
+      <div className="text-5xl md:text-6xl font-bold text-primary">{value}</div>
       <div className="text-sm text-foreground/60 uppercase tracking-wider mt-2">{label}</div>
     </div>
   );
@@ -307,9 +300,9 @@ function StatsBar() {
   return (
     <section className="bg-white py-16 px-6">
       <div className="max-w-5xl mx-auto grid md:grid-cols-3 gap-12">
-        <StatItem target={50} label={t("stats.cooksLabel")} />
-        <StatItem target={500} label={t("stats.mealsLabel")} />
-        <StatItem target={5} label={t("stats.hoodsLabel")} />
+        <StatItem value="50+" label={t("stats.cooksLabel")} />
+        <StatItem value="500+" label={t("stats.mealsLabel")} />
+        <StatItem value="5" label={t("stats.hoodsLabel")} />
       </div>
     </section>
   );
@@ -333,7 +326,7 @@ function HowItWorks() {
           <circle cx="12" cy="9" r="2.5" />
         </svg>
       ),
-      delay: "reveal-delay-1",
+      delay: "",
     },
     {
       num: "2",
@@ -344,7 +337,7 @@ function HowItWorks() {
           <path d="M3 2v7c0 1.1.9 2 2 2h4V2M7 2v20M21 15V2l-4 4-4-4v13a4 4 0 004 4h0a4 4 0 004-4z" />
         </svg>
       ),
-      delay: "reveal-delay-2",
+      delay: "",
     },
     {
       num: "3",
@@ -357,7 +350,7 @@ function HowItWorks() {
           <path d="M23 21v-2a4 4 0 00-3-3.87" />
         </svg>
       ),
-      delay: "reveal-delay-3",
+      delay: "",
     },
   ];
 
@@ -365,7 +358,6 @@ function HowItWorks() {
     <section id="how" className="py-20 px-6">
       <div className="max-w-5xl mx-auto">
         <div className="flex items-center justify-center gap-3 mb-16">
-          <TetaCharacter className="w-16 h-20" action="stir" />
           <h2 className="text-3xl md:text-4xl font-bold text-primary-dark text-center">
             {t("how.title")}
           </h2>
@@ -374,7 +366,7 @@ function HowItWorks() {
           {steps.map((step) => (
             <div
               key={step.num}
-              className={`reveal ${step.delay} bg-white rounded-2xl p-8 relative overflow-hidden hover:-translate-y-1 hover:shadow-md transition-all duration-300`}
+              className={`bg-white rounded-2xl p-8 relative overflow-hidden hover:-translate-y-1 hover:shadow-md transition-all duration-300`}
             >
               {/* Watermark number */}
               <span className="absolute top-2 right-4 rtl:left-4 rtl:right-auto text-7xl font-bold text-primary/5 select-none">
@@ -416,7 +408,7 @@ function Story() {
           {t("story.title")}
         </h2>
         {/* Beirut skyline photo */}
-        <div className="reveal rounded-2xl overflow-hidden mb-10 shadow-lg">
+        <div className="rounded-2xl overflow-hidden mb-10 shadow-lg">
           <Image
             src="/images/beirut-skyline.jpg"
             alt="Beirut skyline with the Lebanese flag"
@@ -430,7 +422,7 @@ function Story() {
           {blocks.map((block, i) => (
             <div
               key={i}
-              className={`reveal bg-white ${block.cardBg ?? ""} rounded-2xl p-8 border-l-4 rtl:border-l-0 rtl:border-r-4 ${block.borderColor}`}
+              className={`bg-white ${block.cardBg ?? ""} rounded-2xl p-8 border-l-4 rtl:border-l-0 rtl:border-r-4 ${block.borderColor}`}
             >
               <span className={`${block.badgeBg} text-xs font-semibold px-3 py-1 rounded-full inline-block mb-3`}>
                 {block.label}
@@ -452,9 +444,9 @@ function Testimonials() {
   const { t } = useTranslation();
 
   const cards = [
-    { quote: t("testimonials.1.quote"), name: t("testimonials.1.name"), desc: t("testimonials.1.desc"), delay: "reveal-delay-1" },
-    { quote: t("testimonials.2.quote"), name: t("testimonials.2.name"), desc: t("testimonials.2.desc"), delay: "reveal-delay-2" },
-    { quote: t("testimonials.3.quote"), name: t("testimonials.3.name"), desc: t("testimonials.3.desc"), delay: "reveal-delay-3" },
+    { quote: t("testimonials.1.quote"), name: t("testimonials.1.name"), desc: t("testimonials.1.desc"), delay: "" },
+    { quote: t("testimonials.2.quote"), name: t("testimonials.2.name"), desc: t("testimonials.2.desc"), delay: "" },
+    { quote: t("testimonials.3.quote"), name: t("testimonials.3.name"), desc: t("testimonials.3.desc"), delay: "" },
   ];
 
   const StarIcon = () => (
@@ -471,7 +463,7 @@ function Testimonials() {
         </h2>
         <div className="grid md:grid-cols-3 gap-8">
           {cards.map((card, i) => (
-            <div key={i} className={`reveal ${card.delay} bg-cream rounded-2xl p-8 relative`}>
+            <div key={i} className={`bg-cream rounded-2xl p-8 relative`}>
               {/* Decorative quote */}
               <span className="absolute top-4 left-6 rtl:left-auto rtl:right-6 text-6xl text-primary/10 font-serif leading-none select-none">
                 {"\u275D"}
@@ -529,7 +521,7 @@ function Sahteen() {
       {/* 7b — 3-step charity flow */}
       <div className="max-w-4xl mx-auto grid md:grid-cols-3 gap-8 py-12 px-6">
         {/* Step 1 */}
-        <div className="reveal reveal-delay-1 bg-white rounded-2xl p-6 text-center shadow-sm">
+        <div className=" bg-white rounded-2xl p-6 text-center shadow-sm">
           <div className="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-4">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-7 h-7 text-primary">
               <path d="M18 11V6a2 2 0 00-2-2H8a2 2 0 00-2 2v5M5 11h14l1 9H4l1-9z" />
@@ -541,7 +533,7 @@ function Sahteen() {
         </div>
 
         {/* Step 2 */}
-        <div className="reveal reveal-delay-2 bg-white rounded-2xl p-6 text-center shadow-sm">
+        <div className=" bg-white rounded-2xl p-6 text-center shadow-sm">
           <div className="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-4">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-7 h-7 text-primary">
               <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
@@ -552,7 +544,7 @@ function Sahteen() {
         </div>
 
         {/* Step 3 */}
-        <div className="reveal reveal-delay-3 bg-white rounded-2xl p-6 text-center shadow-sm">
+        <div className=" bg-white rounded-2xl p-6 text-center shadow-sm">
           <div className="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-4">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-7 h-7 text-primary">
               <path d="M3 12h2a7 7 0 017-7h0a7 7 0 017 7h2" />
@@ -597,10 +589,6 @@ function Sahteen() {
 
       {/* 7f — Charity CTA */}
       <div className="text-center py-8 px-6">
-        <div className="flex items-center justify-center gap-3 mb-4">
-          <TetaCharacter className="w-16 h-20" action="point" />
-          <SpeechBubble text="Yalla, let's feed everyone!" />
-        </div>
         <h3 className="text-2xl font-bold text-primary-dark mb-4">{t("sahteen.ctaTitle")}</h3>
         <a
           href="mailto:hello@ourteta.com"
@@ -641,7 +629,7 @@ function Team() {
           {members.map((m) => (
             <div
               key={m.initials}
-              className="reveal bg-white rounded-2xl p-8 border-l-4 rtl:border-l-0 rtl:border-r-4 border-primary"
+              className="bg-white rounded-2xl p-8 border-l-4 rtl:border-l-0 rtl:border-r-4 border-primary"
             >
               <div className="flex items-center gap-4 mb-4">
                 <div
