@@ -68,12 +68,33 @@ function useCountUp(target: number, duration = 1500) {
 function Header() {
   const { t, toggleLanguage } = useTranslation();
   const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  const navLinks = (
+    <>
+      <a href="#how" className="hover:text-primary transition-colors" onClick={() => setMenuOpen(false)}>
+        {t("header.howItWorks")}
+      </a>
+      <a href="#story" className="hover:text-primary transition-colors" onClick={() => setMenuOpen(false)}>
+        {t("header.story")}
+      </a>
+      <a href="#sahteen" className="hover:text-primary transition-colors" onClick={() => setMenuOpen(false)}>
+        {t("header.sahteen")}
+      </a>
+      <a href="#team" className="hover:text-primary transition-colors" onClick={() => setMenuOpen(false)}>
+        {t("header.team")}
+      </a>
+      <a href="/careers" className="hover:text-primary transition-colors" onClick={() => setMenuOpen(false)}>
+        {t("header.careers")}
+      </a>
+    </>
+  );
 
   return (
     <header
@@ -89,22 +110,25 @@ function Header() {
 
         {/* Center – nav (hidden on mobile) */}
         <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-foreground/70">
-          <a href="#how" className="hover:text-primary transition-colors">
-            {t("header.howItWorks")}
-          </a>
-          <a href="#story" className="hover:text-primary transition-colors">
-            {t("header.story")}
-          </a>
-          <a href="#sahteen" className="hover:text-primary transition-colors">
-            {t("header.sahteen")}
-          </a>
-          <a href="#team" className="hover:text-primary transition-colors">
-            {t("header.team")}
-          </a>
+          {navLinks}
         </nav>
 
         {/* Right – actions */}
         <div className="flex items-center gap-3">
+          {/* Hamburger button (mobile only) */}
+          <button
+            onClick={() => setMenuOpen((prev) => !prev)}
+            className="md:hidden p-2 text-foreground/70 hover:text-primary transition-colors cursor-pointer"
+            aria-label="Toggle menu"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-6 h-6">
+              {menuOpen ? (
+                <path d="M6 6l12 12M6 18L18 6" />
+              ) : (
+                <path d="M4 6h16M4 12h16M4 18h16" />
+              )}
+            </svg>
+          </button>
           <button
             onClick={toggleLanguage}
             className="px-3 py-1.5 text-sm font-medium text-primary border border-primary/30 rounded-full hover:bg-primary/5 transition-colors cursor-pointer"
@@ -119,6 +143,13 @@ function Header() {
           </a>
         </div>
       </div>
+
+      {/* Mobile dropdown menu */}
+      {menuOpen && (
+        <nav className="md:hidden border-t border-primary/10 bg-cream/95 backdrop-blur-md px-6 py-4 flex flex-col gap-4 text-sm font-medium text-foreground/70">
+          {navLinks}
+        </nav>
+      )}
     </header>
   );
 }
