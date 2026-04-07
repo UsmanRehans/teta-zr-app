@@ -264,8 +264,8 @@ function Hero() {
           </div>
         </div>
 
-        {/* Right — hero image (hidden on mobile) */}
-        <div className="hidden md:block flex-1 animate-fade-in-up animate-fade-in-up-delay-2">
+        {/* Right — hero image */}
+        <div className="flex-1 animate-fade-in-up animate-fade-in-up-delay-2">
           <div className="rounded-2xl overflow-hidden shadow-2xl">
             <Image
               src="/images/hero-food.jpg"
