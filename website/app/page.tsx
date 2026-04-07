@@ -2,6 +2,7 @@
 
 import { useTranslation } from "@/lib/i18n";
 import { useState, useEffect, useRef } from "react";
+import Image from "next/image";
 
 /* ------------------------------------------------------------------ */
 /*  Hooks                                                              */
@@ -129,37 +130,54 @@ function Header() {
 function Hero() {
   const { t } = useTranslation();
   return (
-    <section className="bg-gradient-to-b from-cream to-warm py-24 md:py-36 px-6">
-      <div className="max-w-4xl mx-auto text-center">
-        <h1 className="text-4xl md:text-6xl font-bold text-primary-dark leading-tight mb-6 animate-fade-in-up">
-          {t("hero.headline")}
-        </h1>
-        <p className="text-lg md:text-xl text-foreground/70 max-w-2xl mx-auto mb-10 leading-relaxed animate-fade-in-up animate-fade-in-up-delay-1">
-          {t("hero.subtitle")}
-        </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up animate-fade-in-up-delay-2">
-          <a
-            href="https://app.ourteta.com"
-            className="px-8 py-3.5 text-lg font-semibold text-white bg-gradient-to-r from-primary to-primary-dark rounded-full shadow-lg hover:scale-105 transition-transform"
-          >
-            {t("hero.primaryCta")}
-          </a>
-          <a
-            href="https://app.ourteta.com/login?role=cook"
-            className="px-8 py-3.5 text-lg font-semibold text-primary border-2 border-primary rounded-full hover:bg-primary/5 transition-colors"
-          >
-            {t("hero.secondaryCta")}
-          </a>
+    <section className="bg-gradient-to-b from-cream to-[#FFF0E0] py-24 md:py-36 px-6 relative overflow-hidden">
+      <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-12">
+        {/* Left — text */}
+        <div className="flex-1 text-center md:text-left">
+          <h1 className="text-4xl md:text-6xl font-bold text-primary-dark leading-tight mb-6 animate-fade-in-up">
+            {t("hero.headline")}
+          </h1>
+          <p className="text-lg md:text-xl text-foreground/70 max-w-2xl mb-10 leading-relaxed animate-fade-in-up animate-fade-in-up-delay-1">
+            {t("hero.subtitle")}
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start animate-fade-in-up animate-fade-in-up-delay-2">
+            <a
+              href="https://app.ourteta.com"
+              className="px-8 py-3.5 text-lg font-semibold text-white bg-gradient-to-r from-primary to-primary-dark rounded-full shadow-lg hover:scale-105 transition-transform"
+            >
+              {t("hero.primaryCta")}
+            </a>
+            <a
+              href="https://app.ourteta.com/login?role=cook"
+              className="px-8 py-3.5 text-lg font-semibold text-primary border-2 border-primary rounded-full hover:bg-primary/5 transition-colors"
+            >
+              {t("hero.secondaryCta")}
+            </a>
+          </div>
+
+          {/* Social proof */}
+          <div className="flex items-center justify-center md:justify-start mt-10 animate-fade-in-up animate-fade-in-up-delay-3">
+            <div className="flex items-center">
+              <div className="w-8 h-8 rounded-full border-2 border-cream bg-[#C2185B]" />
+              <div className="w-8 h-8 rounded-full border-2 border-cream bg-[#A2C2E0] -ml-2" />
+              <div className="w-8 h-8 rounded-full border-2 border-cream bg-[#FFB300] -ml-2" />
+            </div>
+            <span className="ml-3 text-sm text-foreground/60">{t("hero.socialProof")}</span>
+          </div>
         </div>
 
-        {/* Social proof */}
-        <div className="flex items-center justify-center mt-10 animate-fade-in-up animate-fade-in-up-delay-3">
-          <div className="flex items-center">
-            <div className="w-8 h-8 rounded-full border-2 border-cream bg-[#E8927C]" />
-            <div className="w-8 h-8 rounded-full border-2 border-cream bg-[#7CB5E8] -ml-2" />
-            <div className="w-8 h-8 rounded-full border-2 border-cream bg-[#A8D5BA] -ml-2" />
+        {/* Right — hero image (hidden on mobile) */}
+        <div className="hidden md:block flex-1 animate-fade-in-up animate-fade-in-up-delay-2">
+          <div className="rounded-2xl overflow-hidden shadow-2xl">
+            <Image
+              src="/images/hero-food.jpg"
+              alt="Authentic Lebanese hummus and mezze spread"
+              width={600}
+              height={450}
+              className="w-full h-auto object-cover"
+              priority
+            />
           </div>
-          <span className="ml-3 text-sm text-foreground/60">{t("hero.socialProof")}</span>
         </div>
       </div>
     </section>
@@ -174,7 +192,7 @@ function StatItem({ target, label }: { target: number; label: string }) {
   const { count, ref } = useCountUp(target);
   return (
     <div ref={ref} className="text-center">
-      <div className="text-5xl md:text-6xl font-bold text-primary-dark">{count}+</div>
+      <div className="text-5xl md:text-6xl font-bold text-primary">{count}+</div>
       <div className="text-sm text-foreground/60 uppercase tracking-wider mt-2">{label}</div>
     </div>
   );
@@ -279,9 +297,9 @@ function Story() {
   const { t } = useTranslation();
 
   const blocks = [
-    { label: t("story.label1"), text: t("story.p1"), borderColor: "border-primary/60", badgeBg: "bg-primary/10 text-primary" },
-    { label: t("story.label2"), text: t("story.p2"), borderColor: "border-accent", badgeBg: "bg-accent/10 text-accent" },
-    { label: t("story.label3"), text: t("story.p4"), borderColor: "border-primary", badgeBg: "bg-primary/5 text-primary", cardBg: "bg-primary/5" },
+    { label: t("story.label1"), text: t("story.p1"), borderColor: "border-primary", badgeBg: "bg-primary/10 text-primary" },
+    { label: t("story.label2"), text: t("story.p2"), borderColor: "border-[#A2C2E0]", badgeBg: "bg-[#A2C2E0]/10 text-[#A2C2E0]" },
+    { label: t("story.label3"), text: t("story.p4"), borderColor: "border-[#FFB300]", badgeBg: "bg-[#FFB300]/10 text-[#FFB300]", cardBg: "bg-[#FFB300]/5" },
   ];
 
   return (
@@ -290,6 +308,17 @@ function Story() {
         <h2 className="text-3xl md:text-4xl font-bold text-primary-dark text-center mb-12">
           {t("story.title")}
         </h2>
+        {/* Beirut skyline photo */}
+        <div className="reveal rounded-2xl overflow-hidden mb-10 shadow-lg">
+          <Image
+            src="/images/beirut-skyline.jpg"
+            alt="Beirut skyline with the Lebanese flag"
+            width={800}
+            height={400}
+            className="w-full h-64 object-cover"
+          />
+        </div>
+
         <div className="space-y-8">
           {blocks.map((block, i) => (
             <div
@@ -322,7 +351,7 @@ function Testimonials() {
   ];
 
   const StarIcon = () => (
-    <svg viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 text-accent">
+    <svg viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 text-[#FFB300]">
       <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
     </svg>
   );
@@ -364,18 +393,29 @@ function Sahteen() {
   return (
     <section id="sahteen">
       {/* 7a — Header area */}
-      <div className="py-20 px-6 bg-gradient-to-b from-warm to-cream">
-        <div className="max-w-3xl mx-auto text-center">
-          <svg viewBox="0 0 24 24" fill="currentColor" className="w-12 h-12 text-primary mx-auto mb-4">
-            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-          </svg>
-          <h2 className="text-4xl font-bold text-primary-dark" dir="rtl">
-            {t("sahteen.headlineAr")}
-          </h2>
-          <p className="text-2xl font-semibold text-primary-dark mt-1">{t("sahteen.headline")}</p>
-          <p className="text-lg text-foreground/70 mt-4 max-w-2xl mx-auto leading-relaxed">
-            {t("sahteen.subtitle")}
-          </p>
+      <div className="py-20 px-6 bg-gradient-to-b from-[#FFF0E0] to-cream">
+        <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center gap-12">
+          <div className="flex-1 text-center md:text-left">
+            <svg viewBox="0 0 24 24" fill="currentColor" className="w-12 h-12 text-primary mx-auto md:mx-0 mb-4">
+              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+            </svg>
+            <h2 className="text-4xl font-bold text-primary-dark" dir="rtl">
+              {t("sahteen.headlineAr")}
+            </h2>
+            <p className="text-2xl font-semibold text-primary-dark mt-1">{t("sahteen.headline")}</p>
+            <p className="text-lg text-foreground/70 mt-4 max-w-2xl leading-relaxed">
+              {t("sahteen.subtitle")}
+            </p>
+          </div>
+          <div className="flex-1 rounded-2xl overflow-hidden shadow-lg">
+            <Image
+              src="/images/home-cooking.jpg"
+              alt="Home cook preparing a traditional Lebanese meal"
+              width={500}
+              height={400}
+              className="w-full h-auto object-cover"
+            />
+          </div>
         </div>
       </div>
 
@@ -443,7 +483,7 @@ function Sahteen() {
 
       {/* 7e — Cultural blockquote */}
       <div className="max-w-2xl mx-auto py-8 px-6">
-        <blockquote className="border-l-4 border-accent rtl:border-l-0 rtl:border-r-4 pl-6 rtl:pl-0 rtl:pr-6">
+        <blockquote className="border-l-4 border-[#FFB300] rtl:border-l-0 rtl:border-r-4 pl-6 rtl:pl-0 rtl:pr-6">
           <p className="text-xl italic text-foreground/80">{t("sahteen.culturalQuote")}</p>
         </blockquote>
       </div>
@@ -478,23 +518,15 @@ function Team() {
       bio: t("team.zeinab.bio"),
       quote: t("team.zeinab.quote"),
     },
-    {
-      initials: "UR",
-      bgColor: "bg-primary-dark",
-      name: t("team.usman.name"),
-      role: t("team.usman.role"),
-      bio: t("team.usman.bio"),
-      quote: t("team.usman.quote"),
-    },
   ];
 
   return (
     <section id="team" className="py-20 px-6">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-2xl mx-auto">
         <h2 className="text-3xl md:text-4xl font-bold text-primary-dark text-center mb-16">
           {t("team.title")}
         </h2>
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid gap-8">
           {members.map((m) => (
             <div
               key={m.initials}
@@ -618,6 +650,13 @@ export default function Home() {
         <HowItWorks />
         <Story />
         <Testimonials />
+        {/* Full-width photo divider */}
+        <div
+          className="h-64 bg-cover bg-center bg-fixed"
+          style={{ backgroundImage: "url('/images/mezze-spread.jpg')" }}
+          role="img"
+          aria-label="Mediterranean mezze spread"
+        />
         <Sahteen />
         <Team />
         <FinalCTA />
