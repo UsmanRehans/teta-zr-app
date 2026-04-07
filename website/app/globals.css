@@ -2,10 +2,56 @@
 
 @theme {
   --color-cream: #FFF8F0;
+  --color-warm: #FFF0E0;
+  --color-accent: #D4A574;
   --color-primary: #2D6A4F;
+  --color-primary-light: #3D8B6A;
   --color-primary-dark: #1B4332;
   --color-foreground: #1A1A1A;
 }
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes subtlePulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(45, 106, 79, 0.3); }
+  50% { box-shadow: 0 0 0 8px rgba(45, 106, 79, 0); }
+}
+
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+  opacity: 0;
+}
+
+.animate-fade-in-up-delay-1 { animation-delay: 0.15s; }
+.animate-fade-in-up-delay-2 { animation-delay: 0.3s; }
+.animate-fade-in-up-delay-3 { animation-delay: 0.45s; }
+
+.animate-pulse-subtle {
+  animation: subtlePulse 2.5s ease-in-out infinite;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-delay-1 { transition-delay: 0.15s; }
+.reveal-delay-2 { transition-delay: 0.3s; }
+.reveal-delay-3 { transition-delay: 0.45s; }
 
 body {
   font-family: var(--font-sans), system-ui, sans-serif;
