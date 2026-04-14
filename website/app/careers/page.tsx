@@ -1,177 +1,14 @@
 "use client";
 
-import { useTranslation } from "@/lib/i18n";
+import Nav from "@/app/components/Nav";
+import Footer from "@/app/components/Footer";
 import { useState, useEffect } from "react";
-
-/* ------------------------------------------------------------------ */
-/*  Header                                                             */
-/* ------------------------------------------------------------------ */
-
-function Header() {
-  const { t, toggleLanguage } = useTranslation();
-  const [scrolled, setScrolled] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 10);
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  const navLinks = (
-    <>
-      <a href="/" className="hover:text-primary transition-colors" onClick={() => setMenuOpen(false)}>
-        Home
-      </a>
-      <a href="/careers" className="text-primary font-semibold" onClick={() => setMenuOpen(false)}>
-        {t("header.careers")}
-      </a>
-    </>
-  );
-
-  return (
-    <header
-      className={`sticky top-0 z-50 bg-cream/80 backdrop-blur-md transition-shadow duration-300 ${
-        scrolled ? "shadow-md" : ""
-      }`}
-    >
-      <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-        <a href="/" className="flex items-center gap-1.5 text-2xl font-bold text-primary">
-          teta <span className="text-lg">🍋</span>
-        </a>
-
-        <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-foreground/70">
-          {navLinks}
-        </nav>
-
-        <div className="flex items-center gap-3">
-          <button
-            onClick={() => setMenuOpen((prev) => !prev)}
-            className="md:hidden p-2 text-foreground/70 hover:text-primary transition-colors cursor-pointer"
-            aria-label="Toggle menu"
-          >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-6 h-6">
-              {menuOpen ? (
-                <path d="M6 6l12 12M6 18L18 6" />
-              ) : (
-                <path d="M4 6h16M4 12h16M4 18h16" />
-              )}
-            </svg>
-          </button>
-          <button
-            onClick={toggleLanguage}
-            className="px-3 py-1.5 text-sm font-medium text-primary border border-primary/30 rounded-full hover:bg-primary/5 transition-colors cursor-pointer"
-          >
-            {t("header.langToggle")}
-          </button>
-          <a
-            href="https://app.ourteta.com"
-            className="px-5 py-2 text-sm font-medium text-white bg-primary rounded-full hover:bg-primary-dark transition-colors"
-          >
-            {t("header.openApp")}
-          </a>
-        </div>
-      </div>
-
-      {menuOpen && (
-        <nav className="md:hidden border-t border-primary/10 bg-cream/95 backdrop-blur-md px-6 py-4 flex flex-col gap-4 text-sm font-medium text-foreground/70">
-          {navLinks}
-        </nav>
-      )}
-    </header>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/*  Role Card                                                          */
-/* ------------------------------------------------------------------ */
-
-interface RoleCardProps {
-  borderColor: string;
-  title: string;
-  titleAr: string;
-  type: string;
-  location: string;
-  desc: string;
-  responsibilities: string[];
-  requirements: string[];
-  niceToHave: string;
-  t: (key: string) => string;
-}
-
-function RoleCard({
-  borderColor,
-  title,
-  titleAr,
-  type,
-  location,
-  desc,
-  responsibilities,
-  requirements,
-  niceToHave,
-  t,
-}: RoleCardProps) {
-  const [expanded, setExpanded] = useState(false);
-
-  return (
-    <div
-      className={`bg-white rounded-2xl shadow-sm border-t-4 ${borderColor} hover:shadow-md transition-shadow duration-300 p-8`}
-    >
-      <span className="inline-block bg-accent/15 text-accent text-xs font-semibold px-3 py-1 rounded-full mb-4">
-        {type}
-      </span>
-      <h3 className="text-xl font-bold text-foreground mb-1">{title}</h3>
-      <p className="text-sm text-foreground/50 mb-2" dir="rtl">{titleAr}</p>
-      <p className="text-sm text-foreground/60 mb-4">{location}</p>
-      <p className="text-foreground/70 leading-relaxed mb-4">{desc}</p>
-
-      <button
-        onClick={() => setExpanded(!expanded)}
-        className="text-primary text-sm font-medium hover:underline cursor-pointer"
-      >
-        {expanded ? t("careers.hideDetails") : t("careers.seeDetails")}
-      </button>
-
-      {expanded && (
-        <div className="mt-6 space-y-5 animate-fade-in-up">
-          <div>
-            <h4 className="text-sm font-semibold text-foreground mb-2">{t("careers.responsibilities")}</h4>
-            <ul className="space-y-1.5">
-              {responsibilities.map((r, i) => (
-                <li key={i} className="text-sm text-foreground/70 flex items-start gap-2">
-                  <span className="text-primary mt-0.5">&#x2022;</span>
-                  {r}
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <h4 className="text-sm font-semibold text-foreground mb-2">{t("careers.requirements")}</h4>
-            <ul className="space-y-1.5">
-              {requirements.map((r, i) => (
-                <li key={i} className="text-sm text-foreground/70 flex items-start gap-2">
-                  <span className="text-primary mt-0.5">&#x2022;</span>
-                  {r}
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <h4 className="text-sm font-semibold text-foreground mb-2">{t("careers.niceToHave")}</h4>
-            <p className="text-sm text-foreground/70">{niceToHave}</p>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-}
 
 /* ------------------------------------------------------------------ */
 /*  Application Form                                                   */
 /* ------------------------------------------------------------------ */
 
 function ApplicationForm() {
-  const { t } = useTranslation();
   const [sending, setSending] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
@@ -214,267 +51,324 @@ function ApplicationForm() {
 
   if (success) {
     return (
-      <div className="bg-primary/5 border border-primary/20 rounded-2xl p-8 text-center max-w-2xl mx-auto">
-        <p className="text-2xl font-semibold text-foreground">{t("careers.success")}</p>
+      <div className="success-message">
+        <div className="success-icon">🎉</div>
+        <h3>Application received!</h3>
+        <p>Shukran! We read every application personally and will be in touch soon. Yalla! 🙏</p>
       </div>
     );
   }
 
-  const inputClasses =
-    "w-full px-4 py-3 rounded-xl border border-foreground/20 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50 bg-white text-foreground";
-
   return (
-    <form onSubmit={handleSubmit} className="max-w-2xl mx-auto space-y-5">
-      {/* Name */}
-      <div>
-        <label className="block text-sm font-medium text-foreground mb-1.5">{t("careers.form.name")} *</label>
-        <input
-          type="text"
-          required
-          value={form.name}
-          onChange={(e) => update("name", e.target.value)}
-          className={inputClasses}
-        />
+    <form onSubmit={handleSubmit} className="application-form">
+      <div className="form-row">
+        <div className="form-group">
+          <label>Full Name *</label>
+          <input
+            type="text"
+            required
+            value={form.name}
+            onChange={(e) => update("name", e.target.value)}
+            placeholder="Your full name"
+          />
+        </div>
+        <div className="form-group">
+          <label>Phone *</label>
+          <input
+            type="text"
+            required
+            value={form.phone}
+            onChange={(e) => update("phone", e.target.value)}
+            placeholder="+961 71 123 456"
+          />
+        </div>
       </div>
 
-      {/* Phone */}
-      <div>
-        <label className="block text-sm font-medium text-foreground mb-1.5">{t("careers.form.phone")} *</label>
-        <input
-          type="text"
-          required
-          placeholder="+961 71 123 456"
-          value={form.phone}
-          onChange={(e) => update("phone", e.target.value)}
-          className={inputClasses}
-        />
+      <div className="form-row">
+        <div className="form-group">
+          <label>Email *</label>
+          <input
+            type="email"
+            required
+            value={form.email}
+            onChange={(e) => update("email", e.target.value)}
+            placeholder="you@email.com"
+          />
+        </div>
+        <div className="form-group">
+          <label>University / School (optional)</label>
+          <input
+            type="text"
+            value={form.university}
+            onChange={(e) => update("university", e.target.value)}
+            placeholder="AUB, LAU, etc."
+          />
+        </div>
       </div>
 
-      {/* Email */}
-      <div>
-        <label className="block text-sm font-medium text-foreground mb-1.5">{t("careers.form.email")} *</label>
-        <input
-          type="email"
-          required
-          value={form.email}
-          onChange={(e) => update("email", e.target.value)}
-          className={inputClasses}
-        />
+      <div className="form-row">
+        <div className="form-group">
+          <label>Which role? *</label>
+          <select
+            required
+            value={form.role}
+            onChange={(e) => update("role", e.target.value)}
+          >
+            <option value="">Select a role</option>
+            <option value="Storyteller & Growth Lead">Storyteller &amp; Growth Lead</option>
+            <option value="Teta Scout & Cook Relations">Teta Scout &amp; Cook Relations</option>
+          </select>
+        </div>
+        <div className="form-group">
+          <label>How did you hear about us? *</label>
+          <select
+            required
+            value={form.heardFrom}
+            onChange={(e) => update("heardFrom", e.target.value)}
+          >
+            <option value="">Select one</option>
+            <option value="Instagram">Instagram</option>
+            <option value="TikTok">TikTok</option>
+            <option value="Friend">Friend</option>
+            <option value="AUB/LAU">AUB/LAU</option>
+            <option value="WhatsApp">WhatsApp</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
       </div>
 
-      {/* University */}
-      <div>
-        <label className="block text-sm font-medium text-foreground mb-1.5">{t("careers.form.university")}</label>
-        <input
-          type="text"
-          value={form.university}
-          onChange={(e) => update("university", e.target.value)}
-          className={inputClasses}
-        />
-      </div>
-
-      {/* Role */}
-      <div>
-        <label className="block text-sm font-medium text-foreground mb-1.5">{t("careers.form.role")} *</label>
-        <select
-          required
-          value={form.role}
-          onChange={(e) => update("role", e.target.value)}
-          className={inputClasses}
-        >
-          <option value="">{t("careers.form.rolePlaceholder")}</option>
-          <option value="Storyteller & Growth Lead">Storyteller &amp; Growth Lead</option>
-          <option value="Teta Scout & Cook Relations">Teta Scout &amp; Cook Relations</option>
-        </select>
-      </div>
-
-      {/* Why */}
-      <div>
-        <label className="block text-sm font-medium text-foreground mb-1.5">{t("careers.form.why")} *</label>
+      <div className="form-group full">
+        <label>Why do you want this role? *</label>
         <textarea
           required
-          rows={4}
+          rows={5}
           value={form.why}
           onChange={(e) => update("why", e.target.value)}
-          className={inputClasses}
+          placeholder="Tell us what excites you about Teta and why you'd be great for this role..."
         />
       </div>
 
-      {/* Social */}
-      <div>
-        <label className="block text-sm font-medium text-foreground mb-1.5">{t("careers.form.social")}</label>
+      <div className="form-group full">
+        <label>Instagram or TikTok handle (optional)</label>
         <input
           type="text"
-          placeholder="@yourhandle"
           value={form.social}
           onChange={(e) => update("social", e.target.value)}
-          className={inputClasses}
+          placeholder="@yourhandle"
         />
       </div>
 
-      {/* Heard from */}
-      <div>
-        <label className="block text-sm font-medium text-foreground mb-1.5">{t("careers.form.heardFrom")} *</label>
-        <select
-          required
-          value={form.heardFrom}
-          onChange={(e) => update("heardFrom", e.target.value)}
-          className={inputClasses}
-        >
-          <option value="">{t("careers.form.heardPlaceholder")}</option>
-          <option value="Instagram">{t("careers.form.heardInstagram")}</option>
-          <option value="TikTok">{t("careers.form.heardTikTok")}</option>
-          <option value="Friend">{t("careers.form.heardFriend")}</option>
-          <option value="AUB/LAU">{t("careers.form.heardUni")}</option>
-          <option value="WhatsApp">{t("careers.form.heardWhatsApp")}</option>
-          <option value="Other">{t("careers.form.heardOther")}</option>
-        </select>
-      </div>
+      {error && <p className="form-error">{error}</p>}
 
-      {error && <p className="text-red-600 text-sm">{error}</p>}
-
-      <div className="text-center pt-2">
-        <button
-          type="submit"
-          disabled={sending}
-          className="bg-primary text-white rounded-full px-10 py-3 font-semibold hover:scale-105 transition-transform disabled:opacity-60 disabled:hover:scale-100 cursor-pointer"
-        >
-          {sending ? t("careers.form.sending") : t("careers.form.submit")}
+      <div className="form-submit">
+        <button type="submit" disabled={sending} className="btn-primary">
+          {sending ? "Sending..." : "Submit Application"}
         </button>
       </div>
     </form>
   );
 }
 
-/* ------------------------------------------------------------------ */
-/*  Footer                                                             */
-/* ------------------------------------------------------------------ */
+/* ================================================================== */
+/*  PAGE                                                               */
+/* ================================================================== */
 
-function Footer() {
-  return (
-    <footer className="border-t border-primary/10 py-8 px-6 text-center">
-      <p className="text-sm text-foreground/50">Made with love in Beirut 🍋</p>
-    </footer>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/*  Page                                                               */
-/* ------------------------------------------------------------------ */
+const roles = [
+  {
+    emoji: "📣",
+    title: "Storyteller & Growth Lead",
+    type: "Part-time · 20 hrs/week",
+    salary: "$300–$400/mo + serious equity",
+    location: "Beirut, Lebanon (Remote-friendly)",
+    desc: "You'll be the voice of Our Teta — telling the stories of our cooks, growing our community, and making people crave home-cooked food through content that feels real, not corporate.",
+    responsibilities: [
+      "Own Our Teta's Instagram, TikTok, and WhatsApp presence — make it feel alive",
+      "Film and edit short videos of cooks and their dishes (the sizzle, the hands, the love)",
+      "Build and engage our customer community — turn followers into regulars",
+      "Run local influencer partnerships across Beirut — AUB food bloggers, neighborhood pages",
+      "Track what's working and double down on it — we move fast and learn faster",
+    ],
+    requirements: [
+      "Based in Beirut — you need to smell the food to sell it",
+      "Fluent in Arabic (Lebanese dialect) and English",
+      "Genuine passion for Lebanese food and community — not just a job",
+      "Experience with Instagram Reels or TikTok — your own account counts, we want creators",
+    ],
+    niceToHave: "AUB or LAU student or recent grad. Bonus if you already know Hamra's food scene.",
+  },
+  {
+    emoji: "🔍",
+    title: "Teta Scout & Cook Relations",
+    type: "Part-time · 20 hrs/week",
+    salary: "$300–$400/mo + serious equity",
+    location: "Beirut, Lebanon (On the ground)",
+    desc: "You'll be our boots on the ground — discovering talented home cooks across Beirut, building real relationships, and making sure every teta feels supported and proud to be on the platform.",
+    responsibilities: [
+      "Find and sign up home cooks across Beirut neighborhoods — knock on doors, follow the smells",
+      "Visit cooks at home to photograph their dishes and set up their profiles",
+      "Manage the cook WhatsApp community — be the friendly face they trust",
+      "Be the first point of contact when cooks have questions or need help",
+      "Collect feedback from cooks and relay it to the founding team — you're their advocate",
+    ],
+    requirements: [
+      "Based in Beirut, ideally with a scooter or car — you'll be moving",
+      "Fluent in Arabic (Lebanese dialect) — the tetas don't speak startup",
+      "Warm, trustworthy personality — cooks need to feel comfortable inviting you into their kitchen",
+      "Organized enough to manage 30+ cook relationships without dropping anyone",
+    ],
+    niceToHave: "AUB or LAU student or recent grad. Knows Beirut neighborhoods well — from Achrafieh to Hamra to Dahieh.",
+  },
+];
 
 export default function CareersPage() {
-  const { t } = useTranslation();
+  const [activeTab, setActiveTab] = useState(0);
 
-  const role1Resp = [
-    t("careers.role1.resp1"),
-    t("careers.role1.resp2"),
-    t("careers.role1.resp3"),
-    t("careers.role1.resp4"),
-    t("careers.role1.resp5"),
-  ];
-  const role1Reqs = [
-    t("careers.role1.req1"),
-    t("careers.role1.req2"),
-    t("careers.role1.req3"),
-    t("careers.role1.req4"),
-  ];
+  // Parallax for hero
+  useEffect(() => {
+    const handleParallax = () => {
+      const hero = document.querySelector(".hero-bg") as HTMLElement;
+      const scroll = window.scrollY;
+      if (hero && scroll < window.innerHeight) {
+        hero.style.transform = `scale(${1.05 + scroll * 0.0002}) translateY(${scroll * 0.3}px)`;
+      }
+    };
+    window.addEventListener("scroll", handleParallax);
+    return () => window.removeEventListener("scroll", handleParallax);
+  }, []);
 
-  const role2Resp = [
-    t("careers.role2.resp1"),
-    t("careers.role2.resp2"),
-    t("careers.role2.resp3"),
-    t("careers.role2.resp4"),
-    t("careers.role2.resp5"),
-  ];
-  const role2Reqs = [
-    t("careers.role2.req1"),
-    t("careers.role2.req2"),
-    t("careers.role2.req3"),
-    t("careers.role2.req4"),
-  ];
+  const role = roles[activeTab];
 
   return (
-    <div className="bg-cream min-h-screen">
-      <Header />
+    <>
+      <Nav activePage="careers" />
 
-      <main>
-        {/* Hero banner */}
-        <section className="bg-gradient-to-r from-primary to-primary-dark py-20 md:py-28 px-6 text-center">
-          <div className="max-w-4xl mx-auto">
-            <h1 className="text-4xl md:text-6xl font-bold text-white mb-3">
-              {t("careers.heroTitle")}
-            </h1>
-            <p className="text-xl md:text-2xl text-white/80 mb-4" dir="rtl">
-              انضم لفريق تيتا
-            </p>
-            <p className="text-lg text-white/70 max-w-2xl mx-auto">
-              {t("careers.heroSubtitle")}
-            </p>
+      {/* HERO */}
+      <section className="hero" id="home">
+        <div
+          className="hero-bg"
+          style={{
+            background: `
+              linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.1) 40%, rgba(0,0,0,0.5) 100%),
+              url('https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=1800&q=80') center/cover no-repeat
+            `,
+          }}
+        />
+        <div className="hero-content">
+          <p className="hero-sub" style={{ fontStyle: "italic" }}>Careers</p>
+          <h2>Come build something<br />that matters.</h2>
+          <p>We&apos;re not a startup chasing growth metrics. We&apos;re neighbors feeding neighbors — and we need people who get that.</p>
+          <div className="hero-buttons">
+            <a href="#roles" className="btn-primary">See Open Roles</a>
+            <a href="#apply" className="btn-outline">Apply Now</a>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Intro */}
-        <section className="py-16 px-6">
-          <div className="max-w-3xl mx-auto text-center">
-            <p className="text-lg text-foreground/80 leading-relaxed mb-4">
-              {t("careers.introP1")}
-            </p>
-            <p className="text-base font-medium text-primary">
-              {t("careers.hiringIn")}
-            </p>
-          </div>
-        </section>
+      {/* ROLE TABS */}
+      <section className="careers-tabs-section" id="roles">
+        {/* Tab bar */}
+        <div className="careers-tab-bar">
+          {roles.map((r, i) => (
+            <button
+              key={i}
+              className={`careers-tab ${activeTab === i ? "active" : ""}`}
+              onClick={() => setActiveTab(i)}
+            >
+              <span className="careers-tab-emoji">{r.emoji}</span>
+              {r.title}
+            </button>
+          ))}
+        </div>
 
-        {/* Role cards */}
-        <section className="px-6 pb-20">
-          <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-8">
-            <RoleCard
-              borderColor="border-primary"
-              title={t("careers.role1.title")}
-              titleAr={t("careers.role1.titleAr")}
-              type={t("careers.role1.type")}
-              location={t("careers.role1.location")}
-              desc={t("careers.role1.desc")}
-              responsibilities={role1Resp}
-              requirements={role1Reqs}
-              niceToHave={t("careers.role1.nice")}
-              t={t}
-            />
-            <RoleCard
-              borderColor="border-secondary"
-              title={t("careers.role2.title")}
-              titleAr={t("careers.role2.titleAr")}
-              type={t("careers.role2.type")}
-              location={t("careers.role2.location")}
-              desc={t("careers.role2.desc")}
-              responsibilities={role2Resp}
-              requirements={role2Reqs}
-              niceToHave={t("careers.role2.nice")}
-              t={t}
-            />
-          </div>
-        </section>
-
-        {/* Application form */}
-        <section id="apply" className="py-20 px-6 bg-white">
-          <div className="max-w-5xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold text-primary-dark mb-3">
-                {t("careers.applyTitle")}
-              </h2>
-              <p className="text-foreground/60">{t("careers.applySubtext")}</p>
+        {/* Tab content */}
+        <div className="careers-tab-content">
+          <div className="careers-tab-header">
+            <div>
+              <div className="careers-tab-meta">{role.type} · 📍 {role.location}</div>
+              <div className="careers-tab-badges">
+                <span className="role-badge salary">{role.salary}</span>
+                <span className="role-badge hiring">Actively Hiring</span>
+              </div>
             </div>
-            <ApplicationForm />
           </div>
-        </section>
 
-        {/* Questions */}
-        <section className="py-12 px-6 text-center">
-          <p className="text-foreground/60">{t("careers.questions")}</p>
-        </section>
-      </main>
+          <p className="careers-tab-desc">{role.desc}</p>
+
+          <div className="careers-tab-details">
+            <div className="careers-detail-section">
+              <h4>Responsibilities</h4>
+              <ul>
+                {role.responsibilities.map((r, i) => (
+                  <li key={i}>{r}</li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="careers-detail-section">
+              <h4>Requirements</h4>
+              <ul>
+                {role.requirements.map((r, i) => (
+                  <li key={i}>{r}</li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="careers-detail-section">
+              <h4>Nice to Have</h4>
+              <p>{role.niceToHave}</p>
+            </div>
+
+            <div className="careers-detail-section compensation">
+              <h4>Compensation</h4>
+              <div className="comp-grid">
+                <div className="comp-item">
+                  <span className="comp-label">Salary</span>
+                  <span className="comp-value">$300–$400/mo</span>
+                  <span className="comp-note">Paid in USD, monthly</span>
+                </div>
+                <div className="comp-item">
+                  <span className="comp-label">Equity</span>
+                  <span className="comp-value">Real ownership</span>
+                  <span className="comp-note">Serious stake, vested over 2 years</span>
+                </div>
+                <div className="comp-item">
+                  <span className="comp-label">Schedule</span>
+                  <span className="comp-value">20 hrs/week</span>
+                  <span className="comp-note">Flexible hours</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <a href="#apply" className="btn-primary" style={{ marginTop: "32px", display: "inline-block" }}>
+            Apply for this role
+          </a>
+        </div>
+      </section>
+
+      {/* APPLICATION FORM */}
+      <section className="section-how" id="apply">
+        <div className="section-title">
+          <span className="section-tag">Apply</span>
+          <h2>Ready? Yalla.</h2>
+        </div>
+        <p style={{ textAlign: "center", color: "#666", maxWidth: "500px", margin: "-60px auto 60px", fontSize: "1rem", lineHeight: "1.6" }}>
+          We read every application personally. No bots, no filters — just us.
+        </p>
+        <ApplicationForm />
+      </section>
+
+      {/* QUESTIONS */}
+      <section className="section-sahteen" style={{ padding: "60px 24px" }}>
+        <p style={{ opacity: 0.6, fontSize: "0.95rem" }}>
+          Questions? Reach out to us at{" "}
+          <a href="mailto:hello@ourteta.com" style={{ color: "var(--color-gold)", textDecoration: "none" }}>
+            hello@ourteta.com
+          </a>
+        </p>
+      </section>
 
       <Footer />
-    </div>
+    </>
   );
 }

@@ -31,7 +31,7 @@ export default function Home() {
         <div className="hero-bg"></div>
         <div className="hero-content">
           <p className="hero-sub">Home-cooked. Delivered.</p>
-          <h1>teta</h1>
+          <h1>teta <span className="lemon-logo">🍋</span></h1>
           <p>The platform connecting Beirut's best home cooks with neighbors who miss real food.</p>
           <div className="hero-buttons">
             <a href="https://app.ourteta.com/" className="btn-primary">

@@ -11,19 +11,15 @@ export default function About() {
     <>
       <Nav activePage="about" />
 
-      {/* HERO */}
+      {/* HERO + STORY */}
       <section className="story-hero" id="home">
         <div className="section-title reveal">
           <span className="section-tag">About Us</span>
           <h2>Built from a craving</h2>
         </div>
-        <p style={{ color: "var(--color-text-light)", maxWidth: "600px", margin: "0 auto", fontSize: "1.1rem", lineHeight: "1.7" }}>
+        <p style={{ color: "var(--color-text-light)", maxWidth: "600px", margin: "0 auto 60px", fontSize: "1.1rem", lineHeight: "1.7" }}>
           What started as missing home-cooked food became a mission to connect communities through every meal.
         </p>
-      </section>
-
-      {/* THE STORY */}
-      <section className="story-hero" style={{ padding: "60px 24px 120px" }}>
         <div className="story-grid" style={{ margin: "0 auto", textAlign: "left" }}>
           <div className="story-card reveal" style={{ transitionDelay: "0.1s" }}>
             <span className="emoji">💔</span>
@@ -48,23 +44,19 @@ export default function About() {
       </section>
 
       {/* FOUNDER */}
-      <section className="section-team">
-        <div className="section-title reveal">
-          <span className="section-tag">The Founder</span>
-          <h2>Meet Zeinab</h2>
+      <section className="founder-split">
+        <div className="founder-text">
+          <p className="founder-label">Founder &amp; CEO</p>
+          <h2 className="founder-name">Zeinab Reda</h2>
+          <p className="founder-role">Medical Physics Resident, AUB</p>
+          <p className="founder-role">Building Teta from Beirut</p>
+          <blockquote className="founder-quote">
+            &ldquo;I missed my mother&apos;s cooking. So I built a way for everyone to share theirs.&rdquo;
+          </blockquote>
         </div>
-        <div className="team-content">
-          <div className="team-photo reveal-left">👩‍🍳</div>
-          <div className="team-info reveal-right">
-            <h3>Zeinab Reda</h3>
-            <div className="title">Founder</div>
-            <p>
-              Medical Physics resident at AUB. After two years in Beirut, the gap between incredible neighborhood cooks and the people craving real food became impossible to ignore. What started as swapping meals with neighbors turned into a platform serving hundreds across the city.
-            </p>
-            <blockquote>
-              I missed my mother's cooking. So I built a way for everyone to share theirs.
-            </blockquote>
-          </div>
+        <div className="founder-photo">
+          <span className="founder-emoji">👩‍🍳</span>
+          <span className="founder-initials">ZR</span>
         </div>
       </section>
 
