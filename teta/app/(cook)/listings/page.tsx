@@ -5,6 +5,8 @@ import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
+import { useDemo } from "@/lib/demo/DemoContext";
+import { DEMO_COOKS, DEMO_LISTINGS } from "@/lib/demo/mockData";
 
 interface Listing {
   id: string;
@@ -24,6 +26,7 @@ export default function ListingsPage() {
   const router = useRouter();
   const supabase = createClient();
   const { t } = useTranslation();
+  const { isDemo, demoUser } = useDemo();
 
   useEffect(() => {
     loadListings();
@@ -31,6 +34,25 @@ export default function ListingsPage() {
   }, []);
 
   async function loadListings() {
+    if (isDemo && demoUser) {
+      // Demo mode
+      const demoCook = DEMO_COOKS[0]; // Teta Maryam
+      setCookProfileId(demoCook.id);
+      const demoListings = DEMO_LISTINGS.filter((l) => l.cook_id === demoCook.id);
+      const mapped = demoListings.map((l) => ({
+        id: l.id,
+        name: l.name,
+        price_usd: l.price_usd,
+        is_free: l.is_free,
+        portions_available: l.portions_available,
+        is_active: l.is_active,
+        photo_urls: [] as string[],
+      }));
+      setListings(mapped);
+      setLoading(false);
+      return;
+    }
+
     const {
       data: { user },
     } = await supabase.auth.getUser();
@@ -63,6 +85,13 @@ export default function ListingsPage() {
   }
 
   async function toggleActive(id: string, currentActive: boolean) {
+    if (isDemo) {
+      setListings((prev) =>
+        prev.map((l) => (l.id === id ? { ...l, is_active: !currentActive } : l))
+      );
+      return;
+    }
+
     await supabase
       .from("listings")
       .update({ is_active: !currentActive })
@@ -75,14 +104,14 @@ export default function ListingsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-cream flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <p className="text-foreground/50">{t("loading")}</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-cream">
+    <div className="min-h-screen bg-background">
       <header className="flex items-center justify-between px-6 py-4 border-b border-foreground/5">
         <Link href="/dashboard" className="text-2xl font-bold text-primary">
           teta
@@ -100,7 +129,7 @@ export default function ListingsPage() {
           <h1 className="text-2xl font-bold">{t("myDishes")}</h1>
           <button
             onClick={() => setShowCreate(true)}
-            className="px-4 py-2 bg-primary text-white text-sm font-semibold rounded-full hover:bg-primary-dark transition-colors"
+            className="neu-btn-primary px-4 py-2 text-sm font-semibold rounded-full"
           >
             {t("addDish")}
           </button>
@@ -112,7 +141,7 @@ export default function ListingsPage() {
             <p className="text-foreground/50 mb-4">{t("noDishesYet")}</p>
             <button
               onClick={() => setShowCreate(true)}
-              className="px-6 py-3 bg-primary text-white font-semibold rounded-full hover:bg-primary-dark transition-colors"
+              className="neu-btn-primary px-6 py-3 font-semibold rounded-full"
             >
               {t("addFirstDish")}
             </button>
@@ -122,13 +151,11 @@ export default function ListingsPage() {
             {listings.map((listing) => (
               <div
                 key={listing.id}
-                className={`bg-white rounded-xl border p-4 flex items-center gap-4 transition-colors ${
-                  listing.is_active
-                    ? "border-foreground/5"
-                    : "border-foreground/5 opacity-60"
+                className={`neu-card rounded-2xl p-4 flex items-center gap-4 transition-all ${
+                  !listing.is_active ? "opacity-60" : ""
                 }`}
               >
-                <div className="w-16 h-16 rounded-lg bg-primary/5 flex items-center justify-center flex-shrink-0 overflow-hidden">
+                <div className="neu-well rounded-xl p-2 w-16 h-16 flex items-center justify-center flex-shrink-0 overflow-hidden">
                   {listing.photo_urls?.[0] ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
@@ -151,10 +178,8 @@ export default function ListingsPage() {
                 </div>
                 <button
                   onClick={() => toggleActive(listing.id, listing.is_active)}
-                  className={`px-3 py-1 rounded-full text-xs font-medium ${
-                    listing.is_active
-                      ? "bg-primary/10 text-primary"
-                      : "bg-foreground/5 text-foreground/40"
+                  className={`neu-chip rounded-full text-xs font-medium px-3 py-1 transition-all ${
+                    listing.is_active ? "neu-chip-active" : ""
                   }`}
                 >
                   {listing.is_active ? t("active") : t("hidden")}
@@ -172,6 +197,7 @@ export default function ListingsPage() {
               setListings((prev) => [listing, ...prev]);
               setShowCreate(false);
             }}
+            isDemo={isDemo}
           />
         )}
       </main>
@@ -183,10 +209,12 @@ function CreateListingModal({
   cookProfileId,
   onClose,
   onCreated,
+  isDemo,
 }: {
   cookProfileId: string;
   onClose: () => void;
   onCreated: (listing: Listing) => void;
+  isDemo: boolean;
 }) {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -222,6 +250,8 @@ function CreateListingModal({
   ];
 
   async function handlePhotoUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    if (isDemo) return;
+
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -256,6 +286,21 @@ function CreateListingModal({
     if (!name.trim()) return;
     setSaving(true);
     setError("");
+
+    if (isDemo) {
+      // Demo mode - just create a mock listing
+      const mockListing: Listing = {
+        id: `listing-${Date.now()}`,
+        name: name.trim(),
+        price_usd: isFree ? null : parseFloat(priceUsd) || null,
+        is_free: isFree,
+        portions_available: parseInt(portions) || 1,
+        is_active: true,
+        photo_urls: photoUrl ? [photoUrl] : [],
+      };
+      onCreated(mockListing);
+      return;
+    }
 
     const { data, error: insertError } = await supabase
       .from("listings")
@@ -293,8 +338,8 @@ function CreateListingModal({
 
   return (
     <div className="fixed inset-0 bg-black/50 z-50 flex items-end sm:items-center justify-center">
-      <div className="bg-cream rounded-t-2xl sm:rounded-2xl w-full max-w-md max-h-[90vh] overflow-y-auto">
-        <div className="sticky top-0 bg-cream px-6 py-4 border-b border-foreground/5 flex items-center justify-between">
+      <div className="bg-background rounded-t-2xl sm:rounded-2xl w-full max-w-md max-h-[90vh] overflow-y-auto">
+        <div className="sticky top-0 bg-background px-6 py-4 border-b border-foreground/5 flex items-center justify-between">
           <h2 className="text-lg font-bold">{t("addADish")}</h2>
           <button
             onClick={onClose}
@@ -311,7 +356,7 @@ function CreateListingModal({
               {t("photo")}
             </label>
             {photoUrl ? (
-              <div className="relative w-full h-48 rounded-xl overflow-hidden">
+              <div className="relative w-full h-48 rounded-2xl overflow-hidden neu-well">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={photoUrl}
@@ -327,7 +372,7 @@ function CreateListingModal({
                 </button>
               </div>
             ) : (
-              <label className="w-full h-32 border-2 border-dashed border-foreground/10 rounded-xl flex flex-col items-center justify-center cursor-pointer hover:border-primary/30 transition-colors">
+              <label className="neu-well w-full h-32 rounded-2xl flex flex-col items-center justify-center cursor-pointer hover:neu-inset transition-all">
                 <span className="text-2xl mb-1">📷</span>
                 <span className="text-sm text-foreground/40">
                   {uploading ? t("uploading") : t("tapToAddPhoto")}
@@ -354,7 +399,7 @@ function CreateListingModal({
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder={t("dishNamePlaceholder")}
-              className="w-full px-4 py-3 rounded-xl border border-foreground/10 bg-white text-foreground placeholder:text-foreground/30 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
+              className="neu-input w-full px-4 py-3 rounded-xl text-foreground placeholder:text-foreground/30"
             />
           </div>
 
@@ -369,7 +414,7 @@ function CreateListingModal({
               onChange={(e) => setDescription(e.target.value)}
               placeholder={t("descriptionPlaceholder")}
               rows={2}
-              className="w-full px-4 py-3 rounded-xl border border-foreground/10 bg-white text-foreground placeholder:text-foreground/30 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary resize-none"
+              className="neu-input w-full px-4 py-3 rounded-xl text-foreground placeholder:text-foreground/30 resize-none"
             />
           </div>
 
@@ -382,10 +427,8 @@ function CreateListingModal({
               <button
                 type="button"
                 onClick={() => setIsFree(!isFree)}
-                className={`px-3 py-1 rounded-full text-xs font-medium ${
-                  isFree
-                    ? "bg-primary text-white"
-                    : "bg-foreground/5 text-foreground/50"
+                className={`neu-chip px-3 py-1 rounded-full text-xs font-medium ${
+                  isFree ? "neu-chip-active" : ""
                 }`}
               >
                 {isFree ? t("freeMeal") + " ❤️" : t("markAsFree")}
@@ -403,7 +446,7 @@ function CreateListingModal({
                   value={priceUsd}
                   onChange={(e) => setPriceUsd(e.target.value)}
                   placeholder="0.00"
-                  className="w-full pl-8 pr-4 py-3 rounded-xl border border-foreground/10 bg-white text-foreground placeholder:text-foreground/30 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
+                  className="neu-input w-full pl-8 pr-4 py-3 rounded-xl text-foreground placeholder:text-foreground/30"
                 />
               </div>
             )}
@@ -420,7 +463,7 @@ function CreateListingModal({
                 min="1"
                 value={portions}
                 onChange={(e) => setPortions(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl border border-foreground/10 bg-white text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
+                className="neu-input w-full px-4 py-3 rounded-xl text-foreground"
               />
             </div>
             <div>
@@ -433,7 +476,7 @@ function CreateListingModal({
                 step="5"
                 value={prepTime}
                 onChange={(e) => setPrepTime(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl border border-foreground/10 bg-white text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
+                className="neu-input w-full px-4 py-3 rounded-xl text-foreground"
               />
             </div>
           </div>
@@ -446,7 +489,7 @@ function CreateListingModal({
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border border-foreground/10 bg-white text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
+              className="neu-input w-full px-4 py-3 rounded-xl text-foreground"
             >
               <option value="">{t("selectCategory")}</option>
               <option value="mezza">{t("catMezza")}</option>
@@ -470,10 +513,10 @@ function CreateListingModal({
                   key={a.key}
                   type="button"
                   onClick={() => toggleTag(allergens, a.key, setAllergens)}
-                  className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
+                  className={`neu-chip px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
                     allergens.includes(a.key)
-                      ? "bg-red-100 text-red-700 border border-red-200"
-                      : "bg-white border border-foreground/10 text-foreground/60"
+                      ? "neu-chip-active bg-red-100 text-red-700"
+                      : ""
                   }`}
                 >
                   {a.label}
@@ -495,10 +538,8 @@ function CreateListingModal({
                   onClick={() =>
                     toggleTag(dietaryTags, d.key, setDietaryTags)
                   }
-                  className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
-                    dietaryTags.includes(d.key)
-                      ? "bg-primary/10 text-primary border border-primary/20"
-                      : "bg-white border border-foreground/10 text-foreground/60"
+                  className={`neu-chip px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+                    dietaryTags.includes(d.key) ? "neu-chip-active" : ""
                   }`}
                 >
                   {d.label}
@@ -523,7 +564,7 @@ function CreateListingModal({
           <button
             type="submit"
             disabled={saving || !name.trim()}
-            className="w-full py-3 px-6 bg-primary text-white font-semibold rounded-full hover:bg-primary-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="neu-btn-primary w-full py-3 px-6 font-semibold rounded-full disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {saving ? t("adding") : t("addDish").replace("+ ", "")}
           </button>

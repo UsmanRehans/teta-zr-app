@@ -3,6 +3,7 @@ import { Inter, Noto_Sans_Arabic } from "next/font/google";
 import "./globals.css";
 import AgentChat from "@/components/agent/AgentChat";
 import { LanguageProvider } from "@/lib/i18n/LanguageContext";
+import { DemoProvider } from "@/lib/demo/DemoContext";
 
 const inter = Inter({
   variable: "--font-geist-sans",
@@ -33,8 +34,10 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <LanguageProvider>
-          {children}
-          <AgentChat />
+          <DemoProvider>
+            {children}
+            <AgentChat />
+          </DemoProvider>
         </LanguageProvider>
       </body>
     </html>

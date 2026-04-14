@@ -7,6 +7,8 @@ import Link from "next/link";
 import CookMap from "@/components/map/CookMap";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
 import LanguageToggle from "@/components/LanguageToggle";
+import { useDemo } from "@/lib/demo/DemoContext";
+import { DEMO_COOKS, DEMO_LISTINGS } from "@/lib/demo/mockData";
 
 interface Cook {
   id: string;
@@ -30,6 +32,7 @@ export default function BrowsePage() {
   const router = useRouter();
   const supabase = createClient();
   const { t, locale } = useTranslation();
+  const { isDemo } = useDemo();
 
   useEffect(() => {
     loadCooks();
@@ -37,6 +40,24 @@ export default function BrowsePage() {
   }, []);
 
   async function loadCooks() {
+    if (isDemo) {
+      // Use mock data in demo mode
+      const mapped = DEMO_COOKS.map((c) => ({
+        id: c.id,
+        name: c.name,
+        address_hint: c.address_hint,
+        specialties: c.specialties,
+        avg_rating: c.avg_rating,
+        accepts_orders: c.accepts_orders,
+        lng: c.longitude,
+        lat: c.latitude,
+        avatar_url: c.avatar_url,
+      }));
+      setCooks(mapped);
+      setLoading(false);
+      return;
+    }
+
     const { data } = await supabase
       .from("cook_profiles")
       .select(
@@ -99,16 +120,16 @@ export default function BrowsePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-cream flex items-center justify-center">
-        <p className="text-foreground/50">{t("findingCooks")}</p>
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <p className="text-sub">{t("findingCooks")}</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-cream flex flex-col">
+    <div className="min-h-screen bg-background flex flex-col">
       {/* Header */}
-      <header className="px-6 py-4 border-b border-foreground/5 bg-cream">
+      <header className="px-6 py-4 border-b border-foreground/5 bg-background">
         <div className="flex items-center justify-between mb-3">
           <Link href="/" className="text-2xl font-bold text-primary">
             teta
@@ -141,25 +162,25 @@ export default function BrowsePage() {
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
             placeholder={t("searchPlaceholder")}
-            className="flex-1 px-4 py-2.5 rounded-xl border border-foreground/10 bg-white text-sm text-foreground placeholder:text-foreground/30 focus:outline-none focus:ring-2 focus:ring-primary/50"
+            className="flex-1 neu-input text-sm"
           />
-          <div className="flex bg-white rounded-xl border border-foreground/10 overflow-hidden">
+          <div className="flex neu-card overflow-hidden">
             <button
               onClick={() => setViewMode("map")}
-              className={`px-3 py-2 text-sm ${
+              className={`px-3 py-2 text-sm font-medium transition-all ${
                 viewMode === "map"
-                  ? "bg-primary text-white"
-                  : "text-foreground/50"
+                  ? "neu-chip-active text-primary"
+                  : "text-sub"
               }`}
             >
               {t("map")}
             </button>
             <button
               onClick={() => setViewMode("list")}
-              className={`px-3 py-2 text-sm ${
+              className={`px-3 py-2 text-sm font-medium transition-all ${
                 viewMode === "list"
-                  ? "bg-primary text-white"
-                  : "text-foreground/50"
+                  ? "neu-chip-active text-primary"
+                  : "text-sub"
               }`}
             >
               {t("list")}
@@ -179,17 +200,17 @@ export default function BrowsePage() {
             {filteredCooks.length === 0 ? (
               <div className="text-center py-12">
                 <p className="text-4xl mb-3">🔍</p>
-                <p className="text-foreground/50">{t("noCooksFound")}</p>
+                <p className="text-sub">{t("noCooksFound")}</p>
               </div>
             ) : (
               filteredCooks.map((cook) => (
                 <Link
                   key={cook.id}
                   href={`/cook/${cook.id}`}
-                  className="bg-white rounded-xl border border-foreground/5 p-4 flex items-center gap-4 hover:border-primary/20 transition-colors block"
+                  className="neu-card flex items-center gap-4 hover:shadow-lg transition-shadow block"
                 >
-                  <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 overflow-hidden">
-                    {cook.avatar_url ? (
+                  <div className="w-14 h-14 neu-well flex-shrink-0">
+                    {cook.avatar_url && cook.avatar_url !== "👩‍🍳" ? (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
                         src={cook.avatar_url}
@@ -197,20 +218,20 @@ export default function BrowsePage() {
                         className="w-full h-full object-cover"
                       />
                     ) : (
-                      <span className="text-2xl">👩‍🍳</span>
+                      <span className="text-2xl">{cook.avatar_url || "👩‍🍳"}</span>
                     )}
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
                       <p className="font-semibold truncate">{cook.name}</p>
                       {cook.avg_rating > 0 && (
-                        <span className="text-xs text-foreground/50">
+                        <span className="text-xs text-primary">
                           ⭐ {cook.avg_rating}
                         </span>
                       )}
                     </div>
                     {cook.address_hint && (
-                      <p className="text-sm text-foreground/50">
+                      <p className="text-sm text-sub">
                         📍 {cook.address_hint}
                       </p>
                     )}
@@ -219,7 +240,7 @@ export default function BrowsePage() {
                         {cook.specialties.slice(0, 3).map((s) => (
                           <span
                             key={s}
-                            className="text-xs px-2 py-0.5 bg-primary/5 text-primary rounded-full"
+                            className="text-xs px-2 py-0.5 neu-chip text-primary"
                           >
                             {s}
                           </span>
@@ -227,7 +248,7 @@ export default function BrowsePage() {
                       </div>
                     )}
                   </div>
-                  <span className="text-foreground/30">{arrow}</span>
+                  <span className="text-sub">{arrow}</span>
                 </Link>
               ))
             )}

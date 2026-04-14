@@ -54,7 +54,7 @@ export default function PhoneLogin() {
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
           placeholder={t("phonePlaceholder")}
-          className="w-full px-4 py-3 rounded-xl border border-foreground/10 bg-white text-foreground placeholder:text-foreground/30 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
+          className="neu-input"
         />
       </div>
 
@@ -63,7 +63,7 @@ export default function PhoneLogin() {
       <button
         type="submit"
         disabled={loading}
-        className="w-full py-3 px-6 bg-primary text-white font-semibold rounded-full hover:bg-primary-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        className="neu-btn-primary"
       >
         {loading ? t("sendingCode") : t("sendCode")}
       </button>

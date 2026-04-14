@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { useDemo } from "@/lib/demo/DemoContext";
 
 interface Message {
   role: "user" | "assistant";
@@ -17,12 +18,15 @@ export default function AgentChat() {
   const [userId, setUserId] = useState<string | null>(null);
   const messagesEnd = useRef<HTMLDivElement>(null);
   const supabase = createClient();
+  const { isDemo } = useDemo();
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      if (user) setUserId(user.id);
-    });
-  }, [supabase.auth]);
+    if (!isDemo) {
+      supabase.auth.getUser().then(({ data: { user } }) => {
+        if (user) setUserId(user.id);
+      });
+    }
+  }, [supabase.auth, isDemo]);
 
   useEffect(() => {
     messagesEnd.current?.scrollIntoView({ behavior: "smooth" });
@@ -36,6 +40,21 @@ export default function AgentChat() {
     setInput("");
     setMessages((prev) => [...prev, { role: "user", content: userMessage }]);
     setLoading(true);
+
+    if (isDemo) {
+      // Demo mode - mock response
+      setTimeout(() => {
+        setMessages((prev) => [
+          ...prev,
+          {
+            role: "assistant",
+            content: "I'm here to help with your Teta kitchen! In demo mode, I'm just a preview. Feel free to ask me about orders, dishes, or anything else on Teta.",
+          },
+        ]);
+        setLoading(false);
+      }, 500);
+      return;
+    }
 
     try {
       const apiMessages = [
@@ -81,7 +100,7 @@ export default function AgentChat() {
       {/* Floating button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-6 w-14 h-14 bg-primary text-white rounded-full shadow-lg hover:bg-primary-dark transition-all flex items-center justify-center text-2xl z-50"
+        className="neu-circle fixed bottom-6 right-6 w-14 h-14 bg-primary text-white rounded-full shadow-lg flex items-center justify-center text-2xl z-50"
         aria-label="Chat with Teta Assistant"
       >
         {isOpen ? "✕" : "💬"}
@@ -89,7 +108,7 @@ export default function AgentChat() {
 
       {/* Chat panel */}
       {isOpen && (
-        <div className="fixed bottom-24 right-6 w-[360px] max-w-[calc(100vw-48px)] h-[500px] max-h-[calc(100vh-120px)] bg-white rounded-2xl shadow-2xl border border-foreground/10 flex flex-col z-50 overflow-hidden">
+        <div className="neu-raised fixed bottom-24 right-6 w-[360px] max-w-[calc(100vw-48px)] h-[500px] max-h-[calc(100vh-120px)] bg-background rounded-2xl shadow-2xl flex flex-col z-50 overflow-hidden">
           {/* Header */}
           <div className="px-4 py-3 bg-primary text-white flex items-center gap-3">
             <span className="text-xl">🤖</span>
@@ -122,8 +141,8 @@ export default function AgentChat() {
                 <div
                   className={`max-w-[80%] px-3 py-2 rounded-2xl text-sm whitespace-pre-wrap ${
                     msg.role === "user"
-                      ? "bg-primary text-white rounded-br-md"
-                      : "bg-foreground/5 text-foreground rounded-bl-md"
+                      ? "bg-primary text-white rounded-br-md shadow-md"
+                      : "neu-card rounded-bl-md text-foreground"
                   }`}
                   dir="auto"
                 >
@@ -134,11 +153,11 @@ export default function AgentChat() {
 
             {loading && (
               <div className="flex justify-start">
-                <div className="bg-foreground/5 px-4 py-2 rounded-2xl rounded-bl-md">
+                <div className="neu-card px-4 py-2 rounded-2xl rounded-bl-md">
                   <div className="flex gap-1">
-                    <span className="w-2 h-2 bg-foreground/30 rounded-full animate-bounce [animation-delay:0ms]" />
-                    <span className="w-2 h-2 bg-foreground/30 rounded-full animate-bounce [animation-delay:150ms]" />
-                    <span className="w-2 h-2 bg-foreground/30 rounded-full animate-bounce [animation-delay:300ms]" />
+                    <span className="w-2 h-2 bg-primary rounded-full animate-bounce [animation-delay:0ms]" />
+                    <span className="w-2 h-2 bg-primary rounded-full animate-bounce [animation-delay:150ms]" />
+                    <span className="w-2 h-2 bg-primary rounded-full animate-bounce [animation-delay:300ms]" />
                   </div>
                 </div>
               </div>
@@ -158,13 +177,13 @@ export default function AgentChat() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Type a message..."
-              className="flex-1 px-3 py-2 rounded-xl border border-foreground/10 bg-cream text-sm text-foreground placeholder:text-foreground/30 focus:outline-none focus:ring-2 focus:ring-primary/50"
+              className="neu-input flex-1 px-3 py-2 rounded-xl text-sm text-foreground placeholder:text-foreground/30"
               disabled={loading}
             />
             <button
               type="submit"
               disabled={loading || !input.trim()}
-              className="px-4 py-2 bg-primary text-white rounded-xl text-sm font-medium hover:bg-primary-dark transition-colors disabled:opacity-50"
+              className="neu-btn-primary px-4 py-2 rounded-xl text-sm font-medium disabled:opacity-50"
             >
               Send
             </button>

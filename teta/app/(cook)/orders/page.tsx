@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import OrderCard from "@/components/orders/OrderCard";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
+import { useDemo } from "@/lib/demo/DemoContext";
+import { DEMO_COOKS, DEMO_ORDERS } from "@/lib/demo/mockData";
 
 interface Order {
   id: string;
@@ -23,28 +25,50 @@ export default function CookOrdersPage() {
   const router = useRouter();
   const supabase = createClient();
   const { t } = useTranslation();
+  const { isDemo, demoUser } = useDemo();
 
   useEffect(() => {
     loadOrders();
 
-    const channel = supabase
-      .channel("cook-orders")
-      .on(
-        "postgres_changes",
-        { event: "*", schema: "public", table: "orders" },
-        () => {
-          loadOrders();
-        }
-      )
-      .subscribe();
+    if (!isDemo) {
+      const channel = supabase
+        .channel("cook-orders")
+        .on(
+          "postgres_changes",
+          { event: "*", schema: "public", table: "orders" },
+          () => {
+            loadOrders();
+          }
+        )
+        .subscribe();
 
-    return () => {
-      supabase.removeChannel(channel);
-    };
+      return () => {
+        supabase.removeChannel(channel);
+      };
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   async function loadOrders() {
+    if (isDemo && demoUser) {
+      // Demo mode
+      const demoCook = DEMO_COOKS[0]; // Teta Maryam
+      const demoOrders = DEMO_ORDERS.filter(
+        (o) => o.cook_id === demoCook.id
+      ).map((o) => ({
+        id: o.id,
+        items: [{ listing_id: o.listing_id, name: "Demo Item", qty: 1, price_usd: o.total_price_usd }],
+        total_usd: o.total_price_usd,
+        status: o.status,
+        delivery_type: "delivery",
+        created_at: o.created_at,
+        cook_name: "Customer",
+      }));
+      setOrders(demoOrders);
+      setLoading(false);
+      return;
+    }
+
     const {
       data: { user },
     } = await supabase.auth.getUser();
@@ -108,14 +132,14 @@ export default function CookOrdersPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-cream flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <p className="text-foreground/50">{t("loadingOrders")}</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-cream">
+    <div className="min-h-screen bg-background">
       <header className="flex items-center justify-between px-6 py-4 border-b border-foreground/5">
         <Link href="/dashboard" className="text-2xl font-bold text-primary">
           teta

@@ -6,6 +6,8 @@ import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import DishCard from "@/components/listings/DishCard";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
+import { useDemo } from "@/lib/demo/DemoContext";
+import { DEMO_COOKS, DEMO_LISTINGS } from "@/lib/demo/mockData";
 
 interface CookProfile {
   name: string;
@@ -44,6 +46,7 @@ export default function CookPage() {
   const router = useRouter();
   const supabase = createClient();
   const { t, locale } = useTranslation();
+  const { isDemo } = useDemo();
 
   useEffect(() => {
     loadCook();
@@ -51,6 +54,44 @@ export default function CookPage() {
   }, [id]);
 
   async function loadCook() {
+    if (isDemo) {
+      // Find cook from demo data
+      const demoCook = DEMO_COOKS.find((c) => c.id === id);
+      if (!demoCook) {
+        router.push("/browse");
+        return;
+      }
+
+      setCook({
+        name: demoCook.name,
+        bio: demoCook.bio,
+        avatar_url: demoCook.avatar_url,
+        address_hint: demoCook.address_hint,
+        specialties: demoCook.specialties,
+        avg_rating: demoCook.avg_rating,
+        total_reviews: demoCook.total_reviews,
+        accepts_orders: demoCook.accepts_orders,
+      });
+
+      // Filter listings for this cook
+      const cookListings = DEMO_LISTINGS.filter((l) => l.cook_id === id).map(
+        (l) => ({
+          id: l.id,
+          name: l.name,
+          description: l.description,
+          photo_urls: null,
+          price_usd: l.price_usd,
+          is_free: l.is_free,
+          portions_available: l.portions_available,
+          prep_time_mins: l.prep_time_mins,
+          dietary_tags: l.dietary_tags,
+        })
+      );
+      setListings(cookListings);
+      setLoading(false);
+      return;
+    }
+
     const { data: cookProfile } = await supabase
       .from("cook_profiles")
       .select(
@@ -141,8 +182,8 @@ export default function CookPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-cream flex items-center justify-center">
-        <p className="text-foreground/50">{t("loading")}</p>
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <p className="text-sub">{t("loading")}</p>
       </div>
     );
   }
@@ -150,12 +191,12 @@ export default function CookPage() {
   if (!cook) return null;
 
   return (
-    <div className="min-h-screen bg-cream pb-24">
+    <div className="min-h-screen bg-background pb-24">
       <header className="px-6 py-4 border-b border-foreground/5">
         <div className="flex items-center gap-3">
           <Link
             href="/browse"
-            className="w-10 h-10 flex items-center justify-center rounded-full bg-white border border-foreground/10"
+            className="w-10 h-10 neu-icon"
           >
             {backArrow}
           </Link>
@@ -166,8 +207,8 @@ export default function CookPage() {
       <main className="max-w-md mx-auto px-6 py-6">
         {/* Cook info */}
         <div className="flex items-start gap-4 mb-6">
-          <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 overflow-hidden">
-            {cook.avatar_url ? (
+          <div className="w-20 h-20 neu-well flex-shrink-0">
+            {cook.avatar_url && cook.avatar_url !== "👩‍🍳" && !cook.avatar_url.includes("emoji") ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={cook.avatar_url}
@@ -175,22 +216,22 @@ export default function CookPage() {
                 className="w-full h-full object-cover"
               />
             ) : (
-              <span className="text-3xl">👩‍🍳</span>
+              <span className="text-3xl">{cook.avatar_url || "👩‍🍳"}</span>
             )}
           </div>
           <div>
             <h1 className="text-xl font-bold">{cook.name}</h1>
             {cook.address_hint && (
-              <p className="text-sm text-foreground/50">📍 {cook.address_hint}</p>
+              <p className="text-sm text-sub">📍 {cook.address_hint}</p>
             )}
             <div className="flex items-center gap-3 mt-1">
               {cook.avg_rating > 0 && (
-                <span className="text-sm">
+                <span className="text-sm text-primary">
                   ⭐ {cook.avg_rating} ({cook.total_reviews})
                 </span>
               )}
               {!cook.accepts_orders && (
-                <span className="text-xs px-2 py-0.5 bg-foreground/5 rounded-full text-foreground/40">
+                <span className="text-xs neu-badge bg-foreground/10 text-foreground/60">
                   {t("notAccepting")}
                 </span>
               )}
@@ -199,7 +240,7 @@ export default function CookPage() {
         </div>
 
         {cook.bio && (
-          <p className="text-sm text-foreground/60 mb-4" dir="auto">
+          <p className="text-sm text-sub mb-4" dir="auto">
             {cook.bio}
           </p>
         )}
@@ -209,7 +250,7 @@ export default function CookPage() {
             {cook.specialties.map((s) => (
               <span
                 key={s}
-                className="text-xs px-2.5 py-1 bg-primary/5 text-primary rounded-full"
+                className="text-xs neu-chip text-primary"
               >
                 {s}
               </span>
@@ -223,7 +264,7 @@ export default function CookPage() {
         </h2>
 
         {listings.length === 0 ? (
-          <p className="text-foreground/50 text-center py-8">
+          <p className="text-sub text-center py-8">
             {t("noDishesAvailable")}
           </p>
         ) : (
@@ -246,7 +287,7 @@ export default function CookPage() {
 
       {/* Cart bar */}
       {cartCount > 0 && (
-        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-foreground/10 px-6 py-4 safe-area-bottom">
+        <div className="fixed bottom-0 left-0 right-0 bg-background border-t border-foreground/5 px-6 py-4 safe-area-bottom">
           <div className="max-w-md mx-auto">
             <button
               onClick={() => {
@@ -257,12 +298,14 @@ export default function CookPage() {
                 );
                 router.push(`/my-orders/new`);
               }}
-              className="w-full py-3 bg-primary text-white font-semibold rounded-full flex items-center justify-center gap-2 hover:bg-primary-dark transition-colors"
+              className="neu-btn-primary"
             >
-              <span>
-                {t("viewOrder")} ({cartCount} {cartCount === 1 ? t("item") : t("items")})
-              </span>
-              <span className="font-bold">${cartTotal.toFixed(2)}</span>
+              <div className="flex items-center justify-between">
+                <span>
+                  {t("viewOrder")} ({cartCount} {cartCount === 1 ? t("item") : t("items")})
+                </span>
+                <span className="font-bold">${cartTotal.toFixed(2)}</span>
+              </div>
             </button>
           </div>
         </div>

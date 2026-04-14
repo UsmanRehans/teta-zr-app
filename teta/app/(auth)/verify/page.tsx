@@ -14,7 +14,7 @@ function VerifyContent() {
   if (!phone) {
     return (
       <div className="text-center">
-        <p className="text-foreground/60 mb-4">{t("noPhoneProvided")}</p>
+        <p className="text-sub mb-4">{t("noPhoneProvided")}</p>
         <Link href="/login" className="text-primary font-medium">
           {t("goBackToLogin")}
         </Link>
@@ -29,7 +29,7 @@ export default function VerifyPage() {
   const { t } = useTranslation();
 
   return (
-    <div className="min-h-screen bg-cream flex flex-col">
+    <div className="min-h-screen bg-background flex flex-col">
       <header className="px-6 py-4">
         <Link href="/" className="text-2xl font-bold text-primary">
           teta
@@ -44,7 +44,7 @@ export default function VerifyPage() {
           </h1>
         </div>
 
-        <Suspense fallback={<div className="text-foreground/50">{t("loading")}</div>}>
+        <Suspense fallback={<div className="text-sub">{t("loading")}</div>}>
           <VerifyContent />
         </Suspense>
       </main>

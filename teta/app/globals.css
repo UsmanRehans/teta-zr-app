@@ -1,11 +1,26 @@
 @import "tailwindcss";
 
 :root {
-  --background: #FDF6EC;
-  --foreground: #1a1a1a;
-  --primary: #1D9E75;
-  --primary-dark: #178a64;
-  --cream: #FDF6EC;
+  /* ─── Neumorphic Design System ─── */
+  --background: #E8E2D9;
+  --foreground: #2C2C2C;
+  --primary: #E8491D;
+  --primary-dark: #C73A12;
+  --primary-light: #F5DDD4;
+  --green: #2D7A3A;
+  --green-light: #D8EDDB;
+  --cream: #EDE8E0;
+  --surface: #E8E2D9;
+  --sub: #8A8478;
+
+  /* Neumorphic shadows */
+  --neu-raised: 6px 6px 14px rgba(0,0,0,0.10), -6px -6px 14px rgba(255,255,255,0.60);
+  --neu-raised-sm: 4px 4px 10px rgba(0,0,0,0.08), -4px -4px 10px rgba(255,255,255,0.55);
+  --neu-raised-xs: 3px 3px 6px rgba(0,0,0,0.07), -3px -3px 6px rgba(255,255,255,0.50);
+  --neu-inset: inset 3px 3px 6px rgba(0,0,0,0.08), inset -3px -3px 6px rgba(255,255,255,0.55);
+  --neu-inset-deep: inset 4px 4px 10px rgba(0,0,0,0.10), inset -4px -4px 10px rgba(255,255,255,0.60);
+  --neu-btn-primary: 4px 4px 12px rgba(232,73,29,0.35), -2px -2px 8px rgba(255,255,255,0.15), inset 0 1px 0 rgba(255,255,255,0.2);
+  --neu-btn-green: 4px 4px 12px rgba(45,122,58,0.30), -2px -2px 8px rgba(255,255,255,0.15);
 }
 
 @theme inline {
@@ -13,7 +28,12 @@
   --color-foreground: var(--foreground);
   --color-primary: var(--primary);
   --color-primary-dark: var(--primary-dark);
+  --color-primary-light: var(--primary-light);
   --color-cream: var(--cream);
+  --color-surface: var(--surface);
+  --color-sub: var(--sub);
+  --color-green: var(--green);
+  --color-green-light: var(--green-light);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --font-arabic: var(--font-arabic);
@@ -29,18 +49,75 @@ body {
 [dir="rtl"] body {
   font-family: var(--font-arabic), "Noto Sans Arabic", Arial, Helvetica, sans-serif;
 }
+[dir="rtl"] { text-align: right; }
+[dir="rtl"] .flex-row-reverse-rtl { flex-direction: row-reverse; }
+[dir="rtl"] .rtl-flip { transform: scaleX(-1); }
 
-/* RTL base styles */
-[dir="rtl"] {
-  text-align: right;
+/* ─── Neumorphic Utility Classes ─── */
+
+.neu-raised { background: var(--surface); box-shadow: var(--neu-raised); border-radius: 18px; }
+.neu-raised-sm { background: var(--surface); box-shadow: var(--neu-raised-sm); border-radius: 16px; }
+.neu-raised-xs { background: var(--surface); box-shadow: var(--neu-raised-xs); border-radius: 14px; }
+.neu-inset { background: var(--surface); box-shadow: var(--neu-inset); border-radius: 14px; border: none; }
+.neu-inset-deep { background: var(--surface); box-shadow: var(--neu-inset-deep); border-radius: 16px; border: none; }
+
+.neu-btn-primary {
+  background: var(--primary); color: white; box-shadow: var(--neu-btn-primary);
+  border-radius: 24px; padding: 14px 24px; font-weight: 700; font-size: 16px;
+  border: none; cursor: pointer; text-align: center; transition: all 0.2s ease;
+  display: block; width: 100%;
+}
+.neu-btn-primary:hover { background: var(--primary-dark); transform: translateY(-1px); }
+.neu-btn-primary:active { box-shadow: inset 2px 2px 6px rgba(0,0,0,0.2); transform: translateY(0); }
+.neu-btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+.neu-btn-secondary {
+  background: var(--surface); color: var(--foreground); box-shadow: var(--neu-raised-sm);
+  border-radius: 24px; padding: 14px 24px; font-weight: 700; font-size: 16px;
+  border: none; cursor: pointer; text-align: center; transition: all 0.2s ease;
+}
+.neu-btn-secondary:hover { box-shadow: var(--neu-raised); }
+.neu-btn-secondary:active { box-shadow: var(--neu-inset); }
+
+.neu-btn-green {
+  background: var(--green); color: white; box-shadow: var(--neu-btn-green);
+  border-radius: 14px; padding: 10px 20px; font-weight: 700; font-size: 14px;
+  border: none; cursor: pointer; transition: all 0.2s ease;
 }
 
-/* Flip flex row directions in RTL */
-[dir="rtl"] .flex-row-reverse-rtl {
-  flex-direction: row-reverse;
+.neu-btn-ghost {
+  background: transparent; color: var(--sub); border: none;
+  padding: 14px 24px; font-weight: 600; font-size: 15px; cursor: pointer; text-align: center;
 }
 
-/* Flip arrows in RTL */
-[dir="rtl"] .rtl-flip {
-  transform: scaleX(-1);
+.neu-input {
+  background: var(--surface); box-shadow: var(--neu-inset); border: none;
+  border-radius: 14px; padding: 14px 16px; font-size: 15px; color: var(--foreground);
+  width: 100%; outline: none; transition: box-shadow 0.2s ease;
 }
+.neu-input::placeholder { color: var(--sub); }
+.neu-input:focus { box-shadow: var(--neu-inset-deep), 0 0 0 2px rgba(232,73,29,0.15); }
+
+.neu-card { background: var(--surface); box-shadow: var(--neu-raised-sm); border-radius: 18px; padding: 16px; transition: box-shadow 0.2s ease; }
+.neu-chip { background: var(--surface); box-shadow: var(--neu-raised-xs); border-radius: 20px; padding: 8px 16px; font-size: 13px; font-weight: 600; color: var(--sub); cursor: pointer; transition: all 0.2s; border: none; }
+.neu-chip-active { background: var(--surface); box-shadow: var(--neu-inset); border-radius: 20px; padding: 8px 16px; font-size: 13px; font-weight: 600; color: var(--primary); cursor: pointer; border: none; }
+
+.neu-icon { background: var(--surface); box-shadow: var(--neu-raised-xs); border-radius: 14px; display: flex; align-items: center; justify-content: center; }
+.neu-icon-inset { background: var(--surface); box-shadow: var(--neu-inset); border-radius: 14px; display: flex; align-items: center; justify-content: center; }
+.neu-circle { background: var(--surface); box-shadow: var(--neu-raised); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+.neu-circle-inset { background: var(--surface); box-shadow: var(--neu-inset); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+
+.neu-badge { font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 20px; box-shadow: inset 1px 1px 3px rgba(0,0,0,0.05); }
+.neu-tab-bar { background: var(--surface); box-shadow: 0 -6px 16px rgba(0,0,0,0.04); padding: 12px 0 env(safe-area-inset-bottom, 20px); }
+.neu-divider { height: 1px; background: linear-gradient(90deg, transparent, rgba(0,0,0,0.06), transparent); margin: 16px 0; }
+.neu-well { background: var(--surface); box-shadow: var(--neu-inset-deep); border-radius: 18px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+
+.status-pending { background: #FEF3CD; color: #856404; }
+.status-confirmed { background: #D1ECF1; color: #0C5460; }
+.status-preparing { background: var(--primary-light); color: var(--primary); }
+.status-ready { background: var(--green-light); color: var(--green); }
+.status-delivered { background: #E2E3E5; color: #383D41; }
+.status-cancelled { background: #F8D7DA; color: #721C24; }
+
+* { -webkit-tap-highlight-color: transparent; }
+::-webkit-scrollbar { width: 0; display: none; }

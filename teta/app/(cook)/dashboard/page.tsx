@@ -5,6 +5,8 @@ import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
+import { useDemo } from "@/lib/demo/DemoContext";
+import { DEMO_COOKS, DEMO_LISTINGS, DEMO_ORDERS } from "@/lib/demo/mockData";
 import LanguageToggle from "@/components/LanguageToggle";
 
 interface CookStats {
@@ -26,6 +28,7 @@ export default function CookDashboard() {
   const router = useRouter();
   const supabase = createClient();
   const { t, locale } = useTranslation();
+  const { isDemo, demoUser } = useDemo();
 
   useEffect(() => {
     loadDashboard();
@@ -33,6 +36,29 @@ export default function CookDashboard() {
   }, []);
 
   async function loadDashboard() {
+    if (isDemo && demoUser) {
+      // Demo mode
+      const demoCook = DEMO_COOKS[0]; // Teta Maryam
+      setCookName(demoCook.name);
+      const activeListings = DEMO_LISTINGS.filter(
+        (l) => l.cook_id === demoCook.id && l.is_active
+      ).length;
+      const pendingOrders = DEMO_ORDERS.filter(
+        (o) => o.cook_id === demoCook.id && ["pending", "confirmed", "preparing"].includes(o.status)
+      ).length;
+      const todayOrders = DEMO_ORDERS.filter(
+        (o) => o.cook_id === demoCook.id
+      ).length;
+      setStats({
+        activeListings,
+        pendingOrders,
+        todayOrders,
+        acceptsOrders: demoCook.accepts_orders,
+      });
+      setLoading(false);
+      return;
+    }
+
     const {
       data: { user },
     } = await supabase.auth.getUser();
@@ -89,6 +115,11 @@ export default function CookDashboard() {
   }
 
   async function toggleAcceptOrders() {
+    if (isDemo) {
+      setStats((prev) => ({ ...prev, acceptsOrders: !prev.acceptsOrders }));
+      return;
+    }
+
     const {
       data: { user },
     } = await supabase.auth.getUser();
@@ -105,7 +136,7 @@ export default function CookDashboard() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-cream flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <p className="text-foreground/50">{t("loading")}</p>
       </div>
     );
@@ -114,7 +145,7 @@ export default function CookDashboard() {
   const arrow = locale === "ar" ? "←" : "→";
 
   return (
-    <div className="min-h-screen bg-cream">
+    <div className="min-h-screen bg-background">
       <header className="flex items-center justify-between px-6 py-4 border-b border-foreground/5">
         <Link href="/" className="text-2xl font-bold text-primary">
           teta
@@ -123,7 +154,9 @@ export default function CookDashboard() {
           <LanguageToggle />
           <button
             onClick={async () => {
-              await supabase.auth.signOut();
+              if (!isDemo) {
+                await supabase.auth.signOut();
+              }
               router.push("/");
             }}
             className="text-sm text-foreground/50 hover:text-foreground"
@@ -144,10 +177,10 @@ export default function CookDashboard() {
         {/* Status toggle */}
         <button
           onClick={toggleAcceptOrders}
-          className={`w-full p-4 rounded-xl mb-6 flex items-center justify-between transition-colors ${
+          className={`w-full p-4 rounded-2xl mb-6 flex items-center justify-between transition-all neu-card ${
             stats.acceptsOrders
-              ? "bg-primary/10 border-2 border-primary"
-              : "bg-foreground/5 border-2 border-foreground/10"
+              ? "neu-inset-deep"
+              : "opacity-75"
           }`}
         >
           <div className="text-start">
@@ -157,12 +190,12 @@ export default function CookDashboard() {
             <p className="text-xs text-foreground/50">{t("tapToToggle")}</p>
           </div>
           <div
-            className={`w-12 h-7 rounded-full p-0.5 transition-colors ${
+            className={`w-12 h-7 rounded-full p-0.5 transition-all neu-circle ${
               stats.acceptsOrders ? "bg-primary" : "bg-foreground/20"
             }`}
           >
             <div
-              className={`w-6 h-6 bg-white rounded-full shadow transition-transform ${
+              className={`w-6 h-6 bg-background rounded-full shadow-sm transition-transform ${
                 stats.acceptsOrders ? "translate-x-5" : "translate-x-0"
               }`}
             />
@@ -171,19 +204,19 @@ export default function CookDashboard() {
 
         {/* Stats grid */}
         <div className="grid grid-cols-3 gap-3 mb-8">
-          <div className="bg-white rounded-xl p-4 text-center border border-foreground/5">
+          <div className="neu-card rounded-2xl p-4 text-center">
             <p className="text-2xl font-bold text-primary">
               {stats.activeListings}
             </p>
             <p className="text-xs text-foreground/50 mt-1">{t("activeDishes")}</p>
           </div>
-          <div className="bg-white rounded-xl p-4 text-center border border-foreground/5">
+          <div className="neu-card rounded-2xl p-4 text-center">
             <p className="text-2xl font-bold text-primary">
               {stats.pendingOrders}
             </p>
             <p className="text-xs text-foreground/50 mt-1">{t("pending")}</p>
           </div>
-          <div className="bg-white rounded-xl p-4 text-center border border-foreground/5">
+          <div className="neu-card rounded-2xl p-4 text-center">
             <p className="text-2xl font-bold text-primary">
               {stats.todayOrders}
             </p>
@@ -195,7 +228,7 @@ export default function CookDashboard() {
         <div className="space-y-3">
           <Link
             href="/listings"
-            className="w-full p-4 bg-white rounded-xl border border-foreground/5 flex items-center justify-between hover:border-primary/20 transition-colors block"
+            className="w-full p-4 neu-card rounded-2xl flex items-center justify-between hover:neu-inset transition-all block"
           >
             <div className="flex items-center gap-3">
               <span className="text-xl">🍽️</span>
@@ -211,7 +244,7 @@ export default function CookDashboard() {
 
           <Link
             href="/orders"
-            className="w-full p-4 bg-white rounded-xl border border-foreground/5 flex items-center justify-between hover:border-primary/20 transition-colors block"
+            className="w-full p-4 neu-card rounded-2xl flex items-center justify-between hover:neu-inset transition-all block"
           >
             <div className="flex items-center gap-3">
               <span className="text-xl">📋</span>
@@ -227,7 +260,7 @@ export default function CookDashboard() {
 
           <Link
             href="/profile"
-            className="w-full p-4 bg-white rounded-xl border border-foreground/5 flex items-center justify-between hover:border-primary/20 transition-colors block"
+            className="w-full p-4 neu-card rounded-2xl flex items-center justify-between hover:neu-inset transition-all block"
           >
             <div className="flex items-center gap-3">
               <span className="text-xl">👤</span>

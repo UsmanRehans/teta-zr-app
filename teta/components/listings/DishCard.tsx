@@ -30,7 +30,7 @@ export default function DishCard({
   const { t } = useTranslation();
 
   return (
-    <div className="bg-white rounded-xl border border-foreground/5 overflow-hidden">
+    <div className="neu-card rounded-2xl overflow-hidden">
       <div className="flex">
         {/* Info */}
         <div className="flex-1 p-4">
@@ -51,7 +51,7 @@ export default function DishCard({
                 {t("free")} ❤️
               </span>
             ) : (
-              <span className="text-sm font-semibold">
+              <span className="text-sm font-semibold text-primary">
                 ${listing.price_usd}
               </span>
             )}
@@ -73,7 +73,7 @@ export default function DishCard({
               {listing.dietary_tags.map((tag) => (
                 <span
                   key={tag}
-                  className="text-[10px] px-1.5 py-0.5 bg-primary/5 text-primary rounded"
+                  className="text-[10px] px-1.5 py-0.5 neu-chip rounded"
                 >
                   {tag}
                 </span>
@@ -84,7 +84,7 @@ export default function DishCard({
 
         {/* Photo + Add button */}
         <div className="w-28 relative flex-shrink-0">
-          <div className="w-full h-full min-h-[100px] bg-primary/5 flex items-center justify-center">
+          <div className="neu-well w-full h-full min-h-[100px] flex items-center justify-center">
             {listing.photo_urls?.[0] ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
@@ -100,7 +100,7 @@ export default function DishCard({
             {quantity === 0 ? (
               <button
                 onClick={onAdd}
-                className="px-5 py-1.5 bg-white border-2 border-primary text-primary text-sm font-bold rounded-full shadow-sm hover:bg-primary hover:text-white transition-colors"
+                className="neu-btn-primary px-5 py-1.5 text-sm font-bold rounded-full shadow-sm"
               >
                 {t("addButton")}
               </button>

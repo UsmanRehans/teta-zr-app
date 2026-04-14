@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
+import { useDemo } from "@/lib/demo/DemoContext";
 
 interface CartData {
   cookId: string;
@@ -30,6 +31,7 @@ export default function NewOrderPage() {
   const router = useRouter();
   const supabase = createClient();
   const { t, locale } = useTranslation();
+  const { isDemo } = useDemo();
 
   useEffect(() => {
     const stored = sessionStorage.getItem("teta_cart");
@@ -44,8 +46,8 @@ export default function NewOrderPage() {
 
   if (!cart) {
     return (
-      <div className="min-h-screen bg-cream flex items-center justify-center">
-        <p className="text-foreground/50">{t("loading")}</p>
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <p className="text-sub">{t("loading")}</p>
       </div>
     );
   }
@@ -60,6 +62,14 @@ export default function NewOrderPage() {
   async function placeOrder() {
     setError("");
     setPlacing(true);
+
+    if (isDemo) {
+      // Simulate order placement in demo mode
+      await new Promise((resolve) => setTimeout(resolve, 800));
+      sessionStorage.removeItem("teta_cart");
+      router.push("/my-orders");
+      return;
+    }
 
     const {
       data: { user },
@@ -104,12 +114,12 @@ export default function NewOrderPage() {
   }
 
   return (
-    <div className="min-h-screen bg-cream">
+    <div className="min-h-screen bg-background">
       <header className="px-6 py-4 border-b border-foreground/5">
         <div className="flex items-center gap-3">
           <button
             onClick={() => router.back()}
-            className="w-10 h-10 flex items-center justify-center rounded-full bg-white border border-foreground/10"
+            className="w-10 h-10 neu-icon"
           >
             {backArrow}
           </button>
@@ -119,7 +129,7 @@ export default function NewOrderPage() {
 
       <main className="max-w-md mx-auto px-6 py-6 space-y-6">
         {/* Items */}
-        <div className="bg-white rounded-xl border border-foreground/5 p-4">
+        <div className="neu-card">
           <h2 className="font-semibold mb-3">{t("yourItems")}</h2>
           <div className="space-y-2">
             {cart.items.map((item) => (
@@ -139,43 +149,44 @@ export default function NewOrderPage() {
               </div>
             ))}
           </div>
-          <div className="border-t border-foreground/5 mt-3 pt-3 flex justify-between font-bold">
+          <div className="neu-divider"></div>
+          <div className="flex justify-between font-bold">
             <span>{t("total")}</span>
             <span>${total.toFixed(2)}</span>
           </div>
         </div>
 
         {/* Delivery type */}
-        <div className="bg-white rounded-xl border border-foreground/5 p-4">
+        <div className="neu-card">
           <h2 className="font-semibold mb-3">{t("howDoYouWantIt")}</h2>
           <div className="grid grid-cols-2 gap-3">
             <button
               onClick={() => setDeliveryType("pickup")}
-              className={`p-3 rounded-xl border-2 text-center text-sm transition-all ${
+              className={`p-3 rounded-xl text-center text-sm font-medium transition-all ${
                 deliveryType === "pickup"
-                  ? "border-primary bg-primary/5"
-                  : "border-foreground/10"
+                  ? "neu-chip-active text-primary"
+                  : "neu-chip text-sub"
               }`}
             >
               <p className="text-xl mb-1">🚶</p>
-              <p className="font-medium">{t("pickup")}</p>
+              <p>{t("pickup")}</p>
             </button>
             <button
               onClick={() => setDeliveryType("delivery")}
-              className={`p-3 rounded-xl border-2 text-center text-sm transition-all ${
+              className={`p-3 rounded-xl text-center text-sm font-medium transition-all ${
                 deliveryType === "delivery"
-                  ? "border-primary bg-primary/5"
-                  : "border-foreground/10"
+                  ? "neu-chip-active text-primary"
+                  : "neu-chip text-sub"
               }`}
             >
               <p className="text-xl mb-1">🛵</p>
-              <p className="font-medium">{t("delivery")}</p>
+              <p>{t("delivery")}</p>
             </button>
           </div>
 
           {deliveryType === "delivery" && (
             <div className="mt-3">
-              <p className="text-xs text-orange-600 mb-2">
+              <p className="text-xs text-primary mb-2">
                 {t("deliveryNote")}
               </p>
               <input
@@ -184,14 +195,14 @@ export default function NewOrderPage() {
                 value={deliveryAddress}
                 onChange={(e) => setDeliveryAddress(e.target.value)}
                 placeholder={t("deliveryAddress")}
-                className="w-full px-4 py-3 rounded-xl border border-foreground/10 bg-cream text-foreground text-sm placeholder:text-foreground/30 focus:outline-none focus:ring-2 focus:ring-primary/50"
+                className="neu-input text-sm"
               />
             </div>
           )}
         </div>
 
         {/* Special instructions */}
-        <div className="bg-white rounded-xl border border-foreground/5 p-4">
+        <div className="neu-card">
           <h2 className="font-semibold mb-2">{t("specialInstructions")}</h2>
           <textarea
             dir="auto"
@@ -199,14 +210,14 @@ export default function NewOrderPage() {
             onChange={(e) => setInstructions(e.target.value)}
             placeholder={t("allergiesPlaceholder")}
             rows={2}
-            className="w-full px-4 py-3 rounded-xl border border-foreground/10 bg-cream text-foreground text-sm placeholder:text-foreground/30 focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none"
+            className="neu-input text-sm resize-none"
           />
         </div>
 
         {/* Payment */}
-        <div className="bg-white rounded-xl border border-foreground/5 p-4">
+        <div className="neu-card">
           <h2 className="font-semibold mb-2">{t("payment")}</h2>
-          <div className="flex items-center gap-3 text-sm text-foreground/60">
+          <div className="flex items-center gap-3 text-sm text-sub">
             <span className="text-xl">💵</span>
             <span>{t("cashOnDelivery")}</span>
           </div>
@@ -217,12 +228,12 @@ export default function NewOrderPage() {
         <button
           onClick={placeOrder}
           disabled={placing || (deliveryType === "delivery" && !deliveryAddress)}
-          className="w-full py-3 bg-primary text-white font-semibold rounded-full hover:bg-primary-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="neu-btn-primary"
         >
           {placing ? t("placingOrder") : `${t("placeOrder")} — $${total.toFixed(2)}`}
         </button>
 
-        <p className="text-xs text-center text-foreground/30">
+        <p className="text-xs text-center text-sub">
           {t("paymentDisclaimer")}
         </p>
       </main>

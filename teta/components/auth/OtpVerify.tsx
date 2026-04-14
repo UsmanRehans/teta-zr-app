@@ -78,11 +78,11 @@ export default function OtpVerify({ phone }: OtpVerifyProps) {
           value={otp}
           onChange={(e) => setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))}
           placeholder="000000"
-          className="w-full px-4 py-3 rounded-xl border border-foreground/10 bg-white text-foreground text-center text-2xl tracking-[0.3em] placeholder:text-foreground/30 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
+          className="neu-input text-center text-2xl tracking-[0.3em]"
         />
       </div>
 
-      <p className="text-sm text-foreground/50 text-center">
+      <p className="text-sm text-sub text-center">
         {t("weSentCode")} {phone}
       </p>
 
@@ -91,7 +91,7 @@ export default function OtpVerify({ phone }: OtpVerifyProps) {
       <button
         type="submit"
         disabled={loading || otp.length !== 6}
-        className="w-full py-3 px-6 bg-primary text-white font-semibold rounded-full hover:bg-primary-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        className="neu-btn-primary"
       >
         {loading ? t("verifying") : t("verify")}
       </button>

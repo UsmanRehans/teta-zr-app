@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import LocationPicker from "@/components/map/LocationPicker";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
+import { useDemo } from "@/lib/demo/DemoContext";
+import { DEMO_COOKS } from "@/lib/demo/mockData";
 
 export default function CookProfilePage() {
   const [name, setName] = useState("");
@@ -24,6 +26,7 @@ export default function CookProfilePage() {
   const router = useRouter();
   const supabase = createClient();
   const { t } = useTranslation();
+  const { isDemo, demoUser } = useDemo();
 
   const SPECIALTY_OPTIONS: { key: string; label: string }[] = [
     { key: "Mezza", label: t("specMezza") },
@@ -45,6 +48,22 @@ export default function CookProfilePage() {
 
   async function loadProfile() {
     setLoading(true);
+
+    if (isDemo && demoUser) {
+      // Demo mode
+      const demoCook = DEMO_COOKS[0]; // Teta Maryam
+      setName(demoCook.name);
+      setBio(demoCook.bio);
+      setAvatarUrl(demoCook.avatar_url);
+      setAddressHint(demoCook.address_hint);
+      setSpecialties(demoCook.specialties);
+      setDeliveryRadius(demoCook.delivery_radius_km);
+      setLng(demoCook.longitude);
+      setLat(demoCook.latitude);
+      setLoading(false);
+      return;
+    }
+
     const {
       data: { user },
     } = await supabase.auth.getUser();
@@ -88,6 +107,8 @@ export default function CookProfilePage() {
   }
 
   async function handleAvatarUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    if (isDemo) return;
+
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -128,6 +149,14 @@ export default function CookProfilePage() {
     e.preventDefault();
     setError("");
     setSaving(true);
+
+    if (isDemo) {
+      // Demo mode - just show success
+      setSuccess(true);
+      setSaving(false);
+      setTimeout(() => setSuccess(false), 3000);
+      return;
+    }
 
     const {
       data: { user },
@@ -177,14 +206,14 @@ export default function CookProfilePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-cream flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <p className="text-foreground/50">{t("loadingProfile")}</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-cream">
+    <div className="min-h-screen bg-background">
       <header className="flex items-center justify-between px-6 py-4 border-b border-foreground/5">
         <Link href="/dashboard" className="text-2xl font-bold text-primary">
           teta
@@ -203,7 +232,7 @@ export default function CookProfilePage() {
         <form onSubmit={handleSave} className="space-y-6">
           {/* Avatar */}
           <div className="flex items-center gap-4">
-            <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center overflow-hidden flex-shrink-0">
+            <div className="neu-circle w-20 h-20 rounded-full flex items-center justify-center overflow-hidden flex-shrink-0 relative">
               {avatarUrl ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
@@ -214,10 +243,8 @@ export default function CookProfilePage() {
               ) : (
                 <span className="text-3xl">👩‍🍳</span>
               )}
-            </div>
-            <div>
-              <label className="inline-block px-4 py-2 bg-white border border-foreground/10 rounded-lg text-sm font-medium cursor-pointer hover:bg-foreground/5 transition-colors">
-                {uploading ? t("uploading") : t("uploadPhoto")}
+              <label className="absolute inset-0 flex items-center justify-center bg-black/0 hover:bg-black/20 transition-colors cursor-pointer">
+                <span className="text-white text-xl opacity-0 hover:opacity-100 transition-opacity">📷</span>
                 <input
                   type="file"
                   accept="image/*"
@@ -226,6 +253,11 @@ export default function CookProfilePage() {
                   disabled={uploading}
                 />
               </label>
+            </div>
+            <div>
+              <p className="text-sm text-foreground/70">
+                {uploading ? t("uploading") : t("uploadPhoto")}
+              </p>
             </div>
           </div>
 
@@ -240,7 +272,7 @@ export default function CookProfilePage() {
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder={t("nameCookPlaceholder")}
-              className="w-full px-4 py-3 rounded-xl border border-foreground/10 bg-white text-foreground placeholder:text-foreground/30 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
+              className="neu-input w-full px-4 py-3 rounded-xl text-foreground placeholder:text-foreground/30"
             />
           </div>
 
@@ -255,7 +287,7 @@ export default function CookProfilePage() {
               onChange={(e) => setBio(e.target.value)}
               placeholder={t("aboutPlaceholder")}
               rows={3}
-              className="w-full px-4 py-3 rounded-xl border border-foreground/10 bg-white text-foreground placeholder:text-foreground/30 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary resize-none"
+              className="neu-input w-full px-4 py-3 rounded-xl text-foreground placeholder:text-foreground/30 resize-none"
             />
           </div>
 
@@ -285,7 +317,7 @@ export default function CookProfilePage() {
               value={addressHint}
               onChange={(e) => setAddressHint(e.target.value)}
               placeholder={t("neighborhoodPlaceholder")}
-              className="w-full px-4 py-3 rounded-xl border border-foreground/10 bg-white text-foreground placeholder:text-foreground/30 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
+              className="neu-input w-full px-4 py-3 rounded-xl text-foreground placeholder:text-foreground/30"
             />
           </div>
 
@@ -294,14 +326,16 @@ export default function CookProfilePage() {
             <label className="block text-sm font-medium text-foreground/70 mb-1">
               {t("deliveryRadius")} {deliveryRadius} {t("km")}
             </label>
-            <input
-              type="range"
-              min={1}
-              max={10}
-              value={deliveryRadius}
-              onChange={(e) => setDeliveryRadius(Number(e.target.value))}
-              className="w-full accent-primary"
-            />
+            <div className="neu-inset rounded-xl p-3">
+              <input
+                type="range"
+                min={1}
+                max={10}
+                value={deliveryRadius}
+                onChange={(e) => setDeliveryRadius(Number(e.target.value))}
+                className="w-full accent-primary"
+              />
+            </div>
             <div className="flex justify-between text-xs text-foreground/40">
               <span>1 {t("km")}</span>
               <span>10 {t("km")}</span>
@@ -319,10 +353,8 @@ export default function CookProfilePage() {
                   key={spec.key}
                   type="button"
                   onClick={() => toggleSpecialty(spec.key)}
-                  className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                    specialties.includes(spec.key)
-                      ? "bg-primary text-white"
-                      : "bg-white border border-foreground/10 text-foreground/70 hover:border-primary/30"
+                  className={`neu-chip px-3 py-1.5 rounded-full text-sm font-medium transition-all ${
+                    specialties.includes(spec.key) ? "neu-chip-active" : ""
                   }`}
                 >
                   {spec.label}
@@ -341,7 +373,7 @@ export default function CookProfilePage() {
           <button
             type="submit"
             disabled={saving || !name.trim()}
-            className="w-full py-3 px-6 bg-primary text-white font-semibold rounded-full hover:bg-primary-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="neu-btn-primary w-full py-3 px-6 font-semibold rounded-full disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {saving ? t("saving") : t("saveProfile")}
           </button>

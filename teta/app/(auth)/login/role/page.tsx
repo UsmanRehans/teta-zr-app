@@ -56,7 +56,7 @@ export default function RoleSelectionPage() {
   }
 
   return (
-    <div className="min-h-screen bg-cream flex flex-col">
+    <div className="min-h-screen bg-background flex flex-col">
       <header className="px-6 py-4">
         <Link href="/" className="text-2xl font-bold text-primary">
           teta
@@ -69,7 +69,7 @@ export default function RoleSelectionPage() {
           <h1 className="text-2xl font-bold text-foreground mb-2">
             {t("almostThere")}
           </h1>
-          <p className="text-sm text-foreground/60">
+          <p className="text-sm text-sub">
             {t("tellUsAbout")}
           </p>
         </div>
@@ -89,7 +89,7 @@ export default function RoleSelectionPage() {
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder={t("namePlaceholder")}
-              className="w-full px-4 py-3 rounded-xl border border-foreground/10 bg-white text-foreground placeholder:text-foreground/30 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
+              className="neu-input"
             />
           </div>
 
@@ -101,10 +101,10 @@ export default function RoleSelectionPage() {
               <button
                 type="button"
                 onClick={() => setRole("customer")}
-                className={`p-4 rounded-xl border-2 text-center transition-all ${
+                className={`p-4 text-center transition-all ${
                   role === "customer"
-                    ? "border-primary bg-primary/5"
-                    : "border-foreground/10 bg-white hover:border-foreground/20"
+                    ? "neu-card"
+                    : "neu-raised-sm"
                 }`}
               >
                 <p className="text-2xl mb-1">🍽️</p>
@@ -113,10 +113,10 @@ export default function RoleSelectionPage() {
               <button
                 type="button"
                 onClick={() => setRole("cook")}
-                className={`p-4 rounded-xl border-2 text-center transition-all ${
+                className={`p-4 text-center transition-all ${
                   role === "cook"
-                    ? "border-primary bg-primary/5"
-                    : "border-foreground/10 bg-white hover:border-foreground/20"
+                    ? "neu-card"
+                    : "neu-raised-sm"
                 }`}
               >
                 <p className="text-2xl mb-1">👩‍🍳</p>
@@ -130,7 +130,7 @@ export default function RoleSelectionPage() {
           <button
             type="submit"
             disabled={loading || !role || !name.trim()}
-            className="w-full py-3 px-6 bg-primary text-white font-semibold rounded-full hover:bg-primary-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="neu-btn-primary"
           >
             {loading ? t("settingUp") : t("letsGo")}
           </button>

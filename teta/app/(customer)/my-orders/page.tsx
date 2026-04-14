@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import OrderCard from "@/components/orders/OrderCard";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
+import { useDemo } from "@/lib/demo/DemoContext";
+import { DEMO_ORDERS } from "@/lib/demo/mockData";
 
 interface Order {
   id: string;
@@ -23,34 +25,62 @@ export default function CustomerOrdersPage() {
   const router = useRouter();
   const supabase = createClient();
   const { t } = useTranslation();
+  const { isDemo, demoUser } = useDemo();
 
   useEffect(() => {
     loadOrders();
-    // Subscribe to realtime updates
-    const channel = supabase
-      .channel("customer-orders")
-      .on(
-        "postgres_changes",
-        { event: "UPDATE", schema: "public", table: "orders" },
-        (payload) => {
-          setOrders((prev) =>
-            prev.map((o) =>
-              o.id === payload.new.id
-                ? { ...o, status: payload.new.status }
-                : o
-            )
-          );
-        }
-      )
-      .subscribe();
+    // Subscribe to realtime updates (non-demo only)
+    if (!isDemo) {
+      const channel = supabase
+        .channel("customer-orders")
+        .on(
+          "postgres_changes",
+          { event: "UPDATE", schema: "public", table: "orders" },
+          (payload) => {
+            setOrders((prev) =>
+              prev.map((o) =>
+                o.id === payload.new.id
+                  ? { ...o, status: payload.new.status }
+                  : o
+              )
+            );
+          }
+        )
+        .subscribe();
 
-    return () => {
-      supabase.removeChannel(channel);
-    };
+      return () => {
+        supabase.removeChannel(channel);
+      };
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isDemo]);
 
   async function loadOrders() {
+    if (isDemo) {
+      // Use demo orders for demo mode
+      const filtered = DEMO_ORDERS.filter(
+        (o) => o.customer_id === demoUser?.id
+      ).map((o) => ({
+        id: o.id,
+        items: [
+          {
+            listing_id: o.listing_id,
+            name: "Order item",
+            qty: 1,
+            price_usd: o.total_price_usd,
+          },
+        ],
+        total_usd: o.total_price_usd,
+        status: o.status,
+        delivery_type: "pickup",
+        created_at: o.created_at,
+        cook_name: "Cook",
+      }));
+      setOrders(filtered);
+      setLoading(false);
+      return;
+    }
+
     const {
       data: { user },
     } = await supabase.auth.getUser();
@@ -94,21 +124,21 @@ export default function CustomerOrdersPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-cream flex items-center justify-center">
-        <p className="text-foreground/50">{t("loadingOrders")}</p>
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <p className="text-sub">{t("loadingOrders")}</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-cream">
+    <div className="min-h-screen bg-background">
       <header className="flex items-center justify-between px-6 py-4 border-b border-foreground/5">
         <Link href="/browse" className="text-2xl font-bold text-primary">
           teta
         </Link>
         <Link
           href="/browse"
-          className="text-sm text-primary font-medium hover:text-primary-dark"
+          className="text-sm text-primary font-medium"
         >
           {t("browse")}
         </Link>
@@ -120,10 +150,10 @@ export default function CustomerOrdersPage() {
         {orders.length === 0 ? (
           <div className="text-center py-12">
             <p className="text-4xl mb-3">📋</p>
-            <p className="text-foreground/50 mb-4">{t("noOrdersYetCustomer")}</p>
+            <p className="text-sub mb-4">{t("noOrdersYetCustomer")}</p>
             <Link
               href="/browse"
-              className="inline-block px-6 py-3 bg-primary text-white font-semibold rounded-full hover:bg-primary-dark transition-colors"
+              className="inline-block neu-btn-primary"
             >
               {t("browseCooksButton")}
             </Link>

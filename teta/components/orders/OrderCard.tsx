@@ -82,11 +82,11 @@ export default function OrderCard({
     : "";
 
   return (
-    <div className="bg-white rounded-xl border border-foreground/5 p-4">
+    <div className="neu-card rounded-2xl p-4">
       <div className="flex items-center justify-between mb-2">
         <p className="font-semibold text-sm">{order.cook_name}</p>
         <span
-          className={`text-xs px-2.5 py-1 rounded-full font-medium ${status.color} ${status.bg}`}
+          className={`neu-badge text-xs px-2.5 py-1 rounded-full font-medium ${status.color} ${status.bg}`}
         >
           {status.label}
         </span>
@@ -94,15 +94,15 @@ export default function OrderCard({
 
       <div className="space-y-0.5 mb-2">
         {order.items.map((item, i) => (
-          <p key={i} className="text-sm text-foreground/60">
+          <p key={i} className="text-sm text-sub">
             {item.qty}x {item.name}
           </p>
         ))}
       </div>
 
       <div className="flex items-center justify-between text-sm">
-        <span className="text-foreground/40">{timeAgo}</span>
-        <span className="font-semibold">${order.total_usd.toFixed(2)}</span>
+        <span className="text-foreground/40 text-xs">{timeAgo}</span>
+        <span className="font-semibold text-primary">${order.total_usd.toFixed(2)}</span>
       </div>
 
       {/* Cook actions */}
@@ -110,14 +110,14 @@ export default function OrderCard({
         <div className="flex gap-2 mt-3 pt-3 border-t border-foreground/5">
           <button
             onClick={advanceStatus}
-            className="flex-1 py-2 bg-primary text-white text-sm font-medium rounded-full hover:bg-primary-dark transition-colors"
+            className="neu-btn-green flex-1 py-2 text-sm font-medium rounded-full"
           >
             {t("markAs")} {nextStatusLabel}
           </button>
           {order.status === "pending" && (
             <button
               onClick={cancelOrder}
-              className="py-2 px-4 text-red-600 text-sm font-medium rounded-full border border-red-200 hover:bg-red-50 transition-colors"
+              className="neu-btn-secondary py-2 px-4 text-sm font-medium rounded-full"
             >
               {t("cancel")}
             </button>

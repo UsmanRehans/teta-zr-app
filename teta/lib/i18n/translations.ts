@@ -40,6 +40,11 @@ const translations = {
   signInAsCustomer: { en: "Sign in as Customer", ar: "دخول كزبون" },
   signingIn: { en: "Signing in...", ar: "جاري الدخول..." },
 
+  // Demo mode
+  tryDemoInstead: { en: "Or try the demo", ar: "أو جرّب النسخة التجريبية" },
+  demoModeCustomer: { en: "Order Food", ar: "اطلب أكل" },
+  demoModeCook: { en: "Be a Cook", ar: "كن طبّاخ" },
+
   // Verify page
   checkYourPhone: { en: "Check your phone", ar: "تفقّد تلفونك" },
   noPhoneProvided: { en: "No phone number provided.", ar: "ما في رقم تلفون." },
