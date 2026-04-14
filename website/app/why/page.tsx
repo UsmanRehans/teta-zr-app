@@ -106,48 +106,29 @@ export default function Why() {
           <h2>Real food. Real difference.</h2>
         </div>
 
-        <div className="why-table-container reveal">
-          <table className="why-table">
-            <thead>
-              <tr>
-                <th></th>
-                <th>Home-Cooked</th>
-                <th>Fast Food / Chains</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Sodium &amp; fat</td>
-                <td>Lower</td>
-                <td>High</td>
-              </tr>
-              <tr>
-                <td>Fruits &amp; vegetables</td>
-                <td>Higher</td>
-                <td>Low</td>
-              </tr>
-              <tr>
-                <td>Preservatives</td>
-                <td>None (fresh ingredients)</td>
-                <td>Yes (shelf-life driven)</td>
-              </tr>
-              <tr>
-                <td>Portions</td>
-                <td>Made with care</td>
-                <td>Oversized for profit</td>
-              </tr>
-              <tr>
-                <td>Personal touch</td>
-                <td>Every dish is unique</td>
-                <td>Standardized recipes</td>
-              </tr>
-              <tr>
-                <td>Community money</td>
-                <td>Stays local</td>
-                <td>Leaves immediately</td>
-              </tr>
-            </tbody>
-          </table>
+        <div className="health-grid">
+          {[
+            { dim: "Sodium & fat", good: "Lower", bad: "High" },
+            { dim: "Fruits & vegetables", good: "Higher", bad: "Low" },
+            { dim: "Preservatives", good: "None — fresh ingredients", bad: "Yes — shelf-life driven" },
+            { dim: "Portions", good: "Made with care", bad: "Oversized for profit" },
+            { dim: "Personal touch", good: "Every dish is unique", bad: "Standardized recipes" },
+            { dim: "Community money", good: "Stays local", bad: "Leaves immediately" },
+          ].map((row, i) => (
+            <div className="health-card reveal" key={i} style={{ transitionDelay: `${0.1 + i * 0.08}s` }}>
+              <div className="health-card-label">{row.dim}</div>
+              <div className="health-card-values">
+                <div className="health-val good">
+                  <span className="health-val-tag">Home-Cooked</span>
+                  {row.good}
+                </div>
+                <div className="health-val bad">
+                  <span className="health-val-tag">Fast Food</span>
+                  {row.bad}
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
         <p className="section-source reveal">Sources: NIH/PMC, Pew Research Center</p>
       </section>
