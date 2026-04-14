@@ -226,40 +226,70 @@ export default function Why() {
           <h2>Built for both sides</h2>
         </div>
         <p style={{ textAlign: "center", color: "#666", maxWidth: "700px", margin: "-60px auto 80px", fontSize: "1.05rem", lineHeight: "1.6" }} className="reveal">
-          Whether you're cooking or ordering, the experience is seamless.
+          Whether you&apos;re cooking or ordering, the experience is seamless.
         </p>
 
-        {/* FOR FOOD LOVERS */}
-        <div className="feature-section-title reveal">For Food Lovers</div>
-        <div className="how-grid" style={{ marginBottom: "80px" }}>
-          <div className="how-card reveal" style={{ transitionDelay: "0.1s" }}>
-            <h3>Discover Local Cooks</h3>
-            <p>Browse cooks in your neighborhood. See ratings, menus, and availability.</p>
+        <div className="both-sides-grid">
+          {/* FOR FOOD LOVERS */}
+          <div className="side-panel lovers reveal-left">
+            <div className="side-panel-header">
+              <span className="side-icon">&#127860;</span>
+              <h3>For Food Lovers</h3>
+            </div>
+            <div className="side-features">
+              <div className="side-feature">
+                <div className="side-feature-icon">&#128205;</div>
+                <div>
+                  <strong>Discover Local Cooks</strong>
+                  <p>Browse cooks in your neighborhood. See ratings, menus, and availability.</p>
+                </div>
+              </div>
+              <div className="side-feature">
+                <div className="side-feature-icon">&#128337;</div>
+                <div>
+                  <strong>Real-Time Menus</strong>
+                  <p>Fresh menus updated daily. Know exactly what&apos;s cooking before you order.</p>
+                </div>
+              </div>
+              <div className="side-feature">
+                <div className="side-feature-icon">&#128666;</div>
+                <div>
+                  <strong>Flexible Pickup &amp; Delivery</strong>
+                  <p>Choose what works for you. Pick up directly or get it delivered.</p>
+                </div>
+              </div>
+            </div>
           </div>
-          <div className="how-card reveal" style={{ transitionDelay: "0.25s" }}>
-            <h3>Real-Time Menus</h3>
-            <p>Fresh menus updated daily. Know exactly what's cooking before you order.</p>
-          </div>
-          <div className="how-card reveal" style={{ transitionDelay: "0.4s" }}>
-            <h3>Flexible Pickup & Delivery</h3>
-            <p>Choose what works for you. Pick up directly or get it delivered.</p>
-          </div>
-        </div>
 
-        {/* FOR HOME COOKS */}
-        <div className="feature-section-title reveal">For Home Cooks</div>
-        <div className="how-grid">
-          <div className="how-card reveal" style={{ transitionDelay: "0.1s" }}>
-            <h3>Zero Commission</h3>
-            <p>Keep 100% of what you earn. Your kitchen, your prices, your profit.</p>
-          </div>
-          <div className="how-card reveal" style={{ transitionDelay: "0.25s" }}>
-            <h3>Set Your Own Menu</h3>
-            <p>Cook what you love, when you want. Full control over your offerings.</p>
-          </div>
-          <div className="how-card reveal" style={{ transitionDelay: "0.4s" }}>
-            <h3>Build Your Reputation</h3>
-            <p>Grow your customer base through ratings and repeat orders.</p>
+          {/* FOR HOME COOKS */}
+          <div className="side-panel cooks reveal-right">
+            <div className="side-panel-header">
+              <span className="side-icon">&#127859;</span>
+              <h3>For Home Cooks</h3>
+            </div>
+            <div className="side-features">
+              <div className="side-feature">
+                <div className="side-feature-icon">&#128176;</div>
+                <div>
+                  <strong>Zero Commission</strong>
+                  <p>Keep 100% of what you earn. Your kitchen, your prices, your profit.</p>
+                </div>
+              </div>
+              <div className="side-feature">
+                <div className="side-feature-icon">&#128221;</div>
+                <div>
+                  <strong>Set Your Own Menu</strong>
+                  <p>Cook what you love, when you want. Full control over your offerings.</p>
+                </div>
+              </div>
+              <div className="side-feature">
+                <div className="side-feature-icon">&#11088;</div>
+                <div>
+                  <strong>Build Your Reputation</strong>
+                  <p>Grow your customer base through ratings and repeat orders.</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
