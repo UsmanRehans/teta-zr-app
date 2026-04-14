@@ -591,7 +591,8 @@ nav a.active {
   color: var(--color-gold);
 }
 
-.story-hero h2 {
+.story-hero h2,
+.story-hero .section-title h2 {
   color: white;
 }
 
@@ -600,6 +601,25 @@ nav a.active {
   color: var(--color-text-light);
   margin-top: 20px;
   line-height: 1.7;
+}
+
+.hero-content-backdrop {
+  background: rgba(26, 26, 46, 0.5);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 24px;
+  padding: 60px 48px;
+  max-width: 1100px;
+  margin: 0 auto;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.hero-content-backdrop .section-title {
+  margin-bottom: 40px;
+}
+
+.story-hero .sahteen-steps {
+  margin-bottom: 40px;
 }
 
 /* ===== SECTION LAYOUTS ===== */
@@ -1509,6 +1529,11 @@ footer .copyright {
     max-width: 500px;
     margin-left: auto;
     margin-right: auto;
+  }
+
+  .hero-content-backdrop {
+    padding: 40px 24px;
+    border-radius: 16px;
   }
 
   .side-panel {

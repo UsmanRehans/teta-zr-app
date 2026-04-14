@@ -42,16 +42,16 @@ export default function Home() {
 
         <div className="hero-stats">
           <div className="stat-card">
-            <div className="number">50+</div>
-            <div className="label">Home Cooks</div>
+            <div className="number">0%</div>
+            <div className="label">Commission</div>
           </div>
           <div className="stat-card">
-            <div className="number">500+</div>
-            <div className="label">Meals Served</div>
+            <div className="number">100%</div>
+            <div className="label">Home-Cooked</div>
           </div>
           <div className="stat-card">
-            <div className="number">5</div>
-            <div className="label">Neighborhoods</div>
+            <div className="number">Hyperlocal</div>
+            <div className="label">Neighbor to Neighbor</div>
           </div>
         </div>
 
@@ -96,42 +96,39 @@ export default function Home() {
         <div className="app-preview-box reveal">App Preview</div>
       </section>
 
-      {/* TESTIMONIALS */}
+      {/* THE VISION */}
       <section className="section-testimonials">
         <div className="section-title reveal">
-          <h2>What Our Neighbors Say</h2>
+          <h2>The Vision</h2>
         </div>
         <div className="testimonials-grid">
           <div className="testimonial-card reveal" style={{ transitionDelay: "0.1s" }}>
-            <span className="quote-mark">&ldquo;</span>
-            <p>Exactly like my mom's cooking. I order every week now.</p>
+            <span className="quote-mark">🍽️</span>
+            <p>A student orders a home-cooked meal from the teta down the street — real food, not fast food.</p>
             <div className="testimonial-author">
-              <div className="author-avatar">SM</div>
               <div className="author-info">
-                <div className="name">Sarah M.</div>
-                <div className="role">Hamra</div>
+                <div className="name">For Food Lovers</div>
+                <div className="role">Affordable, authentic, local</div>
               </div>
             </div>
           </div>
           <div className="testimonial-card reveal" style={{ transitionDelay: "0.25s" }}>
-            <span className="quote-mark">&ldquo;</span>
-            <p>I started selling kibbeh on Teta and now I have regulars every Friday.</p>
+            <span className="quote-mark">👩‍🍳</span>
+            <p>A home cook turns her kitchen into a small business — zero commissions, full control, real income.</p>
             <div className="testimonial-author">
-              <div className="author-avatar">UA</div>
               <div className="author-info">
-                <div className="name">Um Ali</div>
-                <div className="role">Achrafieh</div>
+                <div className="name">For Home Cooks</div>
+                <div className="role">Empowerment through food</div>
               </div>
             </div>
           </div>
           <div className="testimonial-card reveal" style={{ transitionDelay: "0.4s" }}>
-            <span className="quote-mark">&ldquo;</span>
-            <p>Finally, real home-cooked Lebanese food. One click away.</p>
+            <span className="quote-mark">🌍</span>
+            <p>A parent abroad buys their kid in Beirut a warm plate of warak enab — from anywhere in the world.</p>
             <div className="testimonial-author">
-              <div className="author-avatar">RK</div>
               <div className="author-info">
-                <div className="name">Rami K.</div>
-                <div className="role">Mar Mikhael</div>
+                <div className="name">For the Diaspora</div>
+                <div className="role">Stay connected through food</div>
               </div>
             </div>
           </div>

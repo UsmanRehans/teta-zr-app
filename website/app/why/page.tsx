@@ -298,7 +298,7 @@ export default function Why() {
       <section className="section-cta">
         <div className="reveal">
           <h2>See what the community is cooking</h2>
-          <p>Join thousands of neighbors discovering real home-cooked food.</p>
+          <p>Be among the first to discover real home-cooked food from your neighbors.</p>
           <div className="hero-buttons" style={{ opacity: 1, transform: "none" }}>
             <a href="https://app.ourteta.com/" className="btn-primary">Explore the App</a>
           </div>

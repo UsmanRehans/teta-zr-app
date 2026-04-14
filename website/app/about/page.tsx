@@ -13,32 +13,34 @@ export default function About() {
 
       {/* HERO + STORY */}
       <section className="story-hero" id="home">
-        <div className="section-title reveal">
-          <span className="section-tag">About Us</span>
-          <h2>Built from a craving</h2>
-        </div>
-        <p style={{ color: "var(--color-text-light)", maxWidth: "600px", margin: "0 auto 60px", fontSize: "1.1rem", lineHeight: "1.7" }}>
-          What started as missing home-cooked food became a mission to connect communities through every meal.
-        </p>
-        <div className="story-grid" style={{ margin: "0 auto", textAlign: "left" }}>
-          <div className="story-card reveal" style={{ transitionDelay: "0.1s" }}>
-            <span className="emoji">💔</span>
-            <h3>The Problem</h3>
-            <p>
-              Beirut is home to thousands of talented home cooks whose culinary expertise rarely extends beyond their immediate neighbors. Meanwhile, an entire generation of students, professionals, and expats struggle to find authentic, affordable home-cooked meals.
-            </p>
+        <div className="hero-content-backdrop">
+          <div className="section-title reveal">
+            <span className="section-tag">About Us</span>
+            <h2>Built from a craving</h2>
           </div>
-          <div className="story-card reveal" style={{ transitionDelay: "0.25s" }}>
-            <span className="emoji">🍽️</span>
-            <h3>The Reality</h3>
-            <p>
-              The market is saturated with overpriced restaurants and generic delivery apps that prioritize speed over quality. Home cooks — many of them women with decades of experience — have no viable path to monetize their skills.
-            </p>
-          </div>
-          <div className="story-card reveal" style={{ transitionDelay: "0.4s" }}>
-            <span className="emoji">❤️</span>
-            <h3>The Solution</h3>
-            <p>Teta is a hyperlocal marketplace that connects home cooks directly with their communities. Zero commissions. Zero middlemen. Just neighbors feeding neighbors.</p>
+          <p style={{ color: "var(--color-text-light)", maxWidth: "600px", margin: "0 auto 60px", fontSize: "1.1rem", lineHeight: "1.7" }}>
+            What started as missing home-cooked food became a mission to connect communities through every meal.
+          </p>
+          <div className="story-grid" style={{ margin: "0 auto", textAlign: "left" }}>
+            <div className="story-card reveal" style={{ transitionDelay: "0.1s" }}>
+              <span className="emoji">💔</span>
+              <h3>The Problem</h3>
+              <p>
+                Beirut is home to thousands of talented home cooks whose culinary expertise rarely extends beyond their immediate neighbors. Meanwhile, an entire generation of students, professionals, and expats struggle to find authentic, affordable home-cooked meals.
+              </p>
+            </div>
+            <div className="story-card reveal" style={{ transitionDelay: "0.25s" }}>
+              <span className="emoji">🍽️</span>
+              <h3>The Reality</h3>
+              <p>
+                The market is saturated with overpriced restaurants and generic delivery apps that prioritize speed over quality. Home cooks — many of them women with decades of experience — have no viable path to monetize their skills.
+              </p>
+            </div>
+            <div className="story-card reveal" style={{ transitionDelay: "0.4s" }}>
+              <span className="emoji">❤️</span>
+              <h3>The Solution</h3>
+              <p>Teta is a hyperlocal marketplace that connects home cooks directly with their communities. Zero commissions. Zero middlemen. Just neighbors feeding neighbors.</p>
+            </div>
           </div>
         </div>
       </section>
