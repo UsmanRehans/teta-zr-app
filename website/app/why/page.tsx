@@ -68,32 +68,174 @@ export default function Why() {
         </div>
       </section>
 
-      {/* BY THE NUMBERS */}
-      <section className="section-sahteen" id="numbers">
+      {/* LEBANON'S REALITY */}
+      <section className="section-sahteen" id="lebanon">
         <div className="section-title reveal">
-          <span className="section-tag">Impact</span>
-          <h2>By the numbers</h2>
+          <span className="section-tag">Lebanon&apos;s Reality</span>
+          <h2>A country in crisis. A community with answers.</h2>
         </div>
-        <p className="subtitle reveal">The data speaks for itself.</p>
+        <p className="subtitle reveal">
+          Lebanon&apos;s economic collapse has tripled poverty and devastated livelihoods. Teta turns kitchens into engines of recovery.
+        </p>
 
         <div className="sahteen-stats">
           <div className="sahteen-stat reveal" style={{ transitionDelay: "0.1s" }}>
-            <div className="big">[X]%</div>
-            <div className="small">of orders are repeat customers</div>
+            <div className="big">44%</div>
+            <div className="small">of Lebanese now live in poverty</div>
           </div>
           <div className="sahteen-stat reveal" style={{ transitionDelay: "0.2s" }}>
-            <div className="big">[X] min</div>
-            <div className="small">average time from order to table</div>
+            <div className="big">73%</div>
+            <div className="small">face multidimensional deprivation</div>
           </div>
           <div className="sahteen-stat reveal" style={{ transitionDelay: "0.3s" }}>
-            <div className="big">$[X]</div>
-            <div className="small">average saved per meal vs. restaurants</div>
+            <div className="big">26%</div>
+            <div className="small">women&apos;s unemployment rate</div>
           </div>
           <div className="sahteen-stat reveal" style={{ transitionDelay: "0.4s" }}>
-            <div className="big">[X]+</div>
-            <div className="small">home cooks and growing</div>
+            <div className="big">80%+</div>
+            <div className="small">currency purchasing power lost</div>
           </div>
         </div>
+        <p className="section-source reveal">Sources: World Bank 2024, UN Women, ILO</p>
+      </section>
+
+      {/* HEALTH COMPARISON */}
+      <section className="section-how" id="health">
+        <div className="section-title reveal">
+          <span className="section-tag">Health</span>
+          <h2>Real food. Real difference.</h2>
+        </div>
+
+        <div className="why-table-container reveal">
+          <table className="why-table">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Home-Cooked</th>
+                <th>Fast Food / Chains</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Sodium &amp; fat</td>
+                <td>Lower</td>
+                <td>High</td>
+              </tr>
+              <tr>
+                <td>Fruits &amp; vegetables</td>
+                <td>Higher</td>
+                <td>Low</td>
+              </tr>
+              <tr>
+                <td>Preservatives</td>
+                <td>None (fresh ingredients)</td>
+                <td>Yes (shelf-life driven)</td>
+              </tr>
+              <tr>
+                <td>Portions</td>
+                <td>Made with care</td>
+                <td>Oversized for profit</td>
+              </tr>
+              <tr>
+                <td>Personal touch</td>
+                <td>Every dish is unique</td>
+                <td>Standardized recipes</td>
+              </tr>
+              <tr>
+                <td>Community money</td>
+                <td>Stays local</td>
+                <td>Leaves immediately</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p className="section-source reveal">Sources: NIH/PMC, Pew Research Center</p>
+      </section>
+
+      {/* PRICE COMPARISON */}
+      <section className="section-sahteen" id="price">
+        <div className="section-title reveal">
+          <span className="section-tag">Price</span>
+          <h2>5&times; more expensive to eat out</h2>
+        </div>
+        <p className="subtitle reveal">
+          Home-cooked meals through Teta cost a fraction of restaurant prices.
+        </p>
+
+        <div className="sahteen-stats-3">
+          <div className="sahteen-stat reveal" style={{ transitionDelay: "0.1s" }}>
+            <div className="big">$4&ndash;5</div>
+            <div className="small">home-cooked per serving</div>
+          </div>
+          <div className="sahteen-stat reveal" style={{ transitionDelay: "0.2s" }}>
+            <div className="big">$6&ndash;11</div>
+            <div className="small">meal delivery services</div>
+          </div>
+          <div className="sahteen-stat reveal" style={{ transitionDelay: "0.3s" }}>
+            <div className="big">$15&ndash;25+</div>
+            <div className="small">restaurant dining</div>
+          </div>
+        </div>
+        <p className="section-source reveal">Sources: Real Plans, Delivery Rank 2026</p>
+      </section>
+
+      {/* LOCAL MULTIPLIER */}
+      <section className="section-how" id="local">
+        <div className="section-title reveal">
+          <span className="section-tag">Local Impact</span>
+          <h2>Your money works harder locally</h2>
+        </div>
+        <p style={{ textAlign: "center", color: "#666", maxWidth: "700px", margin: "-60px auto 80px", fontSize: "1.05rem", lineHeight: "1.6" }} className="reveal">
+          For every $100 spent, here&apos;s how much stays in the community.
+        </p>
+
+        <div className="comparison-grid">
+          <div className="comparison-card burgundy reveal-left">
+            <div className="big">$45</div>
+            <div className="label">stays local when you buy from neighbors</div>
+            <div className="card-subtitle">Local Independents</div>
+          </div>
+          <div className="comparison-card dark reveal-right">
+            <div className="big">$14</div>
+            <div className="label">stays local when you buy from chains</div>
+            <div className="card-subtitle">Big-Box Chains</div>
+          </div>
+        </div>
+        <p style={{ textAlign: "center", color: "#666", maxWidth: "600px", margin: "40px auto 0", fontSize: "0.95rem", lineHeight: "1.6" }} className="reveal">
+          Local businesses recirculate money 2&ndash;3&times; more within the community.
+        </p>
+        <p className="section-source reveal">Sources: iLocal Inc, New Economics Foundation</p>
+      </section>
+
+      {/* MARKET VALIDATION */}
+      <section className="section-sahteen" id="numbers">
+        <div className="section-title reveal">
+          <span className="section-tag">Market Validation</span>
+          <h2>A proven model, a growing market</h2>
+        </div>
+        <p className="subtitle reveal">
+          The home-cooked food economy is one of the fastest-growing segments in food delivery.
+        </p>
+
+        <div className="sahteen-stats">
+          <div className="sahteen-stat reveal" style={{ transitionDelay: "0.1s" }}>
+            <div className="big">$44.5B</div>
+            <div className="small">projected meal-kit market by 2032</div>
+          </div>
+          <div className="sahteen-stat reveal" style={{ transitionDelay: "0.2s" }}>
+            <div className="big">13%</div>
+            <div className="small">annual market growth rate</div>
+          </div>
+          <div className="sahteen-stat reveal" style={{ transitionDelay: "0.3s" }}>
+            <div className="big">81%</div>
+            <div className="small">of home-cook platform members are women</div>
+          </div>
+          <div className="sahteen-stat reveal" style={{ transitionDelay: "0.4s" }}>
+            <div className="big">$40/hr</div>
+            <div className="small">average cook earnings on platforms</div>
+          </div>
+        </div>
+        <p className="section-source reveal">Sources: Data Bridge Market Research, Inc Magazine, Boston Globe</p>
       </section>
 
       {/* BUILT FOR BOTH SIDES */}
