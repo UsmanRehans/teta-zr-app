@@ -34,7 +34,7 @@ export default function RoleSelectionPage() {
     const { error: insertError } = await supabase.from("profiles").insert({
       id: user.id,
       name: name.trim(),
-      phone: user.phone!,
+      email: user.email || "",
       role,
     });
 

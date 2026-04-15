@@ -27,11 +27,16 @@ const translations = {
 
   // Login page
   welcomeToTeta: { en: "Welcome to Teta", ar: "أهلاً بتيتا" },
+  enterEmail: { en: "Enter your email to get started", ar: "أدخل إيميلك للبدء" },
+  emailAddress: { en: "Email address", ar: "البريد الإلكتروني" },
+  emailPlaceholder: { en: "you@example.com", ar: "you@example.com" },
+  sendCode: { en: "Send verification code", ar: "أرسل رمز التحقق" },
+  sendingCode: { en: "Sending code...", ar: "جاري الإرسال..." },
+  invalidEmail: { en: "Please enter a valid email address", ar: "الرجاء إدخال بريد إلكتروني صحيح" },
+  // Legacy phone keys (kept for reference)
   enterPhone: { en: "Enter your phone number to get started", ar: "أدخل رقم تلفونك للبدء" },
   phoneNumber: { en: "Phone number", ar: "رقم التلفون" },
   phonePlaceholder: { en: "+961 71 123 456", ar: "+961 71 123 456" },
-  sendCode: { en: "Send verification code", ar: "أرسل رمز التحقق" },
-  sendingCode: { en: "Sending code...", ar: "جاري الإرسال..." },
   invalidPhone: { en: "Please enter a valid Lebanese number (+961 XX XXX XXX)", ar: "الرجاء إدخال رقم لبناني صحيح (+961 XX XXX XXX)" },
 
   // Dev login
@@ -46,10 +51,13 @@ const translations = {
   demoModeCook: { en: "Be a Cook", ar: "كن طبّاخ" },
 
   // Verify page
+  checkYourEmail: { en: "Check your email", ar: "تفقّد إيميلك" },
   checkYourPhone: { en: "Check your phone", ar: "تفقّد تلفونك" },
+  noEmailProvided: { en: "No email provided.", ar: "ما في إيميل." },
   noPhoneProvided: { en: "No phone number provided.", ar: "ما في رقم تلفون." },
   goBackToLogin: { en: "Go back to login", ar: "ارجع لصفحة الدخول" },
   verificationCode: { en: "Verification code", ar: "رمز التحقق" },
+  weSentCodeToEmail: { en: "We sent a code to", ar: "بعتنالك رمز على" },
   weSentCode: { en: "We sent a code to", ar: "بعتنالك رمز على" },
   verify: { en: "Verify", ar: "تأكيد" },
   verifying: { en: "Verifying...", ar: "جاري التأكيد..." },

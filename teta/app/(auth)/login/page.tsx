@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import PhoneLogin from "@/components/auth/PhoneLogin";
+import EmailLogin from "@/components/auth/EmailLogin";
 import DevLogin from "@/components/auth/DevLogin";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
 import { useDemo } from "@/lib/demo/DemoContext";
@@ -34,11 +34,11 @@ export default function LoginPage() {
             {t("welcomeToTeta")}
           </h1>
           <p className="text-sm text-sub">
-            {t("enterPhone")}
+            {t("enterEmail")}
           </p>
         </div>
 
-        <PhoneLogin />
+        <EmailLogin />
 
         {process.env.NODE_ENV !== "production" && <DevLogin />}
 
@@ -54,14 +54,14 @@ export default function LoginPage() {
                 className="flex-1 neu-card flex flex-col items-center gap-2 py-3 cursor-pointer hover:shadow-lg transition-shadow"
               >
                 <span className="text-xl">🍽️</span>
-                <span className="text-xs font-semibold text-foreground">Customer</span>
+                <span className="text-xs font-semibold text-foreground">{t("demoModeCustomer")}</span>
               </button>
               <button
                 onClick={() => startDemo("cook")}
                 className="flex-1 neu-card flex flex-col items-center gap-2 py-3 cursor-pointer hover:shadow-lg transition-shadow"
               >
                 <span className="text-xl">👩‍🍳</span>
-                <span className="text-xs font-semibold text-foreground">Cook</span>
+                <span className="text-xs font-semibold text-foreground">{t("demoModeCook")}</span>
               </button>
             </div>
           </div>

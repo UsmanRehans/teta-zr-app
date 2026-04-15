@@ -6,10 +6,10 @@ import { useRouter } from "next/navigation";
 import { useTranslation } from "@/lib/i18n/LanguageContext";
 
 interface OtpVerifyProps {
-  phone: string;
+  email: string;
 }
 
-export default function OtpVerify({ phone }: OtpVerifyProps) {
+export default function OtpVerify({ email }: OtpVerifyProps) {
   const [otp, setOtp] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -23,9 +23,9 @@ export default function OtpVerify({ phone }: OtpVerifyProps) {
     setLoading(true);
 
     const { data, error: verifyError } = await supabase.auth.verifyOtp({
-      phone,
+      email,
       token: otp,
-      type: "sms",
+      type: "email",
     });
 
     if (verifyError) {
@@ -54,7 +54,7 @@ export default function OtpVerify({ phone }: OtpVerifyProps) {
   async function handleResend() {
     setError("");
     const { error: resendError } = await supabase.auth.signInWithOtp({
-      phone,
+      email,
     });
     if (resendError) {
       setError(resendError.message);
@@ -83,7 +83,7 @@ export default function OtpVerify({ phone }: OtpVerifyProps) {
       </div>
 
       <p className="text-sm text-sub text-center">
-        {t("weSentCode")} {phone}
+        {t("weSentCodeToEmail")} {email}
       </p>
 
       {error && <p className="text-sm text-red-600 text-center">{error}</p>}
