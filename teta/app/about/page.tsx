@@ -119,8 +119,8 @@ export default function AboutPage() {
             </p>
             <p className="text-sm text-foreground/50 mb-2">Sahteen</p>
             <p className="text-xs text-foreground/40 italic mb-6">
-              &ldquo;Bon app&eacute;tit&rdquo; in Arabic &mdash; said when you
-              wish someone good health through food
+              &ldquo;Bon app&eacute;tit&rdquo; in Arabic. Said when you
+              wish someone good health through food.
             </p>
             <h2 className="text-2xl font-bold text-foreground mb-6">
               {t("aboutSahteenTitle")}

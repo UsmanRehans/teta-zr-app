@@ -230,7 +230,7 @@ export default function NewOrderPage() {
           disabled={placing || (deliveryType === "delivery" && !deliveryAddress)}
           className="neu-btn-primary"
         >
-          {placing ? t("placingOrder") : `${t("placeOrder")} — $${total.toFixed(2)}`}
+          {placing ? t("placingOrder") : `${t("placeOrder")} · $${total.toFixed(2)}`}
         </button>
 
         <p className="text-xs text-center text-sub">

@@ -17,9 +17,9 @@ const notoArabic = Noto_Sans_Arabic({
 });
 
 export const metadata: Metadata = {
-  title: "Teta — Home-Cooked Food from Beirut",
+  title: "Teta | Home-Cooked Food from Beirut",
   description:
-    "Discover authentic Lebanese home-cooked meals from local cooks in your neighborhood.",
+    "Real Lebanese food made by home cooks in your neighborhood. Kibbeh, tabbouleh, mana'eesh. The way teta makes it.",
 };
 
 export default function RootLayout({
